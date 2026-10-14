@@ -17,10 +17,13 @@ Entity State / Fire / Detonation totals).
 xml/            the corrected 13-file spec set (DIS_7_2012.xml + 12 families)
 scripts/        fix.py (upstream -> xml/ transform, v0.1.0 set),
                 fix2_pdf_audit.py (2026-10-15 IEEE-PDF audit gate),
-                validate.py, check_consistency.py, census.py, make_docs.py
+                validate.py, check_consistency.py, census.py,
+                ref056_check.py, make_docs.py
 docs/           changes.json / overrides.json / changes-evidence.md /
                 citations-report.txt (v0.1.0 set) — plus the 2026-10-15
-                IEEE PDF audit: pdf-audit-changes.json / pdf-audit-evidence.md
+                IEEE PDF audit: pdf-audit-changes.json /
+                pdf-audit-evidence.md — and the SISO-REF-056 hygiene
+                assessment: ref056-compliance.md
 ref010/         submodule -> siso-ref-010-xml @ v37-docs (v37 enum tables
                 for the uid/size join + the official v37 distribution docs
                 and the REF-010.1 operations manual)
@@ -37,6 +40,9 @@ ref010/         submodule -> siso-ref-010-xml @ v37-docs (v37 enum tables
   (the interim-generator-input pattern).
 - **Verify**: `python3 scripts/validate.py && python3 scripts/check_consistency.py`
   (drift gate needs `SPEC_UPSTREAM_DIR` pointing at an upstream checkout).
+- **Style hygiene audit**: `python3 scripts/ref056_check.py` — read-only census of
+  the set against SISO-REF-056-2018's transferable best practices; results recorded
+  in `docs/ref056-compliance.md`.
 - **Reproduce xml/ from upstream**: see `MANIFEST`.
 
 ## Corrections at a glance (106 changes + 2026-10-15 IEEE PDF audit)
