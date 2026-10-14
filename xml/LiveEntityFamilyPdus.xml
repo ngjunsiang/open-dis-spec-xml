@@ -1,0 +1,267 @@
+<classes>
+    <!--  TODO check, why unused?
+    <class name="LiveEntityPdu" id="11" abstract="true" inheritsFrom="Pdu"
+           comment="The live entity PDUs have a slightly different header.">
+
+        <attribute name="subprotocolNumber" comment="Subprotocol used to decode the PDU. Section 13 of EBV.">
+            <sisoenum type="DISLiveEntitySubprotocolNumber" comment="uid 417"/>
+        </attribute>
+
+        <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
+            <primitive type="uint8" defaultValue="0"/>
+        </attribute>
+
+    </class>
+    -->
+    
+    <class name="LiveEntityFamilyPdu" id="11" abstract="true" inheritsFrom="Pdu" comment="Does not inherit from PduBase.  See section 9.">
+     
+        <initialValue name="protocolFamily" value="DISProtocolFamily.LIVE_ENTITY_LE_INFORMATION_INTERACTION"/>
+        <attribute name="subprotocolNumber">
+            <sisoenum type="DISLiveEntitySubprotocolNumber" uid="417" size="8" comment="uid 417; subprotocol used to decode the PDU. Section 13 of EBV."/>
+        </attribute>
+        
+        <attribute name="padding">
+            <primitive type="uint8" defaultValue="0" comment="LE PDU Header padding (9.3.2): 8 bits unused"/>
+        </attribute>
+    </class>
+
+    <class name="TimeSpacePositionInformationPdu" id="46" inheritsFrom="LiveEntityFamilyPdu" comment="9.4.2 The Time Space Position Information (TSPI) PDU shall communicate information about the LE’s state vector. Canonical descriptive name; TSPIPdu is an alias.">
+        
+        <initialValue name="pduType" value="DisPduType.TIME_SPACE_POSITION_INFORMATION"/>
+               
+        <attribute name="liveEntityId">
+            <classRef name="LiveEntityIdentifier"/>
+        </attribute>
+        
+        <attribute name="TSPIFlag" comment="bit field">
+            <primitive type="uint8"/>
+        </attribute>
+  
+        <attribute name="entityLocation">
+            <classRef name="LiveEntityRelativeWorldCoordinates"/>
+        </attribute>
+        
+        <attribute name="entityLinearVelocity">
+            <classRef name="LiveEntityLinearVelocity"/>
+        </attribute>
+        
+        <attribute name="entityOrientation">
+            <classRef name="LiveEntityOrientation"/>
+        </attribute>
+        
+        <attribute name="positionError">
+            <classRef name="LiveEntityPositionError"/>
+        </attribute>
+        
+        <attribute name="orientationError">
+            <classRef name="LiveEntityOrientationError"/>
+        </attribute>
+        
+        <attribute name="deadReckoningParameters">
+            <classRef name="LiveDeadReckoningParameters"/>
+        </attribute>
+   
+        <attribute name="measuredSpeed">
+            <primitive type="uint16" comment="16-bit fixed binary"/>
+        </attribute>
+        
+        <attribute name="systemSpecificDataLength" hidden="true">
+            <primitive type="uint8"/>
+        </attribute>
+        
+        <attribute name="systemSpecificData">
+            <primitivelist countFieldName="systemSpecificDataLength">
+                <primitive type="uint8" length="0"/>
+            </primitivelist>
+        </attribute>
+        
+    </class>
+    
+    <class name="TSPIPdu" id="46" comment="Alias (abbreviation) for TimeSpacePositionInformationPdu." aliasFor="TimeSpacePositionInformationPdu"/>
+    
+    <class name="AppearancePdu" id="47" inheritsFrom="LiveEntityFamilyPdu" comment="9.4.3 Communicate information about the appearance of a live entity.">
+        
+        <initialValue name="pduType" value="DisPduType.APPEARANCE"/>
+        
+        <attribute name="liveEntityId">
+            <classRef name="LiveEntityIdentifier"/>
+        </attribute>
+        
+        <attribute name="appearanceFlag1" comment="Appearance Flag-1 (Table 221): bit 7 flag-2 included, 6 Appearance-IR, 5 Appearance-Visual, 4 Capabilities, 3 Entity Marking, 2 Alternate Entity Type, 1 Entity Type, 0 Force ID">
+            <primitive type="uint16"/>
+        </attribute>
+        
+        <attribute name="appearanceFlag2" presentIf="appearanceFlag1:7" comment="Appearance Flag-2 (Table 222): bit 1 Appearance-Audio, bit 0 Appearance-EM; bits 7-2 reserved/unused">
+            <primitive type="uint8"/>
+        </attribute>
+        
+        <attribute name="forceId" presentIf="appearanceFlag1:0">
+            <sisoenum type="ForceID" comment="uid 6" uid="6" size="8"/>
+        </attribute>
+        
+        <attribute name="entityType" presentIf="appearanceFlag1:1">
+            <classRef name="EntityType"/>          
+        </attribute>
+        
+        <attribute name="alternateEntityType" presentIf="appearanceFlag1:2">
+            <classRef name="EntityType"/>          
+        </attribute>
+        
+        <attribute name="entityMarking" presentIf="appearanceFlag1:3">
+            <classRef name="EntityMarking"/>
+        </attribute>
+        
+        <attribute name="capabilities" presentIf="appearanceFlag1:4">
+            <sisobitfield type="EntityCapabilities" defaultValue="0" size="32" comment="uid 55" uid="55"/>
+        </attribute>
+        
+        <!-- uid 31-43: LandPlatformAppearance, AirPlatformAppearance, SurfacePlatformAppearance, SubsurfaceFlatformAppearance,
+                SpacePlatformAppearance, MunitionAppearance, LifeFormsAppearance, EnvironmentalAppearance,
+                CulturalFeatureAppearance, SupplyAppearance, RadioAppearance, ExpendableAppearance, SensorEmitterAppearance -->
+       <!-- This is ill-spec'ed.  There can be up to four sequential 32-bit fields (types above) or none at all, depending on
+            bits in the appearanceFlags field.  The Appearance class has 4 slots.
+               -->
+        <attribute name="appearanceVisual" presentIf="appearanceFlag1:5">
+            <classRef name="EntityAppearance"/>
+        </attribute>
+        
+        <attribute name="appearanceIR" presentIf="appearanceFlag1:6">
+            <classRef name="EntityAppearance"/>
+        </attribute>
+        
+        <attribute name="appearanceEM" presentIf="appearanceFlag2:0">
+            <classRef name="EntityAppearance"/>
+        </attribute>
+        
+        <attribute name="appearanceAudio" presentIf="appearanceFlag2:1">
+            <classRef name="EntityAppearance"/>
+        </attribute>
+        
+        </class>
+    
+    <class name="ArticulatedPartsPdu" id="48" inheritsFrom="LiveEntityFamilyPdu" comment="9.4.4 Communicate information about an entity’s articulated and attached parts.">
+        
+        <initialValue name="pduType" value="DisPduType.ARTICULATED_PARTS"/>
+
+        <attribute name="liveEntityId">
+            <classRef name="LiveEntityIdentifier"/>
+        </attribute>
+        
+        <attribute name="numberOfParameterRecords" hidden="true">
+            <primitive type="uint8"/>
+        </attribute>
+        
+        <attribute name="variableParameters">
+            <objectlist countFieldName="numberOfParameterRecords">
+                <classRef name="VariableParameter"/>
+            </objectlist>
+        </attribute>
+        
+    </class>
+ 
+    <class name="LiveEntityFirePdu" id="49" inheritsFrom="LiveEntityFamilyPdu" comment="9.4.5 Representation of weapons fire in a DIS exercise involving LEs. Canonical descriptive name; LEFirePdu is an alias.">
+        
+        <initialValue name="pduType" value="DisPduType.LIVE_ENTITY_FIRE"/>
+
+        <attribute name="firingLiveEntityId">
+            <classRef name="LiveEntityIdentifier"/>
+        </attribute>
+        
+        <attribute name="fireFlag" comment="Fire Flag (Table 225): bit 7 reserved (flag continuation), 6 Location included, 5 Quantity+Rate included, 4 Warhead+Fuse included, 3 Event ID Site/App included, 2 Munition ID included, 1 Munition ID Site/App included, 0 Target Entity ID included">
+            <primitive type="uint8"/>
+        </attribute>
+        
+        <attribute name="targetLiveEntityId" presentIf="fireFlag:0">
+            <classRef name="LiveEntityIdentifier"/>
+        </attribute>
+        
+        <attribute name="munitionLiveEntityId" presentIf="fireFlag:2">
+            <classRef name="LiveEntityIdentifierElided" when="fireFlag:1=0"/>
+            <classRef name="LiveEntityIdentifier" when="fireFlag:1=1"/>
+        </attribute>
+        
+        <attribute name="eventId">
+            <classRef name="EventIdentifierLiveEntityElided" when="fireFlag:3=0"/>
+            <classRef name="EventIdentifierLiveEntity" when="fireFlag:3=1"/>
+        </attribute>
+        
+        <attribute name="location" presentIf="fireFlag:6">
+            <classRef name="LiveEntityRelativeWorldCoordinates"/>
+        </attribute>
+        
+        <attribute name="munitionDescriptor">
+            <classRef name="LEMunitionDescriptor"/>
+        </attribute>
+        
+        <attribute name="velocity">
+            <classRef name="LiveEntityLinearVelocity"/>
+        </attribute>
+        
+        <attribute name="range">
+            <primitive type="uint16"/>
+        </attribute>
+        
+    </class>
+    
+    <class name="LEFirePdu" id="49" comment="Alias (abbreviation) for LiveEntityFirePdu." aliasFor="LiveEntityFirePdu"/>
+
+    <class name="LiveEntityDetonationPdu" id="50" inheritsFrom="LiveEntityFamilyPdu" comment="9.4.6 Communicate information associated with the impact or detonation of a munition. Canonical descriptive name; LEDetonationPdu is an alias.">
+        
+        <initialValue name="pduType" value="DisPduType.LIVE_ENTITY_DETONATION"/>
+        
+        <attribute name="firingLiveEntityId">
+            <classRef name="LiveEntityIdentifier"/>
+        </attribute>
+        
+        <attribute name="detonationFlag1">
+            <primitive type="uint8"/>
+        </attribute>
+        
+        <attribute name="detonationFlag2" presentIf="detonationFlag1:7">
+            <primitive type="uint8"/>
+        </attribute>
+              
+        <attribute name="targetLiveEntityId" presentIf="detonationFlag1:0">
+            <classRef name="LiveEntityIdentifier"/>
+        </attribute>
+        
+        <attribute name="munitionLiveEntityId" presentIf="detonationFlag1:2">
+            <classRef name="LiveEntityIdentifierElided" when="detonationFlag1:1=0"/>
+            <classRef name="LiveEntityIdentifier" when="detonationFlag1:1=1"/>
+        </attribute>
+        
+        <attribute name="eventId" presentIf="detonationFlag1:7 &amp; detonationFlag2:1">
+            <classRef name="EventIdentifierLiveEntityElided" when="detonationFlag1:3=0"/>
+            <classRef name="EventIdentifierLiveEntity" when="detonationFlag1:3=1"/>
+        </attribute>
+        
+        <attribute name="worldLocation" presentIf="detonationFlag1:6=0">
+            <classRef name="LiveEntityRelativeWorldCoordinates"/>
+        </attribute>
+        
+        <attribute name="velocity">
+            <classRef name="LiveEntityLinearVelocity"/>
+        </attribute>
+        
+        <attribute name="munitionOrientation" comment="spec error? 16-bit fields vs. 8-bit in TspiPdu?" presentIf="detonationFlag2:0">
+            <classRef name="LiveEntityOrientation16"/>
+        </attribute>
+        
+        <attribute name="munitionDescriptor">
+            <classRef name="LEMunitionDescriptor"/>
+        </attribute>
+        
+        <attribute name="entityLocation" presentIf="detonationFlag1:6" comment="Location in Entity's Coordinates: three 16-bit fixed binaries (48 bits; Entity Coordinate Vector with decreased sizes per 9.4.6.8 k)). Previously mis-referenced as LiveEntityLinearVelocity.">
+            <classRef name="LiveEntityRelativeEntityCoordinates"/>
+        </attribute>
+        
+        <attribute name="detonationResult">
+            <sisoenum type="DetonationResult" uid="62" size="8" comment="uid 62"/>
+        </attribute>
+        
+    </class>
+    
+    <class name="LEDetonationPdu" id="50" comment="Alias (abbreviation) for LiveEntityDetonationPdu." aliasFor="LiveEntityDetonationPdu"/>
+
+</classes>

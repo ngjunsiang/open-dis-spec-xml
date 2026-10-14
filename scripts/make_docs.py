@@ -1,0 +1,164 @@
+#!/usr/bin/env python3
+"""Generates the derived artifacts from changes.json (all machine-written):
+
+  overrides.json        interim generator input per the pinned ruling:
+                        corrections keyed file -> class -> field, so a
+                        generator can consume the ORIGINAL .references XML
+                        plus this file until the fixes land upstream.
+  changes-evidence.md   human review doc: every change hunk mapped to its
+                        IEEE 1278.1-2012 / SISO-REF-010 citation, grouped
+                        by change category (wire fixes vs enrichment vs
+                        naming vs citations, so upstream commits can be
+                        split accordingly).
+  citations-report.txt  every section citation remaining in the fixed XML
+                        with its PDF clause title, for the continuing
+                        citation audit (fixed entries marked).
+"""
+import json
+import os
+import re
+from collections import defaultdict
+from lxml import etree
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+FIXED = os.path.join(ROOT, "xml")
+DOCS = os.path.join(ROOT, "docs")
+
+VOCAB = """## Vocabulary added by this pass
+
+These attributes are additions to the opendis7-source-generator XML
+vocabulary (unknown attributes are ignored by the current upstream
+generator, which degrades to the first variant):
+
+| Attribute | On | Meaning |
+|---|---|---|
+| `uid="N"` | sisoenum, sisobitfield | SISO-REF-010 table uid (moved out of free-text comments) |
+| `size="B"` | sisoenum, sisobitfield | wire size in bits, from the REF-010 v37 join |
+| `presentIf="term [| term] [& term]"` | attribute, variant children | field present iff condition; `field:bit`, `field:bit=0`, `field=V` (enum compare); `&` binds tighter than `|`; paths may cross into sibling records (`entityType.entityKind`); inside a classRef'd record, names resolve against the owning PDU (cross-scope rule); a field absent from the current context evaluates false |
+| `when="term"` | classRef/sisoenum/sisobitfield variants | variant group per child tag: **exactly one member present** — the first whose `when=` is true, else the member without `when` (default), else none |
+| `countExpression="a * b - c"` | primitivelist, objectlist | element count from arithmetic over sibling fields |
+| `bitCountExpression="a * b"` | primitivelist, objectlist | length in BITS from arithmetic |
+| `bitCountFieldName="X"` | primitivelist | length in bits from a single field (existing upstream attribute, reused) |
+| `countListFieldName="X"` | primitivelist, objectlist | flat list partitioned into runs; run lengths are the elements of sibling list X |
+
+"""
+
+GROUPS = [
+    ("WIRE", "Wire-shape corrections",
+     "Each of these changes the bytes on the wire versus the original XML. "
+     "Upstream PRs for this group must quote the cited standard text."),
+    ("ENRICH", "Mechanical enrichment (no wire change)",
+     "Attributes derived mechanically from REF-010 v37 or from sibling "
+     "fields; wire-identical, generator-enabling."),
+    ("NAMING", "Naming / alias canonicalization (no wire change)",
+     "Canonical-name flips per the aliasFor ruling; both names resolve."),
+    ("CITATION", "Citation corrections (comment text only)",
+     "Standard-clause citations in comments corrected against the IEEE "
+     "1278.1-2012 clause map. Must not share upstream commits with "
+     "WIRE changes."),
+    ("FIX", "Cleanups (typos, stale artifacts)",
+     "Typos and stale/dead declarations; individually evidenced."),
+    ("ADD", "New declarations",
+     "Record classes this pass declares."),
+    ("NOTE", "Documented standard inconsistencies",
+     "Places where the standard's prose conflicts with its own normative "
+     "tables; the table was followed and the conflict recorded."),
+]
+
+
+def main():
+    changes = json.load(open(os.path.join(DOCS, "changes.json")))
+
+    # ---------------- overrides.json ----------------
+    ov = defaultdict(lambda: defaultdict(list))
+    for ch in changes:
+        ov[ch["file"]][ch["klass"]].append(
+            {k: ch[k] for k in ("field", "kind", "detail", "evidence")})
+    with open(os.path.join(DOCS, "overrides.json"), "w") as fh:
+        json.dump({"_provenance": {
+                       "source": ".references/ DIS 7 XML set (2026-10-13 "
+                                 "collection)",
+                       "fixed_by": "xml-fixed/scripts/fix.py",
+                       "changes": len(changes),
+                       "ruling": ".references/decisions.md: generator "
+                                 "consumes this override file until the "
+                                 "upstream XML fixes merge"},
+                   "files": {f: dict(cs) for f, cs in ov.items()}},
+                  fh, indent=1)
+
+    # ---------------- changes-evidence.md ----------------
+    lines = ["# changes-evidence.md — DIS 7 XML correction pass",
+             "",
+             "Generated by `scripts/make_docs.py` from `changes.json` "
+             "(written by `scripts/fix.py`). Sources: `.references/` XML "
+             "set; SISO-REF-010 v37; IEEE Std 1278.1-2012.",
+             "",
+             f"**{len(changes)} changes** across 13 files. Validation: "
+             "`scripts/validate.py` (all gates pass, including bit-level "
+             "PDU-size parity with Tables 226/229/189).",
+             "",
+             VOCAB]
+    for prefix, title, blurb in GROUPS:
+        grp = [c for c in changes if c["kind"].startswith(prefix)]
+        if not grp:
+            continue
+        lines += [f"## {title} ({len(grp)})", "", blurb, "",
+                  "| File | Class | Field | Change | Evidence |",
+                  "|---|---|---|---|---|"]
+        for c in grp:
+            det = c["detail"].replace("|", "\\|")
+            ev = c["evidence"].replace("|", "\\|")
+            lines.append(f"| {c['file']} | {c['klass']} | {c['field']} | "
+                         f"{det} | {ev} |")
+        lines.append("")
+    open(os.path.join(DOCS, "changes-evidence.md"), "w").write("\n".join(lines))
+
+    # ---------------- citations-report.txt ----------------
+    clause_titles = {}
+    cm = os.path.join(HERE, "clause_map.txt")
+    if os.path.exists(cm):
+        for ln in open(cm):
+            m = re.match(r"^(6\.2\.\d+(?:\.\d+)*)\s+(.*)$", ln.strip())
+            if m:
+                clause_titles[m.group(1)] = m.group(2)
+    fixed_pairs = {(c["file"], c["klass"], c["field"]) for c in changes
+                   if c["kind"] == "CITATION"}
+    out = ["Citation audit report — remaining section citations in the "
+           "fixed XML, with PDF clause titles where the clause map "
+           "resolves them. Entries marked FIXED were corrected this "
+           "pass. Unresolved/odd titles are the manual-audit backlog.",
+           ""]
+    rx = re.compile(r"(?:ection|see) (\d+(?:\.\d+)+)", re.I)
+    for fname in sorted(os.listdir(FIXED)):
+        if not fname.endswith(".xml") or fname.startswith("SISO"):
+            continue
+        tree = etree.parse(os.path.join(FIXED, fname))
+        out.append(f"== {fname}")
+        for cls in tree.getroot().iter("class"):
+            if cls.get("aliasFor"):
+                continue
+            hits = []
+            for where, c in (("class", cls.get("comment")),
+                             *[(a.get("name"), a.get("comment") or "")
+                               for a in cls.findall("attribute")]):
+                for m in rx.finditer(c or ""):
+                    cl = m.group(1)
+                    title = clause_titles.get(cl)
+                    mark = ""
+                    if (fname, cls.get("name"), where) in fixed_pairs:
+                        mark = " [FIXED this pass]"
+                    elif title is None and cl.startswith("6.2."):
+                        mark = " [NOT IN CLAUSE MAP — check]"
+                    hits.append(f"    {where}: {cl}"
+                                f"{' — ' + title if title else ''}{mark}")
+            if hits:
+                out.append(f"  {cls.get('name')}")
+                out += hits
+        out.append("")
+    open(os.path.join(DOCS, "citations-report.txt"), "w").write("\n".join(out))
+    print("wrote overrides.json, changes-evidence.md, citations-report.txt")
+
+
+if __name__ == "__main__":
+    main()

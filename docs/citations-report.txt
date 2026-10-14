@@ -1,0 +1,410 @@
+Citation audit report — remaining section citations in the fixed XML, with PDF clause titles where the clause map resolves them. Entries marked FIXED were corrected this pass. Unresolved/odd titles are the manual-audit backlog.
+
+== DIS_7_2012.xml
+  AcousticEmitter
+    class: 6.2.2 — Acoustic Emitter System record
+  AggregateIdentifier
+    class: 6.2.3 — Aggregate Identifier record
+  AggregateMarking
+    class: 6.2.4 — Aggregate Marking record
+  AggregateType
+    class: 6.2.5 — Aggregate Type record
+  AngularVelocityVector
+    class: 6.2.7 — Angular Velocity Vector record
+  AntennaLocation
+    class: 6.2.8 — Antenna Pattern record
+  APA
+    class: 7.6.4
+  BeamAntennaPattern
+    class: 6.2.9.2 [NOT IN CLAUSE MAP — check]
+  Association
+    class: 5.9.4
+    class: 6.2.9 — Association record
+  Attribute
+    class: 6.2.10 — Attribute record
+  BeamData
+    class: 6.2.11 — Beam Data record
+  ChangeOptions
+    class: 6.2.13 — Change/Options record
+  BeamStatus
+    class: 6.2.12 — Beam Status record
+  ClockTime
+    class: 6.2.14 — Clock Time record
+  DirectedEnergyDamage
+    class: 6.2.15.2 — Directed Energy Damage Description record
+  DataQueryDatumSpecification
+    class: 6.2.17 — Data Query Datum Specification record
+  DatumSpecification
+    class: 6.2.18 — Datum Specification record
+  MunitionDescriptor
+    class: 6.2.19.2 — Munition Descriptor record
+  ExplosionDescriptor
+    class: 6.2.19.3 — Explosion Descriptor record
+    explodingObject: 6.2.30 — Entity Type record
+  ExpendableDescriptor
+    class: 6.2.19.4 — Expendable Descriptor record
+  DirectedEnergyAreaAimpoint
+    class: 6.2.20.2 — DE Area Aimpoint record
+    beamAntennaParameterList: 6.2.9.2 [NOT IN CLAUSE MAP — check]
+    directedEnergyTargetEnergyDepositionRecordList: 6.2.21.4 [NOT IN CLAUSE MAP — check]
+  DirectedEnergyPrecisionAimpoint
+    class: 6.2.20.3 — DE Precision Aimpoint record
+  DirectedEnergyTargetEnergyDeposition
+    class: 6.2.20.4 — DE Target Energy Deposition record
+  BlankingSector
+    class: 6.2.21.2 — Angle Deception attribute record
+    leftAzimuth: 1.4.3
+    rightAzimuth: 1.4.3
+    lowerElevation: 1.4.3
+  AngleDeception
+    class: 6.2.21.2.2 — Record definition
+    azimuthOffset: 1.4.3
+    elevationOffset: 1.4.3
+  FalseTargetsAttribute
+    class: 6.2.21.3 — False Targets attribute record
+  EEFundamentalParameterData
+    class: 6.2.22 — EE Fundamental Parameter Data record
+  EmitterSystem
+    class: 6.2.23 — Emitter System record
+  EngineFuel
+    class: 6.2.24 — Engine Fuel record
+  EngineFuelReload
+    class: 6.2.25 — Engine Fuel Reload record
+  EntityIdentifier
+    class: 6.2.28 — Entity Identifier record
+  EntityMarking
+    class: 6.2.29 — Entity Marking record
+  EulerAngles
+    class: 6.2.33 — Event Identifier record
+  EventIdentifier
+    class: 6.2.33 — Event Identifier record
+  EventIdentifierLiveEntity
+    class: 9.4.5
+  Expendable
+    class: 6.2.36 — Expendable Reload record
+  ExpendableReload
+    class: 6.2.37 — Fixed Datum record
+  FixedDatum
+    class: 6.2.37 — Fixed Datum record
+  FundamentalOperationalData
+    class: 6.2.39 — Fundamental Operational Data record
+  GridAxisDescriptorFixed
+    class: 6.2.41 — Grid Data record
+  GroupID
+    class: 6.2.42 — Group identifier
+  CommunicationsNodeID
+    class: 6.2.48.4 — Communications Node ID record
+  IFFDataSpecification
+    class: 6.2.43 — IFF Data Specification record
+  IFFFundamentalParameterData
+    class: 6.2.44 — IFF Fundamental Parameter Data record
+  IntercomCommunicationsParameters
+    class: 6.2.46 — Intercom Communications Parameters record
+  IntercomIdentifier
+    class: 6.2.48 — IO records
+  JammingTechnique
+    class: 6.2.49 — Jamming Technique record
+  LaunchedMunitionRecord
+    class: 6.2.50 — Launched Munition record
+  LayerHeader
+    class: 6.2.51 — Layer Header record
+    layerSpecificInformation: 6.2.86 — Supply Quantity record
+  LinearSegmentParameter
+    class: 6.2.52 — Linear Segment Parameter record
+  LiveEntityIdentifier
+    class: 6.2.53 — Live Entity Identifier record
+    liveSimulationAddress: 6.2.54 — Live Simulation Address record
+  LiveSimulationAddress
+    class: 6.2.54 — Live Simulation Address record
+  MineEntityIdentifier
+    class: 6.2.55 — Mine Entity Identifier record
+  MinefieldIdentifier
+    class: 6.2.56 — Minefield Identifier record
+  MinefieldSensorType
+    class: 6.2.57 — Minefield Sensor Type record
+  Munition
+    class: 6.2.60 — Munition record
+    munitionType: 6.2.30 — Entity Type record
+  MunitionReload
+    class: 6.2.61 — Munition Reload record
+    munitionType: 6.2.30 — Entity Type record
+  NamedLocationIdentification
+    class: 6.2.62 — Named Location Identification record
+  ObjectIdentifier
+    class: 6.2.63 — Object Identifier record
+  ObjectType
+    class: 6.2.64 — Object Type record
+  OwnershipStatusRecord
+    class: 6.2.65 — Ownership Status record
+  PropulsionSystemData
+    class: 6.2.68 — Propulsion System Data record
+  ProtocolMode
+    class: 6.2.69 — Protocol Mode
+  RadioIdentifier
+    class: 6.2.70 — Radio Identifier record
+  RadioType
+    class: 6.2.71 — Radio Type record
+  RecordSpecificationElement
+    class: 6.2.73 — Record Specification record
+  RecordSpecification
+    class: 6.2.73 — Record Specification record
+  Relationship
+    class: 6.2.74 — Relationship record
+  RequestID
+    class: 6.2.75 — Request ID
+  SecondaryOperationalData
+    class: 6.2.76 — Secondary Operational Data record
+  Sensor
+    class: 6.2.77 — Sensor record
+  ShaftRPM
+    class: 7.6.4
+  SilentEntitySystem
+    class: 6.2.79 — Silent Entity System record
+  SimulationAddress
+    class: 6.2.80 — Simulation Address record
+  SimulationIdentifier
+    class: 6.2.81 — Simulation Identifier record
+  StandardVariableSpecification
+    class: 6.2.83 — Standard Variable Specification record
+  StandardVariableRecord
+    class: 6.2.83 — Standard Variable Specification record
+  StorageFuel
+    class: 6.2.84 — Storage Fuel record
+  StorageFuelReload
+    class: 6.2.85 — Storage Fuel Reload record
+  SupplyQuantity
+    class: 6.2.86 — Supply Quantity record
+  SystemIdentifier
+    class: 6.2.87 — System Identifier record
+    changeOptions: 6.2.15 — Damage Description records
+  TotalRecordSets
+    class: 6.2.88 — Timestamp
+  TrackJamData
+    class: 6.2.89 — Total Record Sets record
+  UAFundamentalParameter
+    class: 6.2.91 — UA Fundamental Parameter Data record
+  UnattachedIdentifier
+    class: 6.2.92 — Unattached Identifier record
+    simulationAddress: 6.2.79 — Silent Entity System record
+  VariableDatum
+    class: 6.2.93 — Variable Datum record
+  ArticulatedPartVP
+    class: 6.2.94.2 — Articulated Part VP record
+  AttachedPartVP
+    class: 6.2.93.3 [NOT IN CLAUSE MAP — check]
+  EntityAssociationVP
+    class: 6.2.94.4.3 — Fields
+  EntityTypeVP
+    class: 6.2.94.5 — Entity Type VP record
+  SeparationVP
+    class: 6.2.94.6 — Separation VP record
+  VariableTransmitterParameters
+    class: 6.2.95 — Variable Transmitter Parameters record
+  Vector3Float
+    class: 6.2.95 — Variable Transmitter Parameters record
+  VectoringNozzleSystem
+    class: 6.2.96 — Vector record
+  Vector3Double
+    class: 6.2.97 — Vectoring Nozzle System Data record
+  PduBase
+    class: 7.2.2
+  EntityAppearance
+    class: 6.2.26 — Entity Appearance record
+  EventIdentifierLiveEntityElided
+    class: 9.4.5
+  LiveEntityRelativeEntityCoordinates
+    class: 9.4.6.8
+  LiveEntityIdentifierElided
+    class: 9.4.5
+
+== DistributedEmissionsFamilyPdus.xml
+  DistributedEmissionsRegenerationFamilyPdu
+    class: 5.3.7
+  ElectromagneticEmissionPdu
+    class: 5.3.7.1
+  ElectronicEmitter
+    emitterSystem: 6.2.23 — Emitter System record
+    location: 6.2.95 — Variable Transmitter Parameters record
+  DesignatorPdu
+    class: 5.3.7.2
+  UnderwaterAcousticPdu
+    class: 5.7.5
+  UAEmitter
+    location: 6.2.95 — Variable Transmitter Parameters record
+  IdentificationFriendOrFoePdu
+    class: 5.7.6
+  IFFPduLayer5Data
+    applicableLayers: 6.2.45 — Information Layers record
+  SupplementalEmissionEntityStatePdu
+    class: 5.7.7
+
+== EntityInformationFamilyPdus.xml
+  EntityInformationInteractionFamilyPdu
+    class: 5.3.3
+  EntityStatePdu
+    class: 5.3.2
+  CollisionPdu
+    class: 5.3.3
+    issuingEntityID: 6.2.28 — Entity Identifier record
+    collidingEntityID: 5.3.3.4
+    collidingEntityID: 6.2.28 — Entity Identifier record
+    eventID: 6.2.34 — Exercise identifier
+    velocity: 6.2.95 — Variable Transmitter Parameters record
+    location: 6.2.95 — Variable Transmitter Parameters record
+  CollisionElasticPdu
+    class: 5.3.4
+    issuingEntityID: 6.2.28 — Entity Identifier record
+    collidingEntityID: 6.2.28 — Entity Identifier record
+    collisionEventID: 6.2.34 — Exercise identifier
+    contactVelocity: 6.2.95 — Variable Transmitter Parameters record
+    locationOfImpact: 6.2.95 — Variable Transmitter Parameters record
+    collisionIntermediateResultXX: 5.3.4.4
+    unitSurfaceNormal: 6.2.95 — Variable Transmitter Parameters record
+  EntityStateUpdatePdu
+    entityID: 6.2.28 — Entity Identifier record
+    entityLinearVelocity: 6.2.96 — Vector record [FIXED this pass]
+    entityLocation: 6.2.98 — World Coordinates record [FIXED this pass]
+    entityOrientation: 6.2.32 — Euler Angles record [FIXED this pass]
+    entityAppearance: 6.2.26 — Entity Appearance record
+    variableParameters: 6.2.94 — Variable Parameter record [FIXED this pass]
+  AttributePdu
+    class: 5.3.6
+    originatingSimulationAddress: 6.2.79 — Silent Entity System record
+
+== EntityManagementFamilyPdus.xml
+  EntityManagementFamilyPdu
+    class: 7.8
+
+== InformationOperationsFamilyPdus.xml
+
+== LiveEntityFamilyPdus.xml
+
+== LogisticsFamilyPdus.xml
+  LogisticsFamilyPdu
+    class: 7.4
+  ServiceRequestPdu
+    requestingEntityID: 6.2.28 — Entity Identifier record
+    requestingEntityID: 7.4.2
+    servicingEntityID: 6.2.28 — Entity Identifier record
+    servicingEntityID: 7.4.2
+    serviceTypeRequested: 7.4.2
+    numberOfSupplyTypes: 7.4.2
+  ResupplyOfferPdu
+    receivingEntityID: 6.2.28 — Entity Identifier record
+    receivingEntityID: 7.4.3
+    supplyingEntityID: 6.2.28 — Entity Identifier record
+    supplyingEntityID: 7.4.3
+    numberOfSupplyTypes: 7.4.3
+    supplies: 6.2.85 — Storage Fuel Reload record
+    supplies: 7.4.3
+  ResupplyReceivedPdu
+    receivingEntityID: 6.2.28 — Entity Identifier record
+    supplyingEntityID: 6.2.28 — Entity Identifier record
+    supplies: 6.2.85 — Storage Fuel Reload record
+    supplies: 7.4.3
+  ResupplyCancelPdu
+    receivingEntityID: 7.4.5
+    supplyingEntityID: 7.4.5
+  RepairCompletePdu
+    receivingEntityID: 6.2.28 — Entity Identifier record
+    repairingEntityID: 6.2.28 — Entity Identifier record
+    repair: 6.2.74 — Relationship record
+  RepairResponsePdu
+    receivingEntityID: 6.2.28 — Entity Identifier record
+    repairingEntityID: 6.2.28 — Entity Identifier record
+
+== MinefieldFamilyPdus.xml
+  MinefieldFamilyPdu
+    class: 7.9
+
+== RadioCommunicationsFamilyPdus.xml
+  RadioCommunicationsFamilyPdu
+    class: 7.7
+
+== SimulationManagementFamilyPdus.xml
+  SimulationManagementFamilyPdu
+    receivingID: 5.6.5
+  CreateEntityPdu
+    class: 7.5.2
+    class: 5.6.5.2
+    requestID: 6.2.75 — Request ID
+  RemoveEntityPdu
+    class: 7.5.3
+    class: 5.6.5.3
+  StartResumePdu
+    class: 7.5.4
+    class: 5.6.5.4
+    realWorldTime: 6.2.16 — Data Filter record
+    simulationTime: 6.2.16 — Data Filter record
+  StopFreezePdu
+    class: 7.5.5
+    class: 5.6.5.5
+  AcknowledgePdu
+    class: 5.6.5.6
+  ActionRequestPdu
+    class: 5.6.5.7
+  ActionResponsePdu
+    class: 7.5.8
+    class: 5.6.5.8
+  DataQueryPdu
+    class: 7.5.9
+    class: 5.6.5.9
+  SetDataPdu
+    class: 7.5.10
+    class: 5.6.5.10
+  DataPdu
+    class: 5.6.5.11
+  EventReportPdu
+    class: 5.6.5.12
+  CommentPdu
+    class: 5.6.5.13
+
+== SimulationManagementWithReliabilityFamilyPdus.xml
+  SimulationManagementWithReliabilityFamilyPdu
+    receivingID: 5.6.5
+  StopFreezeReliablePdu
+    class: 5.6.5.5.1
+  ActionResponseReliablePdu
+    class: 5.6.5.8.1
+
+== SyntheticEnvironmentFamilyPdus.xml
+  SyntheticEnvironmentFamilyPdu
+    class: 5.3.11
+
+== WarfareFamilyPdus.xml
+  WarfareFamilyPdu
+    class: 7.3
+  FirePdu
+    munitionExpendibleID: 6.2.28 — Entity Identifier record
+    eventID: 6.2.34 — Exercise identifier
+    fireMissionIndex: 5.4.3.3
+    locationInWorldCoordinates: 6.2.98 — World Coordinates record [FIXED this pass]
+    velocity: 6.2.95 — Variable Transmitter Parameters record
+  DetonationPdu
+    explodingEntityID: 7.3.3
+    eventID: 7.3.3
+    velocity: 7.3.3
+    locationInWorldCoordinates: 7.3.3
+    descriptor: 7.3.3
+    locationOfEntityCoordinates: 7.3.3
+    detonationResult: 7.3.3
+    numberOfVariableParameters: 7.3.3
+    variableParameters: 7.3.3
+  DirectedEnergyFirePdu
+    munitionType: 7.3.4
+    shotStartTime: 7.3.4
+    commulativeShotTime: 7.3.4
+    apertureEmitterLocation: 7.3.4
+    apertureDiameter: 7.3.4
+    wavelength: 7.3.4
+    pulseWidth: 7.3.4
+    flags: 7.3.4
+    pulseShape: 7.3.4
+    numberOfDERecords: 7.3.4
+    dERecords: 7.3.4
+  EntityDamageStatusPdu
+    damagedEntityID: 6.2.28 — Entity Identifier record
+    damagedEntityID: 7.3.4
+    numberOfDamageDescription: 7.3.5
+    damageDescriptionRecords: 6.2.17 — Data Query Datum Specification record
+    damageDescriptionRecords: 7.3.5

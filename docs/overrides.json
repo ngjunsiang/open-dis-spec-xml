@@ -1,0 +1,792 @@
+{
+ "_provenance": {
+  "source": ".references/ DIS 7 XML set (2026-10-13 collection)",
+  "fixed_by": "xml-fixed/scripts/fix.py",
+  "changes": 106,
+  "ruling": ".references/decisions.md: generator consumes this override file until the upstream XML fixes merge"
+ },
+ "files": {
+  "DIS_7_2012.xml": {
+   "?": [
+    {
+     "field": "EntityAssociationAssociationType",
+     "kind": "ENRICH-comment",
+     "detail": "comment '330' -> 'uid 330'",
+     "evidence": "uid moved to attribute; comment normalized to 'uid N'"
+    },
+    {
+     "field": "BeamStatusBeamState",
+     "kind": "ENRICH-comment",
+     "detail": "comment '318' -> 'uid 318'",
+     "evidence": "uid moved to attribute; comment normalized to 'uid N'"
+    },
+    {
+     "field": "TransmitterModulationTypeSystem",
+     "kind": "ENRICH-comment",
+     "detail": "comment 'uid =163' -> 'uid 163'",
+     "evidence": "uid moved to attribute; comment normalized to 'uid N'"
+    },
+    {
+     "field": "VariableRecordType",
+     "kind": "ENRICH-comment",
+     "detail": "comment 'uid = 66' -> 'uid 66'",
+     "evidence": "uid moved to attribute; comment normalized to 'uid N'"
+    },
+    {
+     "field": "VariableRecordType",
+     "kind": "ENRICH-comment",
+     "detail": "comment 'uid = 66' -> 'uid 66'",
+     "evidence": "uid moved to attribute; comment normalized to 'uid N'"
+    },
+    {
+     "field": "Domain",
+     "kind": "FIX-default",
+     "detail": "defaultValue 'Domain.inst(PlatformDomain.OTHER)' -> \"0\" (Java source literal removed)",
+     "evidence": "bitfield default zero = no flags set; normalized vocabulary is integers or EnumType.MEMBER symbols"
+    }
+   ],
+   "EntityType": [
+    {
+     "field": "domain",
+     "kind": "WIRE-repr",
+     "detail": "classRef Domain (specialCase domainHolder) -> conditional sisoenum variants: uid 14 MunitionDomain when entityKind=2 first, uid 8 PlatformDomain default LAST (variant ordering convention)",
+     "evidence": "IEEE 1278.1-2012 6.2.30 Entity Type record; kind-conditional uid ruled in .references/decisions.md (exemplar section 9.4)"
+    }
+   ],
+   "Domain": [
+    {
+     "field": "-",
+     "kind": "FIX-cleanup",
+     "detail": "deleted specialCase=domainHolder class (zero refs after rewrite)",
+     "evidence": "replaced by conditional sisoenum variants"
+    }
+   ],
+   "EntityAppearance": [
+    {
+     "field": "-",
+     "kind": "ADD-class",
+     "detail": "new record class: value attribute wrapping 13 kind/domain-conditional 32-bit appearance variants (uids 31-43); exactly one variant present, Land default",
+     "evidence": "IEEE 1278.1-2012 6.2.26 Entity Appearance record [UID 31-43]; REF-010 v37 bitfield tables"
+    }
+   ],
+   "PduBase": [
+    {
+     "field": "pduStatus",
+     "kind": "WIRE-repr",
+     "detail": "classRef to abstract single-field PduStatus record -> inline sisobitfield u8 (flatten-to-primitive applied in the XML)",
+     "evidence": "IEEE 1278.1-2012 6.2.67 PDU Status record; 7.2.2 PDU Header"
+    }
+   ],
+   "PduStatus": [
+    {
+     "field": "-",
+     "kind": "FIX-cleanup",
+     "detail": "deleted abstract wrapper class (zero refs after inlining)",
+     "evidence": "kickoff scope: flatten vs inline decided \u2014 inline"
+    }
+   ],
+   "ModulationParameters": [
+    {
+     "field": "recordSpecificFields",
+     "kind": "ENRICH-length",
+     "detail": "marked isDynamicListLengthField=\"true\" (no length field exists; content defined per radio system in Annex C)",
+     "evidence": "IEEE 1278.1-2012 6.2.58 + Annex C; Table 89 shows per-field R1..RN octets with no count field"
+    }
+   ],
+   "RecordSpecificationElement": [
+    {
+     "field": "recordValues",
+     "kind": "ENRICH-length",
+     "detail": "added bitCountExpression=\"recordLength * recordCount\"",
+     "evidence": "IEEE 1278.1-2012 6.2.73 d)-f): Record Length is in bits; Record Values length = Record Length x Record Count, in bits"
+    },
+    {
+     "field": "padTo64",
+     "kind": "FIX-length",
+     "detail": "unsized primitivelist -> padtoboundary 64",
+     "evidence": "IEEE 1278.1-2012 6.2.73 g): 0-63 unused bits for 64-bit alignment"
+    }
+   ],
+   "Environment": [
+    {
+     "field": "geometry",
+     "kind": "ENRICH-length",
+     "detail": "added bitCountExpression=\"length - 64\" (length covers the whole record in bits; fixed header is 64 bits)",
+     "evidence": "IEEE 1278.1-2012 6.2.31 b) Length = length in bits of the Environment record; type(32)+length(16)+index(8)+pad(8)"
+    }
+   ],
+   "GridAxisDescriptorVariable": [
+    {
+     "field": "xiValues",
+     "kind": "ENRICH-length",
+     "detail": "added countFieldName=\"numberOfPointsOnXiAxis\"",
+     "evidence": "IEEE 1278.1-2012 6.2.42 Grid Axis Descriptor: one Xi value per grid point on the axis"
+    }
+   ],
+   "IntercomCommunicationsParameters": [
+    {
+     "field": "recordSpecificField",
+     "kind": "ENRICH-length",
+     "detail": "added countFieldName=\"recordLength\" (octets)",
+     "evidence": "IEEE 1278.1-2012 6.2.46 b): Record Length = total length of the Record-Specific fields in octets"
+    }
+   ],
+   "VariableTransmitterParameters": [
+    {
+     "field": "recordSpecificFields",
+     "kind": "ENRICH-length",
+     "detail": "added countExpression=\"recordLength - 6\" (recordLength covers type(4)+length(2)+fields+padding)",
+     "evidence": "IEEE 1278.1-2012 6.2.95 b): Record Length = total octets incl. type, length, fields and 64-bit padding; multiple of 8"
+    },
+    {
+     "field": "padding",
+     "kind": "FIX-length",
+     "detail": "removed trailing padtoboundary (padding is already inside recordLength)",
+     "evidence": "IEEE 1278.1-2012 6.2.95 b)"
+    }
+   ],
+   "DataFilterRecord": [
+    {
+     "field": "-",
+     "kind": "FIX-cleanup",
+     "detail": "deleted wrapper class with staticivar constants (zero refs)",
+     "evidence": "bit map carried by the inline comment instead"
+    }
+   ],
+   "EntityAssociationVP": [
+    {
+     "field": "associationStatus",
+     "kind": "FIX-typo",
+     "detail": "sisoenum type renamed EntityAssociationAssociationType -> EntityAssociationAssociationStatus (type name was bound to both uid 330 and uid 319)",
+     "evidence": "opendis7-source-generator issue #18; SISO-REF-010 v37 uid 319 'Entity Association-Association Status' vs uid 330 '... Type'; IEEE 1278.1-2012 6.2.94.4.3 c) [UID 319]"
+    }
+   ],
+   "EventIdentifierLiveEntityElided": [
+    {
+     "field": "-",
+     "kind": "ADD-class",
+     "detail": "declared the missing 2-byte elided event-ID shape",
+     "evidence": "IEEE 1278.1-2012 9.4.5 f): 'shall not be included, and the associated Fire Flag field bit shall be set to zero'; event taxonomy in .references/decisions.md"
+    }
+   ],
+   "LiveEntityRelativeEntityCoordinates": [
+    {
+     "field": "-",
+     "kind": "ADD-class",
+     "detail": "declared the 48-bit LE Location-in-Entity's-Coordinates shape (was previously mis-modeled as LiveEntityLinearVelocity 3xu16 by reuse, or LiveEntityRelativeWorldCoordinates 4xu16)",
+     "evidence": "IEEE 1278.1-2012 9.4.6.8 k): Entity Coordinate Vector [6.2.96 item a)] subject to decreased field sizes; Table 229 term 48F6"
+    }
+   ],
+   "LiveEntityIdentifierElided": [
+    {
+     "field": "-",
+     "kind": "ADD-class",
+     "detail": "declared the 2-byte elided munition-ID shape",
+     "evidence": "IEEE 1278.1-2012 9.4.5 e): same-site/app elision rule"
+    }
+   ],
+   "LEMunitionDescriptor": [
+    {
+     "field": "-",
+     "kind": "ADD-class",
+     "detail": "LE-context Munition Descriptor with flag-conditional warhead/fuse (bit 4) and quantity/rate (bit 5)",
+     "evidence": "IEEE 1278.1-2012 9.4.5 h) 'the warhead, fuse, quantity, and rate fields of this record shall be optional'; Tables 225/227 bits 4/5; Table 189-family formulas 32F4 + 32F5"
+    }
+   ],
+   "Appearance": [
+    {
+     "field": "-",
+     "kind": "FIX-cleanup",
+     "detail": "deleted ill-spec'ed unconditional Appearance (4xu32) class",
+     "evidence": "IEEE 1278.1-2012 9.4.3.5 i)-l), Table 223"
+    }
+   ],
+   "EventIdentifier": [
+    {
+     "field": "-",
+     "kind": "CITATION",
+     "detail": "Section 6.2.34 -> Section 6.2.33",
+     "evidence": "IEEE 1278.1-2012 clause map: 6.2.33 Event Identifier record (6.2.34 = Exercise identifier)"
+    }
+   ],
+   "EventIdentifierLiveEntity": [
+    {
+     "field": "-",
+     "kind": "CITATION",
+     "detail": "Section 6.2.34 -> Section 9.4.5",
+     "evidence": "IEEE 1278.1-2012 clause map: shape defined contextually in 9.4.5 f)/9.4.6 f)"
+    }
+   ],
+   "SimulationAddress": [
+    {
+     "field": "-",
+     "kind": "CITATION",
+     "detail": "Section 6.2.79 -> Section 6.2.80",
+     "evidence": "IEEE 1278.1-2012 clause map: 6.2.80 Simulation Address record (6.2.79 = Silent Entity System)"
+    }
+   ],
+   "SimulationIdentifier": [
+    {
+     "field": "-",
+     "kind": "CITATION",
+     "detail": "Section 6.2.80 -> Section 6.2.81",
+     "evidence": "IEEE 1278.1-2012 clause map: 6.2.81 Simulation Identifier record"
+    }
+   ],
+   "LiveEntityIdentifier": [
+    {
+     "field": "-",
+     "kind": "CITATION",
+     "detail": "Section 6.2.54 -> Section 6.2.53",
+     "evidence": "IEEE 1278.1-2012 clause map: 6.2.53 Live Entity Identifier record"
+    }
+   ],
+   "LiveSimulationAddress": [
+    {
+     "field": "-",
+     "kind": "CITATION",
+     "detail": "Section 6.2.55 -> Section 6.2.54",
+     "evidence": "IEEE 1278.1-2012 clause map: 6.2.54 Live Simulation Address record"
+    }
+   ],
+   "EntityMarking": [
+    {
+     "field": "-",
+     "kind": "CITATION",
+     "detail": "Section 6.29 -> Section 6.2.29",
+     "evidence": "IEEE 1278.1-2012 clause map: 6.2.29 Entity Marking record"
+    }
+   ],
+   "GroupID": [
+    {
+     "field": "-",
+     "kind": "CITATION",
+     "detail": "Section 6.2.43 -> Section 6.2.42",
+     "evidence": "IEEE 1278.1-2012 clause map: 6.2.42 Group identifier (6.2.43 = IFF Data Specification record)"
+    }
+   ],
+   "UnattachedIdentifier": [
+    {
+     "field": "-",
+     "kind": "CITATION",
+     "detail": "Section 6.2.91 -> Section 6.2.92",
+     "evidence": "IEEE 1278.1-2012 clause map: 6.2.92 Unattached Identifier record (6.2.91 = UA Fundamental Parameter Data record)"
+    }
+   ]
+  },
+  "(all)": {
+   "-": [
+    {
+     "field": "-",
+     "kind": "ENRICH-uid-size",
+     "detail": "added uid= and size= to 196 sisoenum/sisobitfield elements (129 distinct uids; sizes from SISO-REF-010 v37 join)",
+     "evidence": "SISO-REF-010 v37 enum/bitfield size attributes"
+    }
+   ]
+  },
+  "EntityInformationFamilyPdus.xml": {
+   "?": [
+    {
+     "field": "EntityCapabilities",
+     "kind": "FIX-default",
+     "detail": "defaultValue 'new LandPlatformCapabilities()' -> \"0\" (Java source literal removed)",
+     "evidence": "bitfield default zero = no flags set; normalized vocabulary is integers or EnumType.MEMBER symbols"
+    }
+   ],
+   "EntityStatePdu": [
+    {
+     "field": "entityAppearance",
+     "kind": "WIRE-repr",
+     "detail": "plain uint32 -> classRef EntityAppearance (13 conditional variants, uids 31-43)",
+     "evidence": "IEEE 1278.1-2012 6.2.26 Entity Appearance record; 5.3.2/7.6.2 Entity State PDU, 7.6.3 Entity State Update PDU formats"
+    }
+   ],
+   "EntityStateUpdatePdu": [
+    {
+     "field": "entityAppearance",
+     "kind": "WIRE-repr",
+     "detail": "plain uint32 -> classRef EntityAppearance (13 conditional variants, uids 31-43)",
+     "evidence": "IEEE 1278.1-2012 6.2.26 Entity Appearance record; 5.3.2/7.6.2 Entity State PDU, 7.6.3 Entity State Update PDU formats"
+    },
+    {
+     "field": "entityLinearVelocity",
+     "kind": "CITATION",
+     "detail": "see 6.2.95 item c)] -> see 6.2.96 item c)]",
+     "evidence": "IEEE 1278.1-2012 clause map: Linear Velocity Vector is item c) of 6.2.96 Vector record; 6.2.95 is Variable Transmitter Parameters"
+    },
+    {
+     "field": "entityLocation",
+     "kind": "CITATION",
+     "detail": "(see 6.2.97) -> (see 6.2.98)",
+     "evidence": "IEEE 1278.1-2012 clause map: 6.2.98 World Coordinates record (6.2.97 = Vectoring Nozzle System Data)"
+    },
+    {
+     "field": "entityOrientation",
+     "kind": "CITATION",
+     "detail": "(see 6.2.33) -> (see 6.2.32)",
+     "evidence": "IEEE 1278.1-2012 clause map: 6.2.32 Euler Angles record (6.2.33 = Event Identifier record)"
+    },
+    {
+     "field": "variableParameters",
+     "kind": "CITATION",
+     "detail": "(see 6.2.93 and Annex I) -> (see 6.2.94 and Annex I)",
+     "evidence": "IEEE 1278.1-2012 clause map: 6.2.94 Variable Parameter record (6.2.93 = Variable Datum record)"
+    }
+   ]
+  },
+  "LiveEntityFamilyPdus.xml": {
+   "?": [
+    {
+     "field": "EntityCapabilities",
+     "kind": "FIX-default",
+     "detail": "defaultValue 'new LandPlatformCapabilities()' -> \"0\" (Java source literal removed)",
+     "evidence": "bitfield default zero = no flags set; normalized vocabulary is integers or EnumType.MEMBER symbols"
+    }
+   ],
+   "LiveEntityFamilyPdu": [
+    {
+     "field": "subprotocolNumber",
+     "kind": "WIRE-add",
+     "detail": "added subprotocolNumber (uid 417) + trailing padding u8 \u2014 they existed only inside the commented-out LiveEntityPdu, so every LE PDU header was 2 bytes short",
+     "evidence": "IEEE 1278.1-2012 9.3.2 LE PDU Header record; Tables 223/226/229: LE PDU Header = 96 bits ending Subprotocol Number (8) + Padding (8)"
+    }
+   ],
+   "TSPIPdu": [
+    {
+     "field": "liveEntityId",
+     "kind": "WIRE-ref",
+     "detail": "classRef EntityID (6-byte standard shape) -> LiveEntityIdentifier (4-byte live shape)",
+     "evidence": "IEEE 1278.1-2012 9.4.2 b)/9.4.3 b)/9.4.4 b)/9.4.5 b),d),e)/9.4.6 b),d),e): 'Entity Identifier record (see 6.2.28) except that the Site Number and Application Number fields shall be only 8 bits long'; 6.2.53 Live Entity Identifier record"
+    }
+   ],
+   "AppearancePdu": [
+    {
+     "field": "liveEntityId",
+     "kind": "WIRE-ref",
+     "detail": "classRef EntityID (6-byte standard shape) -> LiveEntityIdentifier (4-byte live shape)",
+     "evidence": "IEEE 1278.1-2012 9.4.2 b)/9.4.3 b)/9.4.4 b)/9.4.5 b),d),e)/9.4.6 b),d),e): 'Entity Identifier record (see 6.2.28) except that the Site Number and Application Number fields shall be only 8 bits long'; 6.2.53 Live Entity Identifier record"
+    },
+    {
+     "field": "appearanceFlags",
+     "kind": "WIRE-repr",
+     "detail": "single u16 -> appearanceFlag1 (u8) + appearanceFlag2 (u8, presentIf appearanceFlag1:7)",
+     "evidence": "IEEE 1278.1-2012 9.4.3.5 c) + Tables 221/222; Table 223 (8F7)"
+    },
+    {
+     "field": "forceId/entityType/alternateEntityType/entityMarking/capabilities",
+     "kind": "WIRE-presence",
+     "detail": "presentIf appearanceFlag1:0..:4 per Table 221",
+     "evidence": "IEEE 1278.1-2012 Table 221; Table 223 formula terms 8F0/64F1/64F2/96F3/32F4"
+    },
+    {
+     "field": "appearanceVisual",
+     "kind": "WIRE-repr",
+     "detail": "classRef EntityAppearance, presentIf appearanceFlag1:5 (was one unconditional ill-spec'ed 4xu32 appearanceFields)",
+     "evidence": "IEEE 1278.1-2012 9.4.3.5 i)-l) Entity Appearance record (6.2.26); Table 223 formula 32(F5+F6+G0+G1)"
+    },
+    {
+     "field": "appearanceIR",
+     "kind": "WIRE-repr",
+     "detail": "classRef EntityAppearance, presentIf appearanceFlag1:6 (was one unconditional ill-spec'ed 4xu32 appearanceFields)",
+     "evidence": "IEEE 1278.1-2012 9.4.3.5 i)-l) Entity Appearance record (6.2.26); Table 223 formula 32(F5+F6+G0+G1)"
+    },
+    {
+     "field": "appearanceEM",
+     "kind": "WIRE-repr",
+     "detail": "classRef EntityAppearance, presentIf appearanceFlag2:0 (was one unconditional ill-spec'ed 4xu32 appearanceFields)",
+     "evidence": "IEEE 1278.1-2012 9.4.3.5 i)-l) Entity Appearance record (6.2.26); Table 223 formula 32(F5+F6+G0+G1)"
+    },
+    {
+     "field": "appearanceAudio",
+     "kind": "WIRE-repr",
+     "detail": "classRef EntityAppearance, presentIf appearanceFlag2:1 (was one unconditional ill-spec'ed 4xu32 appearanceFields)",
+     "evidence": "IEEE 1278.1-2012 9.4.3.5 i)-l) Entity Appearance record (6.2.26); Table 223 formula 32(F5+F6+G0+G1)"
+    }
+   ],
+   "ArticulatedPartsPdu": [
+    {
+     "field": "liveEntityId",
+     "kind": "WIRE-ref",
+     "detail": "classRef EntityID (6-byte standard shape) -> LiveEntityIdentifier (4-byte live shape)",
+     "evidence": "IEEE 1278.1-2012 9.4.2 b)/9.4.3 b)/9.4.4 b)/9.4.5 b),d),e)/9.4.6 b),d),e): 'Entity Identifier record (see 6.2.28) except that the Site Number and Application Number fields shall be only 8 bits long'; 6.2.53 Live Entity Identifier record"
+    }
+   ],
+   "LEFirePdu": [
+    {
+     "field": "firingLiveEntityId",
+     "kind": "WIRE-ref",
+     "detail": "classRef EntityID (6-byte standard shape) -> LiveEntityIdentifier (4-byte live shape)",
+     "evidence": "IEEE 1278.1-2012 9.4.2 b)/9.4.3 b)/9.4.4 b)/9.4.5 b),d),e)/9.4.6 b),d),e): 'Entity Identifier record (see 6.2.28) except that the Site Number and Application Number fields shall be only 8 bits long'; 6.2.53 Live Entity Identifier record"
+    },
+    {
+     "field": "targetLiveEntityId",
+     "kind": "WIRE-ref",
+     "detail": "classRef EntityID (6-byte standard shape) -> LiveEntityIdentifier (4-byte live shape)",
+     "evidence": "IEEE 1278.1-2012 9.4.2 b)/9.4.3 b)/9.4.4 b)/9.4.5 b),d),e)/9.4.6 b),d),e): 'Entity Identifier record (see 6.2.28) except that the Site Number and Application Number fields shall be only 8 bits long'; 6.2.53 Live Entity Identifier record"
+    },
+    {
+     "field": "munitionLiveEntityId",
+     "kind": "WIRE-ref",
+     "detail": "classRef EntityID (6-byte standard shape) -> LiveEntityIdentifier (4-byte live shape)",
+     "evidence": "IEEE 1278.1-2012 9.4.2 b)/9.4.3 b)/9.4.4 b)/9.4.5 b),d),e)/9.4.6 b),d),e): 'Entity Identifier record (see 6.2.28) except that the Site Number and Application Number fields shall be only 8 bits long'; 6.2.53 Live Entity Identifier record"
+    },
+    {
+     "field": "flags",
+     "kind": "WIRE-rename",
+     "detail": "renamed flags -> fireFlag with Table 225 bit-map comment",
+     "evidence": "IEEE 1278.1-2012 9.4.5.6 c); Table 225"
+    },
+    {
+     "field": "targetLiveEntityId+munitionLiveEntityId+eventId+location+munitionDescriptor",
+     "kind": "WIRE-conditional",
+     "detail": "target presentIf fireFlag:0; munition presentIf fireFlag:2 with 4B/2B variants on fireFlag:1; eventId 4B/2B variants on fireFlag:3; location presentIf fireFlag:6; descriptor -> LEMunitionDescriptor",
+     "evidence": "IEEE 1278.1-2012 9.4.5.6 d)-h); Table 226 formula 280 + 32F0 + (16F1+16)F2 + 16F3 + 64F6 + 32F4 + 32F5 bits"
+    }
+   ],
+   "LEDetonationPdu": [
+    {
+     "field": "firingLiveEntityId",
+     "kind": "WIRE-ref",
+     "detail": "classRef EntityID (6-byte standard shape) -> LiveEntityIdentifier (4-byte live shape)",
+     "evidence": "IEEE 1278.1-2012 9.4.2 b)/9.4.3 b)/9.4.4 b)/9.4.5 b),d),e)/9.4.6 b),d),e): 'Entity Identifier record (see 6.2.28) except that the Site Number and Application Number fields shall be only 8 bits long'; 6.2.53 Live Entity Identifier record"
+    },
+    {
+     "field": "targetLiveEntityId",
+     "kind": "WIRE-ref",
+     "detail": "classRef EntityID (6-byte standard shape) -> LiveEntityIdentifier (4-byte live shape)",
+     "evidence": "IEEE 1278.1-2012 9.4.2 b)/9.4.3 b)/9.4.4 b)/9.4.5 b),d),e)/9.4.6 b),d),e): 'Entity Identifier record (see 6.2.28) except that the Site Number and Application Number fields shall be only 8 bits long'; 6.2.53 Live Entity Identifier record"
+    },
+    {
+     "field": "munitionLiveEntityId",
+     "kind": "WIRE-ref",
+     "detail": "classRef EntityID (6-byte standard shape) -> LiveEntityIdentifier (4-byte live shape)",
+     "evidence": "IEEE 1278.1-2012 9.4.2 b)/9.4.3 b)/9.4.4 b)/9.4.5 b),d),e)/9.4.6 b),d),e): 'Entity Identifier record (see 6.2.28) except that the Site Number and Application Number fields shall be only 8 bits long'; 6.2.53 Live Entity Identifier record"
+    },
+    {
+     "field": "detonationFlag2+targetLiveEntityId+munitionLiveEntityId+eventId+worldLocation+entityLocation+munitionOrientation+munitionDescriptor+detonationResult",
+     "kind": "WIRE-conditional",
+     "detail": "flag-2 presentIf detonationFlag1:7; target :0; munition :2 with 4B/2B variants on :1; eventId presentIf flag1:7 & flag2:1 with 4B/2B variants on :3; worldLocation presentIf :6=0; entityLocation (re-referenced) presentIf :6; orientation presentIf flag2:0; descriptor -> LEMunitionDescriptor; result -> sisoenum uid 62",
+     "evidence": "IEEE 1278.1-2012 9.4.6.8; Tables 227/228/229 formula 256 + 8F7 + 32F0 + (16F1+16)F2 + (16F3+16)G1 + 64(1-F6) + 48G0 + 32F4 + 32F5 + 48F6 bits; 9.4.6.8 l) '[UID 62]'"
+    },
+    {
+     "field": "firingLiveEntityId",
+     "kind": "NOTE",
+     "detail": "kept unconditional: Table 229's formula includes it in the 256-bit base and no flag bit governs it, contradicting 9.4.6.8 b) prose",
+     "evidence": "IEEE 1278.1-2012 Table 229 formula vs 9.4.6.8 b)"
+    }
+   ],
+   "TimeSpacePositionInformationPdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now TimeSpacePositionInformationPdu; TSPIPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "LiveEntityFirePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now LiveEntityFirePdu; LEFirePdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "LiveEntityDetonationPdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now LiveEntityDetonationPdu; LEDetonationPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ]
+  },
+  "RadioCommunicationsFamilyPdus.xml": {
+   "SignalPdu": [
+    {
+     "field": "data",
+     "kind": "FIX-length",
+     "detail": "length governed by dataLength in bits (bitCountFieldName=\"dataLength\"); was unsized",
+     "evidence": "IEEE 1278.1-2012 7.7.4/7.7.6: the Data Length field specifies the length of the Data field in bits"
+    }
+   ],
+   "IntercomSignalPdu": [
+    {
+     "field": "data",
+     "kind": "FIX-length",
+     "detail": "length governed by dataLength in bits (bitCountFieldName=\"dataLength\"); was incorrectly a byte countFieldName",
+     "evidence": "IEEE 1278.1-2012 7.7.4/7.7.6: the Data Length field specifies the length of the Data field in bits"
+    }
+   ]
+  },
+  "MinefieldFamilyPdus.xml": {
+   "MinefieldDataPdu": [
+    {
+     "field": "minefieldSequenceNumbeer",
+     "kind": "FIX-typo",
+     "detail": "renamed minefieldSequenceNumbeer -> minefieldSequenceNumber",
+     "evidence": "IEEE 1278.1-2012 7.9.4 d) Minefield Sequence Number"
+    },
+    {
+     "field": "dataFilter",
+     "kind": "WIRE-repr",
+     "detail": "classRef DataFilterRecord (staticivar bit constants) -> inline uint32 with 6.2.16 bit-map comment",
+     "evidence": "IEEE 1278.1-2012 6.2.16 Data Filter record, Table 38"
+    },
+    {
+     "field": "groundBurialDepthOffset",
+     "kind": "WIRE-presence",
+     "detail": "presentIf=\"dataFilter:0 | dataFilter:1 | dataFilter:2\"",
+     "evidence": "IEEE 1278.1-2012 Table 189 total-size formula (G = 1 if any of F0,F1,F2 (6.2.16 a)-c)))"
+    },
+    {
+     "field": "waterBurialDepthOffset",
+     "kind": "WIRE-presence",
+     "detail": "presentIf=\"dataFilter:1\"",
+     "evidence": "IEEE 1278.1-2012 Table 189 total-size formula (F1)"
+    },
+    {
+     "field": "snowBurialDepthOffset",
+     "kind": "WIRE-presence",
+     "detail": "presentIf=\"dataFilter:2\"",
+     "evidence": "IEEE 1278.1-2012 Table 189 total-size formula (F2)"
+    },
+    {
+     "field": "mineOrientation",
+     "kind": "WIRE-presence",
+     "detail": "presentIf=\"dataFilter:0 | dataFilter:1 | dataFilter:2 | dataFilter:3\"",
+     "evidence": "IEEE 1278.1-2012 Table 189 total-size formula (R = 1 if any of F0..F3 (6.2.16 d)))"
+    },
+    {
+     "field": "thermalContrast",
+     "kind": "WIRE-presence",
+     "detail": "presentIf=\"dataFilter:4\"",
+     "evidence": "IEEE 1278.1-2012 Table 189 total-size formula (F4)"
+    },
+    {
+     "field": "reflectance",
+     "kind": "WIRE-presence",
+     "detail": "presentIf=\"dataFilter:5\"",
+     "evidence": "IEEE 1278.1-2012 Table 189 total-size formula (F5)"
+    },
+    {
+     "field": "mineEmplacementTime",
+     "kind": "WIRE-presence",
+     "detail": "presentIf=\"dataFilter:6\"",
+     "evidence": "IEEE 1278.1-2012 Table 189 total-size formula (F6)"
+    },
+    {
+     "field": "mineEntityNumber",
+     "kind": "WIRE-presence",
+     "detail": "",
+     "evidence": "IEEE 1278.1-2012 Table 189 total-size formula (unconditional (16N))"
+    },
+    {
+     "field": "fusing",
+     "kind": "WIRE-presence",
+     "detail": "presentIf=\"dataFilter:8\"",
+     "evidence": "IEEE 1278.1-2012 Table 189 total-size formula (F8)"
+    },
+    {
+     "field": "scalarDetectionCoefficient",
+     "kind": "WIRE-presence",
+     "detail": "presentIf=\"dataFilter:9\" countExpression=\"numberOfMinesInThisPdu * numberOfSensorTypes\"",
+     "evidence": "IEEE 1278.1-2012 Table 189 total-size formula (F9; S = M x N, mine-major runs of M values per 5.10.4.5.1)"
+    },
+    {
+     "field": "paintScheme",
+     "kind": "WIRE-presence",
+     "detail": "presentIf=\"dataFilter:10\"",
+     "evidence": "IEEE 1278.1-2012 Table 189 total-size formula (F10)"
+    },
+    {
+     "field": "numberOfTripDetonationWires",
+     "kind": "WIRE-presence",
+     "detail": "presentIf=\"dataFilter:7\"",
+     "evidence": "IEEE 1278.1-2012 Table 189 total-size formula (F7; one count per mine (NF7))"
+    },
+    {
+     "field": "numberOfVertices",
+     "kind": "FIX-length",
+     "detail": "countListFieldName=\"numberOfTripDetonationWires\" (U = sum of per-mine wire counts), presentIf dataFilter:7",
+     "evidence": "IEEE 1278.1-2012 7.9.4 z) + Table 189 (8UF7); per-mine runs per 5.10.4.5.2"
+    },
+    {
+     "field": "padTo32_4",
+     "kind": "WIRE-add",
+     "detail": "added missing P4 padding (presentIf dataFilter:7, derived from UF7 per Table 189)",
+     "evidence": "IEEE 1278.1-2012 Table 189: 8P4 between Number of Vertices and Vertex fields; P4 = ceil4(U)-U"
+    },
+    {
+     "field": "padTo32_3",
+     "kind": "WIRE-presence",
+     "detail": "presentIf=\"dataFilter:7\" (P3 derived from NF7)",
+     "evidence": "IEEE 1278.1-2012 Table 189: P3 = ceil4(NF7)-NF7"
+    },
+    {
+     "field": "vertices",
+     "kind": "WIRE-add",
+     "detail": "added the missing Vertex list (Vector3Float) with runs partitioned by numberOfVertices",
+     "evidence": "IEEE 1278.1-2012 7.9.4 aa) + Table 189 (96VF7); 5.10.4.5.3 ordering"
+    }
+   ],
+   "MinefieldQueryPdu": [
+    {
+     "field": "dataFilter",
+     "kind": "WIRE-repr",
+     "detail": "classRef DataFilterRecord -> inline uint32 (as MinefieldDataPdu)",
+     "evidence": "IEEE 1278.1-2012 6.2.16; 7.9.3"
+    }
+   ]
+  },
+  "DistributedEmissionsFamilyPdus.xml": {
+   "IdentificationFriendOrFoePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now IdentificationFriendOrFoePdu; IFFPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "SupplementalEmissionEntityStatePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now SupplementalEmissionEntityStatePdu; SEESPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ]
+  },
+  "SimulationManagementWithReliabilityFamilyPdus.xml": {
+   "CreateEntityReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now CreateEntityReliablePdu; CreateEntityRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "RemoveEntityReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now RemoveEntityReliablePdu; RemoveEntityRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "StartResumeReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now StartResumeReliablePdu; StartResumeRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "StopFreezeReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now StopFreezeReliablePdu; StopFreezeRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "AcknowledgeReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now AcknowledgeReliablePdu; AcknowledgeRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "ActionRequestReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now ActionRequestReliablePdu; ActionRequestRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "ActionResponseReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now ActionResponseReliablePdu; ActionResponseRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "DataQueryReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now DataQueryReliablePdu; DataQueryRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "SetDataReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now SetDataReliablePdu; SetDataRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "DataReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now DataReliablePdu; DataRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "EventReportReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now EventReportReliablePdu; EventReportRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "CommentReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now CommentReliablePdu; CommentRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "RecordQueryReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now RecordQueryReliablePdu; RecordQueryRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "SetRecordReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now SetRecordReliablePdu; SetRecordRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ],
+   "RecordReliablePdu": [
+    {
+     "field": "-",
+     "kind": "NAMING-canonical",
+     "detail": "canonical/descriptive name is now RecordReliablePdu; RecordRPdu demoted to aliasFor (both names resolve; the generator emits one class)",
+     "evidence": "aliasFor ruling in .references/decisions.md: descriptive name canonical, abbreviation aliased"
+    }
+   ]
+  },
+  "WarfareFamilyPdus.xml": {
+   "FirePdu": [
+    {
+     "field": "locationInWorldCoordinates",
+     "kind": "CITATION",
+     "detail": "6.2.97 -> 6.2.98 for 'World Coordinates' record",
+     "evidence": "IEEE 1278.1-2012 clause map: 6.2.98 is the World Coordinates record clause; 6.2.97 is not"
+    }
+   ]
+  }
+ }
+}

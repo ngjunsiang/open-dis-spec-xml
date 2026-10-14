@@ -1,0 +1,155 @@
+6.2.1 General
+6.2.2 Acoustic Emitter System record
+6.2.3 Aggregate Identifier record
+6.2.4 Aggregate Marking record
+6.2.5 Aggregate Type record
+6.2.6 Angle representation
+6.2.7 Angular Velocity Vector record
+6.2.8 Antenna Pattern record
+6.2.8.1 General
+6.2.8.2 Beam Antenna Pattern record
+6.2.9 Association record
+6.2.10 Attribute record
+6.2.11 Beam Data record
+6.2.12 Beam Status record
+6.2.13 Change/Options record
+6.2.14 Clock Time record
+6.2.15 Damage Description records
+6.2.15.1 General
+6.2.15.2 Directed Energy Damage Description record
+6.2.16 Data Filter record
+6.2.17 Data Query Datum Specification record
+6.2.18 Datum Specification record
+6.2.19 Descriptor records
+6.2.19.1 General
+6.2.19.2 Munition Descriptor record
+6.2.19.3 Explosion Descriptor record
+6.2.19.4 Expendable Descriptor record
+6.2.20 Directed Energy (DE) records
+6.2.20.1 General
+6.2.20.2 DE Area Aimpoint record
+6.2.20.3 DE Precision Aimpoint record
+6.2.20.4 DE Target Energy Deposition record
+6.2.21 EE Attribute records
+6.2.21.1 Blanking Sector attribute record
+6.2.21.1.1 General
+6.2.21.1.2 Record definition
+6.2.21.1.3 Issuance rules
+6.2.21.1.4 Receipt rules
+6.2.21.2 Angle Deception attribute record
+6.2.21.2.1 General
+6.2.21.2.2 Record definition
+6.2.21.2.3 Issuance rules
+6.2.21.2.4 Receipt rules
+6.2.21.3 False Targets attribute record
+6.2.21.3.1 General
+6.2.21.3.2 Record definition
+6.2.21.3.3 Issuance rules
+6.2.21.3.4 Receipt rules
+6.2.22 EE Fundamental Parameter Data record
+6.2.23 Emitter System record
+6.2.24 Engine Fuel record
+6.2.25 Engine Fuel Reload record
+6.2.26 Entity Appearance record
+6.2.27 Entity Capabilities record
+6.2.28 Entity Identifier record
+6.2.29 Entity Marking record
+6.2.30 Entity Type record
+6.2.31 Environment record
+6.2.31.1 General
+6.2.31.2 Geometry record
+6.2.31.3 State record
+6.2.32 Euler Angles record
+6.2.33 Event Identifier record
+6.2.33.1 General
+6.2.33.2 Event identification
+6.2.33.3 Record format
+6.2.34 Exercise identifier
+6.2.35 Expendable record
+6.2.36 Expendable Reload record
+6.2.37 Fixed Datum record
+6.2.38 Force identification
+6.2.39 Fundamental Operational Data record
+6.2.40 Grid Axis Descriptor record
+6.2.41 Grid Data record
+6.2.42 Group identifier
+6.2.43 IFF Data Specification record
+6.2.44 IFF Fundamental Parameter Data record
+6.2.45 Information Layers record
+6.2.46 Intercom Communications Parameters record
+6.2.47 Intercom Identifier record
+6.2.48 IO records
+6.2.48.1 General
+6.2.48.2 IO Communications Node record
+6.2.48.3 IO Effect record
+6.2.48.4 Communications Node ID record
+6.2.49 Jamming Technique record
+6.2.50 Launched Munition record
+6.2.51 Layer Header record
+6.2.52 Linear Segment Parameter record
+6.2.53 Live Entity Identifier record
+6.2.54 Live Simulation Address record
+6.2.54.1 General
+6.2.54.2 Live site number
+6.2.54.3 Live application number
+6.2.55 Mine Entity Identifier record
+6.2.56 Minefield Identifier record
+6.2.57 Minefield Sensor Type record
+6.2.58 Modulation Parameters record
+6.2.59 Modulation Type record
+6.2.60 Munition record
+6.2.61 Munition Reload record
+6.2.62 Named Location Identification record
+6.2.63 Object Identifier record
+6.2.64 Object Type record
+6.2.65 Ownership Status record
+6.2.66 PDU Header record
+6.2.67 PDU Status record
+6.2.68 Propulsion System Data record
+6.2.69 Protocol Mode
+6.2.70 Radio Identifier record
+6.2.71 Radio Type record
+6.2.72 Record Query Specification record
+6.2.73 Record Specification record
+6.2.74 Relationship record
+6.2.75 Request ID
+6.2.76 Secondary Operational Data record
+6.2.77 Sensor record
+6.2.78 Service type
+6.2.79 Silent Entity System record
+6.2.80 Simulation Address record
+6.2.80.1 General
+6.2.80.2 Site number
+6.2.80.3 Application number
+6.2.81 Simulation Identifier record
+6.2.82 Simulation Management PDU Header record
+6.2.83 Standard Variable Specification record
+6.2.84 Storage Fuel record
+6.2.85 Storage Fuel Reload record
+6.2.86 Supply Quantity record
+6.2.87 System Identifier record
+6.2.88 Timestamp
+6.2.88.1 General
+6.2.88.2 Timestamp format
+6.2.88.2.1 Absolute timestamp
+6.2.88.2.2 Relative timestamp
+6.2.88.2.3 Scale
+6.2.89 Total Record Sets record
+6.2.90 Track/Jam Data record
+6.2.91 UA Fundamental Parameter Data record
+6.2.92 Unattached Identifier record
+6.2.93 Variable Datum record
+6.2.94 Variable Parameter record
+6.2.94.1 General
+6.2.94.2 Articulated Part VP record
+6.2.94.3 Attached Part VP record
+6.2.94.4 Entity Association VP Record
+6.2.94.4.1 Purpose
+6.2.94.4.2 General rules
+6.2.94.4.3 Fields
+6.2.94.5 Entity Type VP record
+6.2.94.6 Separation VP record
+6.2.95 Variable Transmitter Parameters record
+6.2.96 Vector record
+6.2.97 Vectoring Nozzle System Data record
+6.2.98 World Coordinates record

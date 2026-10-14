@@ -1,0 +1,15 @@
+# Build manifest — v0.1.0
+generated: 2026-10-14
+source-of-truth chain:
+  upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
+                   (xml/dis_7_2012/* — byte-verified identical to the
+                   working collection this transform was developed against)
+  enumerations:    siso-ref-010-xml submodule @ tag v37
+  transform:       scripts/fix.py (106 logged changes -> docs/changes.json)
+reproduce:
+  git clone https://github.com/open-dis/opendis7-source-generator upstream
+  SPEC_UPSTREAM_DIR=$PWD/upstream python3 scripts/fix.py
+  python3 scripts/validate.py && python3 scripts/check_consistency.py
+equivalence:
+  xml/ == upstream xml/dis_7_2012 + docs/overrides.json applied
+  (the interim-generator-input ruling in the originating project)
