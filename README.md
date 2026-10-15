@@ -45,6 +45,21 @@ ref010/         submodule -> siso-ref-010-xml @ v37-docs (v37 enum tables
   in `docs/ref056-compliance.md`.
 - **Reproduce xml/ from upstream**: see `MANIFEST`.
 
+## Source of truth
+
+This repository (with the [siso-ref-010-xml](https://github.com/ngjunsiang/siso-ref-010-xml)
+mirror as its enums counterpart) is the **pinned source of truth** for
+DIS 7 consumers such as open-dis-python: `xml/` is the canonical final
+word on any wire discrepancy or deviation, superseding consumers' local
+XML copies. `.references/` (gitignored) holds the authority documents
+this repo aligns against — IEEE Std 1278.1-2012 with its color figures,
+DIS tutorials and source-generator design material, and the upstream XML
+collection with its derived XSDs and schema documentation. Aligning the
+XML to the IEEE/SISO source as faithfully as possible is this repo's
+responsibility, not the consumer's: consumers resolve discrepancies
+against `xml/` alone and do not consult the PDFs unless a spec-repo
+issue says otherwise.
+
 ## Corrections at a glance (106 changes + 2026-10-15 IEEE PDF audit)
 
 Wire-shape fixes (LE identifiers/headers/flags, Minefield Data vertices +
