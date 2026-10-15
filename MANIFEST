@@ -24,3 +24,12 @@ stage 2 (2026-10-15):
   source:         .references/IEEE Std 1278.1-2012.pdf (sole reference)
   equivalence:    xml/ == stage-1 output + the stage-2 deltas; the gate
                   asserts every delta's post-state directly on xml/
+post-release erratum (2026-10-15):
+  siso-ref-xml was history-rewritten after this tag to purge the
+  noncommercial-only licensed documents (v37 .doc/.htm/.pdf/.xlsx
+  renditions + the REF-010.1 manual) from git history; its v37-docs and
+  v0.9.0 tags were force-moved to docs-free commits (31f023d / fe4829a;
+  v37 data byte-exact, unchanged). The gitlink recorded in THIS tag
+  (74a28a9) predates the rewrite and no longer resolves in the submodule
+  remote; main now pins the rewritten v37-docs. The validation suite is
+  unaffected — it consumes only SISO-REF-010.xml, which is unchanged.
