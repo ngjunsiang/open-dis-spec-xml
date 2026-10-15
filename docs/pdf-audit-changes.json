@@ -1,0 +1,370 @@
+[
+ [
+  "WIRE",
+  "LogisticsFamilyPdus.xml",
+  "RepairResponsePdu",
+  "repairResult",
+  "uid 64->65, size 16->8",
+  "IEEE 1278.1-2012 5.5.10 item d) '[UID 65]' 8-bit; Table 148; total 224"
+ ],
+ [
+  "WIRE",
+  "SyntheticEnvironmentFamilyPdus.xml",
+  "PointObjectStatePdu",
+  "updateNumber",
+  "uint32 -> uint16",
+  "Table 193 'Update Number 16-bit'; total 704"
+ ],
+ [
+  "WIRE",
+  "SyntheticEnvironmentFamilyPdus.xml",
+  "PointObjectStatePdu",
+  "modifications",
+  "size 16->8 (uid 240)",
+  "7.10.4 Modifications 8-bit enumeration [UID 240]; Table 193"
+ ],
+ [
+  "WIRE",
+  "SyntheticEnvironmentFamilyPdus.xml",
+  "ArealObjectStatePdu",
+  "modifications",
+  "size 16->8 (uid 242)",
+  "7.10.6 Modifications 8-bit [UID 242]; Table 195 total 384+192N"
+ ],
+ [
+  "WIRE",
+  "DIS_7_2012.xml",
+  "LinearSegmentParameter",
+  "segmentModification",
+  "size 16->8 (uid 241)",
+  "Table 83; 6.2.52 item b)"
+ ],
+ [
+  "WIRE",
+  "SimulationManagementWithReliabilityFamilyPdus.xml",
+  "RecordReliablePdu",
+  "+responseSerialNumber uint32 after eventType",
+  "Table 210; 7.11.16 item e)"
+ ],
+ [
+  "WIRE",
+  "MinefieldFamilyPdus.xml",
+  "MinefieldQueryPdu",
+  "+padTo32 (padtoboundary 32) trailing",
+  "Table 188 total '320 + 64N + 16M + 8P bits'"
+ ],
+ [
+  "WIRE",
+  "MinefieldFamilyPdus.xml",
+  "MinefieldResponseNACKPdu",
+  "+padTo32 (padtoboundary 32) trailing",
+  "Table 190 total '208 + 8N + 8P bits'"
+ ],
+ [
+  "WIRE",
+  "LiveEntityFamilyPdus.xml",
+  "AppearancePdu",
+  "appearanceFlag1",
+  "uint16 -> uint8",
+  "Table 223 total base 136 = 96+32+8; Table 221"
+ ],
+ [
+  "WIRE",
+  "DIS_7_2012.xml",
+  "BeamStatus",
+  "beamState",
+  "1-bit sisoenum -> 8-bit sisobitfield (bits 1-7 pad)",
+  "Table 35 / 6.2.12: total Beam Status record = 8 bits"
+ ],
+ [
+  "WIRE",
+  "DIS_7_2012.xml",
+  "VariableTransmitterParameters",
+  "paddingTo64",
+  "commented 2xu8 -> active padtoboundary 64",
+  "Table 130 total '48 + 8K + 8P bits'"
+ ],
+ [
+  "NAME",
+  "SyntheticEnvironmentFamilyPdus.xml",
+  "PointObjectStatePdu",
+  "generObjectAppearance -> generalObjectAppearance",
+  "PDF 'General Object Appearance' (Tables 193/195); matches ArealObjectStatePdu",
+  "ruling 2026-10-15"
+ ],
+ [
+  "NAME",
+  "EntityManagementFamilyPdus.xml",
+  "IsPartOfPdu",
+  "orginatingEntityID -> originatingEntityID",
+  "PDF 'Originating Entity ID'",
+  "ruling 2026-10-15"
+ ],
+ [
+  "NAME",
+  "DistributedEmissionsFamilyPdus.xml",
+  "SupplementalEmissionEntityStatePdu",
+  "orginatingEntityID -> originatingEntityID",
+  "PDF 'Originating Entity ID' (Table 174)",
+  "ruling 2026-10-15"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "PduBase",
+  "(comment) section 7.2.2 -> 6.2.66",
+  "PDF: 'PDU Header record (see 6.2.66)'"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "BeamAntennaPattern",
+  "(comment) 6.2.9.2 -> 6.2.8.2",
+  "6.2.8.2 Beam Antenna Pattern record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "BeamData.beamAntennaParameterList",
+  "(comment) 6.2.9.2 -> 6.2.8.2",
+  "6.2.8.2"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "BeamData.directedEnergyTargetEnergyDepositionRecordList",
+  "6.2.21.4 -> 6.2.20.4",
+  "6.2.20.4 DE Target Energy Deposition record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "AttachedPartVP",
+  "6.2.93.3 -> 6.2.94.3",
+  "6.2.94.3 Attached Part VP record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "EulerAngles",
+  "6.2.33 -> 6.2.32",
+  "6.2.32 Euler Angles record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "Expendable",
+  "6.2.36 -> 6.2.35",
+  "6.2.35 Expendable record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "ExpendableReload",
+  "6.2.37 -> 6.2.36",
+  "6.2.36 Expendable Reload record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "IntercomIdentifier",
+  "6.2.48 -> 6.2.47",
+  "6.2.47 Intercom Identifier record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "GridAxisDescriptorFixed",
+  "6.2.41 -> 6.2.40",
+  "6.2.40 Grid Axis Descriptor record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "GridAxisDescriptorVariable",
+  "+citation 6.2.40; typo 'fo'->'for'",
+  "6.2.40 covers fixed and variable spacing"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "Vector3Float",
+  "6.2.95 -> 6.2.96",
+  "6.2.96 Vector record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "VectoringNozzleSystem",
+  "6.2.96 -> 6.2.97",
+  "6.2.97 Vectoring Nozzle System Data record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "Vector3Double",
+  "6.2.97 -> 6.2.98",
+  "6.2.98 World Coordinates record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "TotalRecordSets",
+  "6.2.88 -> 6.2.89",
+  "6.2.89 Total Record Sets record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "TrackJamData",
+  "6.2.89 -> 6.2.90",
+  "6.2.90 Track/Jam Data record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "BlankingSector",
+  "6.2.21.2 -> 6.2.21.1",
+  "6.2.21.1 Blanking Sector attribute record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "AngleDeception",
+  "6.2.21.2.2 -> 6.2.21.2",
+  "6.2.21.2 Angle Deception attribute record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "EntityAssociationVP",
+  "6.2.94.4.3 -> 6.2.94.4",
+  "6.2.94.4 Entity Association VP Record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "ChangeOptions",
+  "'aka B.2.41' -> 'described in B.2.4'",
+  "6.2.13: 'the Change/Options record is described in B.2.4'"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "BlankingSector/AngleDeception fields",
+  "(see 1.4.3) -> (see 1.6.3)",
+  "PDF wording '(see 1.6.3)' entity coordinate system (1.6.3.2)"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "EntityType/EntityTypeRaw",
+  "+citation 6.2.30",
+  "6.2.30 Entity Type record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "EntityID",
+  "+citation 6.2.28",
+  "6.2.28 Entity Identifier record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "VariableParameter",
+  "+citation 6.2.94",
+  "6.2.94 Variable Parameter record"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "DeadReckoningParameters",
+  "comment rewritten (320-bit ESPDU field, not a named record)",
+  "7.2.2 item k); 5.3.2.3.2 item f)"
+ ],
+ [
+  "CITE",
+  "DIS_7_2012.xml",
+  "ElectronicEmitter.location + IFF PDU location + Collision/Fire velocity/location fields",
+  "6.2.95 item a)/c) -> 6.2.96 item a)/c)",
+  "Vector record items are 6.2.96 a)/c)"
+ ],
+ [
+  "CITE",
+  "DistributedEmissionsFamilyPdus.xml",
+  "DistributedEmissionsRegenerationFamilyPdu",
+  "Section 5.3.7 -> Section 7.6",
+  "7.6 Distributed Emission Regeneration protocol family"
+ ],
+ [
+  "CITE",
+  "DistributedEmissionsFamilyPdus.xml",
+  "ElectromagneticEmissionPdu",
+  "Section 5.3.7.1 -> 5.7.3",
+  "5.7.3 Electromagnetic Emission (EE) PDU"
+ ],
+ [
+  "CITE",
+  "DistributedEmissionsFamilyPdus.xml",
+  "DesignatorPdu",
+  "See 5.3.7.2 -> See 5.7.4",
+  "5.7.4 Designator PDU"
+ ],
+ [
+  "CITE",
+  "DistributedEmissionsFamilyPdus.xml",
+  "ElectronicEmitter/IFFData",
+  "+citations 7.6.2 / 6.2.43",
+  ""
+ ],
+ [
+  "CITE",
+  "SyntheticEnvironmentFamilyPdus.xml",
+  "SyntheticEnvironmentFamilyPdu",
+  "Section 5.3.11 -> Section 7.10",
+  "7.10 Synthetic Environment protocol family"
+ ],
+ [
+  "CITE",
+  "SimulationManagementFamilyPdus.xml",
+  "SimulationManagementFamilyPdu",
+  "'Sectionn 6.2.81' -> 'Section 7.5'",
+  "7.5 Simulation Management protocol family"
+ ],
+ [
+  "CITE",
+  "EntityInformationFamilyPdus.xml",
+  "EntityInformationInteractionFamilyPdu",
+  "Section 5.3.3 -> Section 5.3",
+  "5.3 Entity information/interaction family"
+ ],
+ [
+  "CITE",
+  "RadioCommunicationsFamilyPdus.xml",
+  "RadioCommsHeader/IntercomReferenceID",
+  "+citations 6.2.70 / 6.2.47",
+  ""
+ ],
+ [
+  "CITE",
+  "MinefieldFamilyPdus.xml",
+  "MinefieldDataPdu.vertices",
+  "'per 5.10.4.5.3' -> 'per 5.10.4.5 item 3)'",
+  "5.10.4.5 minefield data order, item 3) Vertex"
+ ],
+ [
+  "CITE",
+  "MinefieldFamilyPdus.xml",
+  "MineEmplacementTime",
+  "+citation 6.2.14",
+  "Clock Time record"
+ ],
+ [
+  "RULING",
+  "EntityInformationFamilyPdus.xml",
+  "AttributePdu",
+  "attributeRecordProtocolVersion kept uid 5 (DISProtocolFamily)",
+  "PDF 7.2.6 d) cites [UID 5] though field is Protocol Version [UID 3]; PDF-internal error; kept literal per AUQ ruling 2026-10-15"
+ ]
+]

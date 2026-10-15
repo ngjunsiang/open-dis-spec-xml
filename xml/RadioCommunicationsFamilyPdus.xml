@@ -5,7 +5,7 @@
   
     </class>
 
-    <class name="RadioCommsHeader" inheritsFrom="root" comment="Common PDU fields for Radio Communications family">
+    <class name="RadioCommsHeader" inheritsFrom="root" comment="Common PDU fields for Radio Communications family: Radio Identifier record, Section 6.2.70.">
         <attribute name="radioReferenceID" comment="ID of the entitythat is the source of the communication">
             <classRef name="EntityID"/>
         </attribute> 
@@ -221,7 +221,7 @@
     
     </class>
 
-    <class name="IntercomReferenceID" inheritsFrom="root" comment="unique reference ID for this intercom">
+    <class name="IntercomReferenceID" inheritsFrom="root" comment="unique reference ID for this intercom; reference-ID portion of the Intercom Identifier record, Section 6.2.47.">
         
         <attribute name="siteNumber">
             <primitive type="uint16"/>

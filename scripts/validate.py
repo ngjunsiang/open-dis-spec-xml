@@ -65,6 +65,14 @@ def ref_join():
 
 
 # ------------------------------------------------------------- the gates --
+# uids where IEEE 1278.1-2012 (authoritative for this repo) sizes the field
+# differently than REF-010 v37 registers the enum: BeamStatusBeamState is a
+# 1-bit enumeration inside an 8-bit record (6.2.12/Table 35);
+# ObjectStateModification{Point,Areal,Linear}Object are 8-bit per the
+# Modifications field definitions (7.10.4/7.10.6/6.2.52 item b, Table 83).
+PDF_SIZE_OVERRIDES = {318: "8", 240: "8", 242: "8", 241: "8"}
+
+
 def gate_uid_size(trees, ref):
     bad = []
     for fname, tree in trees.items():
@@ -81,7 +89,9 @@ def gate_uid_size(trees, ref):
             u = int(uid)
             if u not in ref:
                 bad.append(f"{fname}:{e.get('type')} uid {u} not in REF-010")
-            elif ref[u] != size:
+            elif ref[u] != size and PDF_SIZE_OVERRIDES.get(u) != str(size):
+                bad.append(f"{fname}:{e.get('type')} size {size} != REF-010 "
+                           f"{ref[u]}")
                 bad.append(f"{fname}:{e.get('type')} size {size} != REF-010 "
                            f"{ref[u]}")
             m = re.search(r"uid (\d+)", e.get("comment") or "")

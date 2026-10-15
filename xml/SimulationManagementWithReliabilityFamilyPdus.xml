@@ -516,6 +516,10 @@
         <attribute name="eventType">
             <sisoenum type="RecordREventType" comment="uid 333" uid="333" size="16"/>
         </attribute>
+
+        <attribute name="responseSerialNumber" comment="Serial number of the Record-R PDU; used to match a response to the originating Set Record-R PDU">
+            <primitive type="uint32"/>
+        </attribute>
        
         <attribute name="numberOfRecordSets" hidden="true" comment="Number of record sets in list">
             <primitive type="uint32"/>

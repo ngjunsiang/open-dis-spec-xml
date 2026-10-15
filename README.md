@@ -15,10 +15,12 @@ Entity State / Fire / Detonation totals).
 
 ```
 xml/            the corrected 13-file spec set (DIS_7_2012.xml + 12 families)
-scripts/        fix.py (upstream -> xml/ transform), validate.py,
-                check_consistency.py, census.py, make_docs.py
+scripts/        fix.py (upstream -> xml/ transform, v0.1.0 set),
+                fix2_pdf_audit.py (2026-10-15 IEEE-PDF audit gate),
+                validate.py, check_consistency.py, census.py, make_docs.py
 docs/           changes.json / overrides.json / changes-evidence.md /
-                citations-report.txt — every change with its citation
+                citations-report.txt (v0.1.0 set) — plus the 2026-10-15
+                IEEE PDF audit: pdf-audit-changes.json / pdf-audit-evidence.md
 ref010/         submodule -> siso-ref-010-xml @ v37 (enum tables for the
                 uid/size join)
 ```
@@ -36,7 +38,7 @@ ref010/         submodule -> siso-ref-010-xml @ v37 (enum tables for the
   (drift gate needs `SPEC_UPSTREAM_DIR` pointing at an upstream checkout).
 - **Reproduce xml/ from upstream**: see `MANIFEST`.
 
-## Corrections at a glance (106 changes)
+## Corrections at a glance (106 changes + 2026-10-15 IEEE PDF audit)
 
 Wire-shape fixes (LE identifiers/headers/flags, Minefield Data vertices +
 dataFilter conditions, typed enums, length sources), mechanical enrichment
@@ -53,3 +55,12 @@ corrected set (and the reproducible delta) so consumers don't have to
 wait. As fixes merge upstream, the delta shrinks. The XML is BSD-licensed
 downstream of the NPS MOVES original (see `LICENSE`); the enumerations
 submodule is SISO-licensed with attribution (see its LICENSE).
+
+## IEEE PDF audit (2026-10-15)
+
+A full pass of `xml/` against `IEEE Std 1278.1-2012.pdf` (citations, wire
+shapes, enum uid/size): 11 wire-shape corrections, ~40 citation corrections,
+3 field-name corrections to the PDF spellings, 1 PDF-internal discrepancy
+ruled on (Attribute Record Protocol Version kept literal `[UID 5]`).
+Evidence: `docs/pdf-audit-evidence.md`, `docs/pdf-audit-changes.json`.
+Gate: `python3 scripts/fix2_pdf_audit.py`.

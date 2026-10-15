@@ -110,6 +110,10 @@
                 <classRef name="MinefieldSensorType"/>
             </objectlist> 
         </attribute>
+
+        <attribute name="padTo32" comment="Padding to 32-bit boundary (P in Table 188 total)">
+            <padtoboundary length="32"/>
+        </attribute>
     </class>
 
     <class name="MinefieldDataPdu" id="39" inheritsFrom="MinefieldFamilyPdu" comment="5.10.4 Information about the location and status of a collection of mines in a minefield is conveyed through the Minefield Data PDU on an individual mine basis.">
@@ -266,7 +270,7 @@
             <padtoboundary length="32"/>
         </attribute>
         
-        <attribute name="vertices" presentIf="dataFilter:7" comment="Vertex: Entity Coordinate Vector per trip/detonation-wire vertex; wire runs partitioned by numberOfVertices (V = sum of J_i), per-mine per-wire ordering per 5.10.4.5.3">
+        <attribute name="vertices" presentIf="dataFilter:7" comment="Vertex: Entity Coordinate Vector per trip/detonation-wire vertex; wire runs partitioned by numberOfVertices (V = sum of J_i), per-mine per-wire ordering per 5.10.4.5 item 3)">
             <objectlist countListFieldName="numberOfVertices">
                 <classRef name="Vector3Float"/>
             </objectlist>
@@ -274,7 +278,7 @@
     
     </class>
     
-    <class name="MineEmplacementTime" inheritsFrom="root" comment="simulation time of emplacement of the mine">
+    <class name="MineEmplacementTime" inheritsFrom="root" comment="simulation time of emplacement of the mine; Clock Time record, Section 6.2.14.">
         
         <attribute name="hour">
             <primitive type="uint32"/>
@@ -310,6 +314,10 @@
             <primitivelist countFieldName="numberOfMissingPdus">
                 <primitive type="uint8"/>
             </primitivelist> 
+        </attribute>
+
+        <attribute name="padTo32" comment="Padding to 32-bit boundary (P in Table 190 total)">
+            <padtoboundary length="32"/>
         </attribute>
     
     </class>

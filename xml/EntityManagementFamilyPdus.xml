@@ -180,7 +180,7 @@
 
         <initialValue name="pduType" value="DisPduType.ISPARTOF"/>
  
-        <attribute name="orginatingEntityID" comment="ID of entity originating PDU">
+        <attribute name="originatingEntityID" comment="ID of entity originating PDU">
             <classRef name="EntityID"/>
         </attribute>
   

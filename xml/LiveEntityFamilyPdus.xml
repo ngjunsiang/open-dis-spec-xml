@@ -89,7 +89,7 @@
         </attribute>
         
         <attribute name="appearanceFlag1" comment="Appearance Flag-1 (Table 221): bit 7 flag-2 included, 6 Appearance-IR, 5 Appearance-Visual, 4 Capabilities, 3 Entity Marking, 2 Alternate Entity Type, 1 Entity Type, 0 Force ID">
-            <primitive type="uint16"/>
+            <primitive type="uint8"/>
         </attribute>
         
         <attribute name="appearanceFlag2" presentIf="appearanceFlag1:7" comment="Appearance Flag-2 (Table 222): bit 1 Appearance-Audio, bit 0 Appearance-EM; bits 7-2 reserved/unused">

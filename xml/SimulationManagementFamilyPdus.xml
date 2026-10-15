@@ -1,5 +1,5 @@
  <classes>  
-      <class name="SimulationManagementFamilyPdu" id="5" abstract="true" inheritsFrom="PduBase" comment="First part of a simulation management (SIMAN) PDU and SIMAN-Reliability (SIMAN-R) PDU. Sectionn 6.2.81">
+      <class name="SimulationManagementFamilyPdu" id="5" abstract="true" inheritsFrom="PduBase" comment="First part of a simulation management (SIMAN) PDU and SIMAN-Reliability (SIMAN-R) PDU. Section 7.5">
 
         <initialValue name="protocolFamily" value="DISProtocolFamily.SIMULATION_MANAGEMENT"/>
 

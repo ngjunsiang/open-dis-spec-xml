@@ -1,11 +1,11 @@
 <classes>
-   <class name="DistributedEmissionsRegenerationFamilyPdu" id="6" abstract="true" inheritsFrom="PduBase" comment="Section 5.3.7. Electronic Emissions. Abstract superclass for distributed emissions PDU">
+   <class name="DistributedEmissionsRegenerationFamilyPdu" id="6" abstract="true" inheritsFrom="PduBase" comment="Section 7.6. Distributed Emission Regeneration protocol family. Abstract superclass for distributed emissions PDU">
 
        <initialValue name="protocolFamily" value="DISProtocolFamily.DISTRIBUTED_EMISSION_REGENERATION"/>
 
     </class>
 
-    <class name="ElectromagneticEmissionPdu" id="23" inheritsFrom="DistributedEmissionsRegenerationFamilyPdu" comment="7.6.2 Communicate active electromagnetic emissions, including radar and radar-related electronic warfare (e.g., jamming). Exceptions include IFF interrogations and replies, navigation aids, voice, beacon and data radio communications, directed energy weapons, and laser ranging and designation systems, which are handled by other PDUs. Section 5.3.7.1.">
+    <class name="ElectromagneticEmissionPdu" id="23" inheritsFrom="DistributedEmissionsRegenerationFamilyPdu" comment="7.6.2 Communicate active electromagnetic emissions, including radar and radar-related electronic warfare (e.g., jamming). Exceptions include IFF interrogations and replies, navigation aids, voice, beacon and data radio communications, directed energy weapons, and laser ranging and designation systems, which are handled by other PDUs. Section 5.7.3.">
     
         <initialValue name="pduType" value="DisPduType.ELECTROMAGNETIC_EMISSION"/>
 
@@ -39,7 +39,7 @@
   
     </class>
     
-    <class name="ElectronicEmitter" inheritsFrom="root" comment="A device that is able to discharge detectable electromagnetic energy.">
+    <class name="ElectronicEmitter" inheritsFrom="root" comment="A device that is able to discharge detectable electromagnetic energy. Per-system data of the EE PDU (7.6.2).">
         
          <attribute name="systemDataLength" comment=" this field shall specify the length of this emitter system's data in 32-bit words.">
             <primitive type="uint8"/>
@@ -57,7 +57,7 @@
             <classRef name="EmitterSystem"/>
         </attribute>
   
-        <attribute name="location" comment="the location of the antenna beam source with respect to the emitting entity's coordinate system. This location shall be the origin of the emitter coordinate system that shall have the same orientation as the entity coordinate system. This field shall be represented by an Entity Coordinate Vector record see 6.2.95 ">
+        <attribute name="location" comment="the location of the antenna beam source with respect to the emitting entity's coordinate system. This location shall be the origin of the emitter coordinate system that shall have the same orientation as the entity coordinate system. This field shall be represented by an Entity Coordinate Vector record see 6.2.96 ">
             <classRef name="Vector3Float"/>
         </attribute>
  
@@ -118,7 +118,7 @@
         </attribute>
     </class>
     
-    <class name="DesignatorPdu" id="24" inheritsFrom="DistributedEmissionsRegenerationFamilyPdu" comment="7.6.3 Handles designating operations. See 5.3.7.2.">
+    <class name="DesignatorPdu" id="24" inheritsFrom="DistributedEmissionsRegenerationFamilyPdu" comment="7.6.3 Handles designating operations. See 5.7.4.">
 
         <initialValue name="pduType" value="DisPduType.DESIGNATOR"/>
   
@@ -250,7 +250,7 @@
             <classRef name="AcousticEmitter"/>
         </attribute>
 
-        <attribute name="location" comment="the location of the antenna beam source with respect to the emitting entity's coordinate system. This location shall be the origin of the emitter coordinate system that shall have the same orientation as the entity coordinate system. This field shall be represented by an Entity Coordinate Vector record see 6.2.95 ">
+        <attribute name="location" comment="the location of the antenna beam source with respect to the emitting entity's coordinate system. This location shall be the origin of the emitter coordinate system that shall have the same orientation as the entity coordinate system. This field shall be represented by an Entity Coordinate Vector record see 6.2.96 ">
             <classRef name="Vector3Float"/>
         </attribute>
  
@@ -715,7 +715,7 @@
  
         <initialValue name="pduType" value="DisPduType.SUPPLEMENTAL_EMISSION_ENTITY_STATE"/>
    
-        <attribute name="orginatingEntityID" comment="Originating entity ID provides a unique identifier">
+        <attribute name="originatingEntityID" comment="Originating entity ID provides a unique identifier">
             <classRef name="EntityID"/>
         </attribute>    
   

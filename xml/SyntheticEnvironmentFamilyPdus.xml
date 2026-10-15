@@ -1,5 +1,5 @@
 <classes>
-    <class name="SyntheticEnvironmentFamilyPdu" id="9" inheritsFrom="PduBase" abstract="true" comment="Section 5.3.11: Abstract superclass for synthetic environment PDUs">
+    <class name="SyntheticEnvironmentFamilyPdu" id="9" inheritsFrom="PduBase" abstract="true" comment="Section 7.10: Abstract superclass for synthetic environment PDUs">
 
         <initialValue name="protocolFamily" value="DISProtocolFamily.SYNTHETIC_ENVIRONMENT"/>
      
@@ -128,7 +128,7 @@
         </attribute>
    
         <attribute name="updateNumber" comment="unique update number of each state transition of an object">
-            <primitive type="uint32"/>
+            <primitive type="uint16"/>
         </attribute>
    
         <attribute name="forceID" comment="force ID provides a unique identifier">
@@ -136,7 +136,7 @@
         </attribute>
    
         <attribute name="modifications" comment="modifications">
-            <sisobitfield type="ObjectStateModificationPointObject" size="16" comment="uid 240" uid="240"/>
+            <sisobitfield type="ObjectStateModificationPointObject" size="8" comment="uid 240" uid="240"/>
         </attribute>
    
         <attribute name="objectType" comment="Object type">
@@ -155,7 +155,7 @@
             <primitive type="uint32"/>
         </attribute>
            
-        <attribute name="generObjectAppearance" comment="General object apperance">
+        <attribute name="generalObjectAppearance" comment="General object appearance">
             <sisobitfield type="ObjectStateAppearanceGeneral" size="16" comment="uid 229" uid="229"/>
         </attribute>
    
@@ -242,7 +242,7 @@
         </attribute>
    
         <attribute name="modifications" comment="modifications enumeration">
-            <sisobitfield type="ObjectStateModificationArealObject" size="16" comment="uid 242" uid="242"/>
+            <sisobitfield type="ObjectStateModificationArealObject" size="8" comment="uid 242" uid="242"/>
         </attribute>
 
         <attribute name="objectType" comment="Object type">

@@ -1,5 +1,5 @@
-# Build manifest — v0.1.0
-generated: 2026-10-14
+# Build manifest — v0.9.0
+generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit)
 source-of-truth chain:
   upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
                    (xml/dis_7_2012/* — byte-verified identical to the
@@ -13,3 +13,10 @@ reproduce:
 equivalence:
   xml/ == upstream xml/dis_7_2012 + docs/overrides.json applied
   (the interim-generator-input ruling in the originating project)
+stage 2 (2026-10-15):
+  audit:          scripts/fix2_pdf_audit.py (postcondition gate)
+  changes:        docs/pdf-audit-changes.json (51 entries)
+  evidence:       docs/pdf-audit-evidence.md
+  source:         .references/IEEE Std 1278.1-2012.pdf (sole reference)
+  equivalence:    xml/ == stage-1 output + the stage-2 deltas; the gate
+                  asserts every delta's post-state directly on xml/

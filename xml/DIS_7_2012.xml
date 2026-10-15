@@ -168,7 +168,7 @@
  <!-- uid 31-43: LandPlatformAppearance, AirPlatformAppearance, SurfacePlatformAppearance, SubsurfaceFlatformAppearance,
                 SpacePlatformAppearance, MunitionAppearance, LifeFormsAppearance, EnvironmentalAppearance,
                 CulturalFeatureAppearance, SupplyAppearance, RadioAppearance, ExpendableAppearance, SensorEmitterAppearance -->
-    <class name="BeamAntennaPattern" inheritsFrom="root" comment="Used when the antenna pattern type field has a value of 1. Specifies the direction, pattern, and polarization of radiation from an antenna. Section 6.2.9.2">
+    <class name="BeamAntennaPattern" inheritsFrom="root" comment="Used when the antenna pattern type field has a value of 1. Specifies the direction, pattern, and polarization of radiation from an antenna. Section 6.2.8.2">
    
         <attribute name="beamDirection" comment="The rotation that transforms the reference coordinate sytem into the beam coordinate system. Either world coordinates or entity coordinates may be used as the reference coordinate system, as specified by the reference system field of the antenna pattern record.">
             <classRef name="EulerAngles"/>
@@ -284,7 +284,7 @@
     
     </class>
 
-    <class name="ChangeOptions" inheritsFrom="root" comment="This is a bitfield. See section 6.2.13 aka B.2.41">
+    <class name="ChangeOptions" inheritsFrom="root" comment="This is a bitfield. See section 6.2.13, described in B.2.4">
         <attribute name="value">
             <primitive type="uint8"/>
         </attribute>
@@ -292,8 +292,8 @@
 
     <class name="BeamStatus" inheritsFrom="root" comment="Information related to the status of a beam. This is contained in the beam status field of the electromagnitec emission PDU. The first bit determines whether the beam is active (0) or deactivated (1). Section 6.2.12.">
 
-        <attribute name="beamState" comment="First bit zero means beam is active, first bit = 1 means deactivated. The rest is padding.">
-            <sisoenum type="BeamStatusBeamState" comment="uid 318" uid="318" size="1"/>
+        <attribute name="beamState" comment="First bit zero means beam is active, first bit = 1 means deactivated; bits 1-7 padding (8-bit record, Table 35/6.2.12)">
+            <sisobitfield type="BeamStatusBeamState" comment="uid 318" uid="318" size="8"/>
         </attribute>
     
     </class>
@@ -502,13 +502,13 @@
             <primitive type="uint16" defaultValue="0"/>
         </attribute>
    
-        <attribute name="beamAntennaParameterList" comment="list of beam antenna records. See 6.2.9.2">
+        <attribute name="beamAntennaParameterList" comment="list of beam antenna records. See 6.2.8.2">
             <objectlist countFieldName="beamAntennaPatternRecordCount">
                 <classRef name="BeamAntennaPattern"/>
             </objectlist> 
         </attribute>
    
-        <attribute name="directedEnergyTargetEnergyDepositionRecordList" comment="list of DE target deposition records. See 6.2.21.4">
+        <attribute name="directedEnergyTargetEnergyDepositionRecordList" comment="list of DE target deposition records. See 6.2.20.4">
             <objectlist countFieldName="directedEnergyTargetEnergyDepositionRecordCount">
                 <classRef name="DirectedEnergyTargetEnergyDeposition"/>
             </objectlist> 
@@ -604,7 +604,7 @@
     <!-- Electronic warfare records -->
  
     <!-- Section 6.2.21.1 -->
-    <class name="BlankingSector" inheritsFrom="root" comment="The Blanking Sector attribute record may be used to convey persistent areas within a scan volume where emitter power for a specific active emitter beam is reduced to an insignificant value. Section 6.2.21.2">
+    <class name="BlankingSector" inheritsFrom="root" comment="The Blanking Sector attribute record may be used to convey persistent areas within a scan volume where emitter power for a specific active emitter beam is reduced to an insignificant value. Section 6.2.21.1">
        
         <attribute name="recordType" comment="record type">
             <primitive type="uint32" defaultValue="3500"/>
@@ -634,19 +634,19 @@
             <primitive type="uint8" defaultValue="0"/>
         </attribute>
     
-        <attribute name="leftAzimuth" comment="This field is provided to indicate the left-most azimuth (clockwise in radians) for which emitted power is reduced. This angle is measured in the X-Y plane of the radar's entity coor- dinate system (see 1.4.3). The range of permissible values is 0 to 2PI, with zero pointing in the X- direction. ">
+        <attribute name="leftAzimuth" comment="This field is provided to indicate the left-most azimuth (clockwise in radians) for which emitted power is reduced. This angle is measured in the X-Y plane of the radar's entity coor- dinate system (see 1.6.3). The range of permissible values is 0 to 2PI, with zero pointing in the X- direction. ">
             <primitive type="float32"/>
         </attribute>
     
-        <attribute name="rightAzimuth" comment="Indicate the right-most azimuth (clockwise in radians) for which emitted power is reduced. This angle is measured in the X-Y plane of the radar's entity coordinate system (see 1.4.3). The range of permissible values is 0 to 2PI , with zero pointing in the X- direction.">
+        <attribute name="rightAzimuth" comment="Indicate the right-most azimuth (clockwise in radians) for which emitted power is reduced. This angle is measured in the X-Y plane of the radar's entity coordinate system (see 1.6.3). The range of permissible values is 0 to 2PI , with zero pointing in the X- direction.">
             <primitive type="float32"/>
         </attribute>
     
-        <attribute name="lowerElevation" comment="This field is provided to indicate the lowest elevation (in radians) for which emit- ted power is reduced. This angle is measured positive upward with respect to the X-Y plane of the radar's entity coordinate system (see 1.4.3). The range of permissible values is -PI/2 to PI/2">
+        <attribute name="lowerElevation" comment="This field is provided to indicate the lowest elevation (in radians) for which emit- ted power is reduced. This angle is measured positive upward with respect to the X-Y plane of the radar's entity coordinate system (see 1.6.3). The range of permissible values is -PI/2 to PI/2">
             <primitive type="float32"/>
         </attribute>
     
-        <attribute name="upperElevation" comment="This field is provided to indicate the highest elevation (in radians) for which emitted power is reduced. This angle is measured positive upward with respect to the X-Y plane of the radar's entitycoordinatesystem(see1.4.3). The range of permissible values is -PI/2 to PI/2">
+        <attribute name="upperElevation" comment="This field is provided to indicate the highest elevation (in radians) for which emitted power is reduced. This angle is measured positive upward with respect to the X-Y plane of the radar's entitycoordinatesystem (see 1.6.3). The range of permissible values is -PI/2 to PI/2">
             <primitive type="float32"/>
         </attribute>
     
@@ -661,7 +661,7 @@
     </class>
 
     <!-- Section 6.2.21.2 -->
-    <class name="AngleDeception" inheritsFrom="root" comment="The Angle Deception attribute record may be used to communicate discrete values that are associated with angle deception jamming that cannot be referenced to an emitter mode. The values provided in the record records (provided in the associated Electromagnetic Emission PDU). (The victim radar beams are those that are targeted by the jammer.) Section 6.2.21.2.2">
+    <class name="AngleDeception" inheritsFrom="root" comment="The Angle Deception attribute record may be used to communicate discrete values that are associated with angle deception jamming that cannot be referenced to an emitter mode. The values provided in the record records (provided in the associated Electromagnetic Emission PDU). (The victim radar beams are those that are targeted by the jammer.) Section 6.2.21.2">
   
         <attribute name="recordType" comment="record type">
             <primitive type="uint32" defaultValue="3501"/>
@@ -691,7 +691,7 @@
             <primitive type="uint8" defaultValue="0"/>
         </attribute>
     
-        <attribute name="azimuthOffset" comment="This field indicates the relative azimuth angle at which the deceptive radar returns are centered. This angle is measured in the X-Y plane of the victim radar's entity coordinate system (see 1.4.3). This angle is measured in radians from the victim radar entity's azimuth for the true jam- mer position to the center of the range of azimuths in which deceptive radar returns are perceived as shown in Figure 43. Positive and negative values indicate that the perceived positions of the jammer are right and left of the true position of the jammer, respectively. The range of permissible values is -PI to PI">
+        <attribute name="azimuthOffset" comment="This field indicates the relative azimuth angle at which the deceptive radar returns are centered. This angle is measured in the X-Y plane of the victim radar's entity coordinate system (see 1.6.3). This angle is measured in radians from the victim radar entity's azimuth for the true jam- mer position to the center of the range of azimuths in which deceptive radar returns are perceived as shown in Figure 43. Positive and negative values indicate that the perceived positions of the jammer are right and left of the true position of the jammer, respectively. The range of permissible values is -PI to PI">
             <primitive type="float32"/>
         </attribute>
     
@@ -707,7 +707,7 @@
             <primitive type="float32"/>
         </attribute>
     
-        <attribute name="elevationOffset" comment="This field indicates the relative elevation angle at which the deceptive radar returns begin. This angle is measured as an angle with respect to the X-Y plane of the victim radar's entity coordinate system (see 1.4.3). This angle is measured in radians from the victim radar entity's eleva- tion for the true jammer position to the center of the range of elevations in which deceptive radar returns are perceived as shown in Figure 44. Positive and negative values indicate that the perceived positions of the jammer are above and below the true position of the jammer, respectively. The range of permissible values is -PI/2 to PI/2">
+        <attribute name="elevationOffset" comment="This field indicates the relative elevation angle at which the deceptive radar returns begin. This angle is measured as an angle with respect to the X-Y plane of the victim radar's entity coordinate system (see 1.6.3). This angle is measured in radians from the victim radar entity's eleva- tion for the true jammer position to the center of the range of elevations in which deceptive radar returns are perceived as shown in Figure 44. Positive and negative values indicate that the perceived positions of the jammer are above and below the true position of the jammer, respectively. The range of permissible values is -PI/2 to PI/2">
             <primitive type="float32"/>
         </attribute>
     
@@ -909,7 +909,7 @@
 
     </class>
 
-    <class name="EntityID" inheritsFrom="root" comment="Unique identifier triplet for this entity.  Also referred to as EntityIdentifier">
+    <class name="EntityID" inheritsFrom="root" comment="Unique identifier triplet for this entity.  Also referred to as EntityIdentifier. Section 6.2.28.">
 
         <attribute name="siteID" comment="Site ID values are unique identification number for originating site, often corresponding to an internet address.  Site ID values are agreed upon by individual simulations.">
             <primitive type="uint16"/>
@@ -939,7 +939,7 @@
             
     </class>
 
-    <class name="EntityType" inheritsFrom="root" comment="Identifies the type of Entity">
+    <class name="EntityType" inheritsFrom="root" comment="Identifies the type of Entity. Section 6.2.30.">
     
         <attribute name="entityKind" comment="Kind of entity">
             <sisoenum type="EntityKind" comment="uid 7" uid="7" size="8"/>
@@ -973,7 +973,7 @@
     
     </class>
     
-    <class name="EntityTypeRaw" inheritsFrom="root" comment="Identifies the type of Entity">
+    <class name="EntityTypeRaw" inheritsFrom="root" comment="Identifies the type of Entity. Section 6.2.30.">
     
         <attribute name="entityKind" comment="Kind of entity">
             <sisoenum type="EntityKind" comment="uid 7" uid="7" size="8"/>
@@ -1078,7 +1078,7 @@
     </class>
 -->
 
-    <class name="EulerAngles" inheritsFrom="root" comment="Three floating point values representing an orientation, psi, theta, and phi, aka the euler angles, in radians. Section 6.2.33">
+    <class name="EulerAngles" inheritsFrom="root" comment="Three floating point values representing an orientation, psi, theta, and phi, aka the euler angles, in radians. Section 6.2.32">
 
         <attribute name="psi">
             <primitive type="float32"/>
@@ -1123,7 +1123,7 @@
     </class>
 
 
-    <class name="Expendable" inheritsFrom="root" comment="An entity's expendable (chaff, flares, etc.) information. Section 6.2.36">
+    <class name="Expendable" inheritsFrom="root" comment="An entity's expendable (chaff, flares, etc.) information. Section 6.2.35">
 
         <attribute name="expendable" comment="Type of expendable">
             <classRef name="EntityType"/>
@@ -1147,7 +1147,7 @@
 
     </class>
 
-    <class name="ExpendableReload" inheritsFrom="root" comment="An entity's expendable (chaff, flares, etc.) information. Section 6.2.37">
+    <class name="ExpendableReload" inheritsFrom="root" comment="An entity's expendable (chaff, flares, etc.) information. Section 6.2.36">
 
         <attribute name="expendable" comment="Type of expendable">
             <classRef name="EntityType"/>
@@ -1255,7 +1255,7 @@
         
     </class>
     
-    <class name="GridAxisDescriptorFixed" inheritsFrom="GridAxisDescriptor" comment="Grid axis record for fixed data. Section 6.2.41">
+    <class name="GridAxisDescriptorFixed" inheritsFrom="GridAxisDescriptor" comment="Grid axis record for fixed data. Section 6.2.40">
         <attribute name="numberOfPointsOnXiAxis" comment="Number of grid locations along Xi axis">
             <primitive type="uint16"/>
         </attribute>
@@ -1266,7 +1266,7 @@
     
     </class>
 
-    <class name="GridAxisDescriptorVariable" inheritsFrom="GridAxisDescriptor" comment="Grid axis descriptor fo variable spacing axis data.">
+    <class name="GridAxisDescriptorVariable" inheritsFrom="GridAxisDescriptor" comment="Grid axis descriptor for variable spacing axis data. Section 6.2.40.">
         
         <attribute name="numberOfPointsOnXiAxis" comment="Number of grid locations along Xi axis">
             <primitive type="uint16"/>
@@ -1479,7 +1479,7 @@
 
     </class>
 
-    <class name="IFFData" inheritsFrom="root" comment="repeating element in IFF Data specification record">
+    <class name="IFFData" inheritsFrom="root" comment="repeating element (IFF Data record) in the IFF Data Specification record, Section 6.2.43">
      
         <attribute name="recordType" comment="enumeration for type of record">
             <sisoenum type="VariableRecordType" comment="uid 66 Variable Record Type values are defined by VariableRecordType enumerations" uid="66" size="32"/>
@@ -1583,7 +1583,7 @@
 
     </class>
 
-    <class name="IntercomIdentifier" inheritsFrom="root" comment="Unique designation of an attached or unattached intercom in an event or exercirse. Section 6.2.48">
+    <class name="IntercomIdentifier" inheritsFrom="root" comment="Unique designation of an attached or unattached intercom in an event or exercirse. Section 6.2.47">
 
         <attribute name="siteNumber">
             <primitive type="uint16"/>
@@ -1678,7 +1678,7 @@
         </attribute>
      
         <attribute name="segmentModification" comment=" whether a modification has been made to the point object's location or orientation">
-            <sisobitfield type="ObjectStateModificationLinearObject" size="16" comment="UID 241" uid="241"/>
+            <sisobitfield type="ObjectStateModificationLinearObject" size="8" comment="UID 241" uid="241"/>
         </attribute>
 
         <attribute name="generalSegmentAppearance" comment="general dynamic appearance attributes of the segment. This record shall be defined as a 16-bit record of enumerations. The values defined for this record are included in Section 12 of SISO-REF-010.">
@@ -2372,7 +2372,7 @@
     Scale is one hour divided by 2^31-1, about 1.676 microseconds
     -->
 
-    <class name="TotalRecordSets" inheritsFrom="root" comment="Total number of record sets contained in a logical set of one or more PDUs. Used to transfer ownership, etc Section 6.2.88">
+    <class name="TotalRecordSets" inheritsFrom="root" comment="Total number of record sets contained in a logical set of one or more PDUs. Used to transfer ownership, etc Section 6.2.89">
 
         <attribute name="totalRecordSets" comment="Total number of record sets">
             <primitive type="uint16"/>
@@ -2384,7 +2384,7 @@
 
     </class>
 
-    <class name="TrackJamData" inheritsFrom="root" comment=" Track-Jam data Section 6.2.89">
+    <class name="TrackJamData" inheritsFrom="root" comment=" Track-Jam data Section 6.2.90">
 
         <attribute name="entityID" comment="The entity tracked or illumated, or an emitter beam targeted with jamming">
             <classRef name="EntityID"/>
@@ -2464,7 +2464,7 @@
 
     </class>
 
-    <class name="VariableParameter" inheritsFrom="root" comment="used in DetonationPdu, ArticulatedPartsPdu among others">
+    <class name="VariableParameter" inheritsFrom="root" comment="Used in DetonationPdu, ArticulatedPartsPdu among others. Section 6.2.94.">
         
         <attribute name="recordType" comment="The identification of the Variable Parameter record. Enumeration from EBV">
             <sisoenum type="VariableParameterRecordType" comment="uid 56" uid="56" size="8"/>
@@ -2506,7 +2506,7 @@
 
     </class>
 
-    <class name="AttachedPartVP" inheritsFrom="root" comment="Removable parts that may be attached to an entity.  Section 6.2.93.3">
+    <class name="AttachedPartVP" inheritsFrom="root" comment="Removable parts that may be attached to an entity.  Section 6.2.94.3">
 
         <attribute name="recordType" comment="The identification of the Variable Parameter record. Enumeration from EBV">
             <sisoenum type="VariableParameterRecordType" defaultValue="VariableParameterRecordType.ATTACHED_PART" comment="uid 56" uid="56" size="8"/>
@@ -2530,7 +2530,7 @@
 
     </class>
 
-    <class name="EntityAssociationVP" inheritsFrom="root" comment="Association or disassociation of two entities.  Section 6.2.94.4.3">
+    <class name="EntityAssociationVP" inheritsFrom="root" comment="Association or disassociation of two entities.  Section 6.2.94.4">
 
         <attribute name="recordType" comment="The identification of the Variable Parameter record. Enumeration from EBV">
             <sisoenum type="VariableParameterRecordType" defaultValue="VariableParameterRecordType.ENTITY_ASSOCIATION" comment="uid 56" uid="56" size="8"/>
@@ -2642,15 +2642,13 @@
             </primitivelist>
         </attribute>
         
-        <!--<attribute name="paddingTo64">
-            <primitivelist length="2">
-                <primitive type="uint8"/>
-            </primitivelist>
-        </attribute> -->
+        <attribute name="paddingTo64" comment="Padding of 0 to 7 octets as required for 64-bit alignment (Table 130)">
+            <padtoboundary length="64"/>
+        </attribute>
         
          </class>
 
-    <class name="Vector3Float" inheritsFrom="root" comment="Three floating point values, x, y, and z. Section 6.2.95">
+    <class name="Vector3Float" inheritsFrom="root" comment="Three floating point values, x, y, and z. Section 6.2.96">
     
         <attribute name="x" comment="X value">
             <primitive type="float32"/>
@@ -2678,7 +2676,7 @@
   
     </class>
 
-    <class name="VectoringNozzleSystem" inheritsFrom="root" comment="Operational data for describing the vectoring nozzle systems Section 6.2.96">
+    <class name="VectoringNozzleSystem" inheritsFrom="root" comment="Operational data for describing the vectoring nozzle systems Section 6.2.97">
 
         <attribute name="horizontalDeflectionAngle" comment="In degrees">
             <primitive type="float32"/>
@@ -2690,7 +2688,7 @@
 
     </class>
 
-    <class name="Vector3Double" inheritsFrom="root" comment="Three double precision floating point values, x, y, and z. Used for world coordinates Section 6.2.97.">
+    <class name="Vector3Double" inheritsFrom="root" comment="Three double precision floating point values, x, y, and z. Used for world coordinates Section 6.2.98.">
         <attribute name="x" comment="X value">
             <primitive type="float64"/>
         </attribute>
@@ -2705,7 +2703,7 @@
     </class>
 
     <!-- Dead reackoning parameters are not listed in the standard, but nonetheless appear in the ESPDU -->
-    <class name="DeadReckoningParameters" inheritsFrom="root" comment="Not specified in the standard. This is used by the ESPDU">
+    <class name="DeadReckoningParameters" inheritsFrom="root" comment="Dead Reckoning Parameters field of the ESPDU (7.2.2 item k): 8-bit Dead Reckoning Algorithm enumeration (uid 44), 120 bits reserved for other parameters (5.3.2.3.2 item f), entity linear acceleration, entity angular velocity; 320 bits total">
  
         <attribute name="deadReckoningAlgorithm" comment="Algorithm to use in computing dead reckoning. See EBV doc.">
             <sisoenum type="DeadReckoningAlgorithm" comment="uid 44" uid="44" size="8"/>
@@ -2886,7 +2884,7 @@ next hour. The next hour then starts back at zero. This results in each time uni
         
     </class>
 
-    <class name="PduBase" abstract="true" inheritsFrom="Pdu" comment="The superclass for all PDUs except LiveEntity. This incorporates the PduHeader record, section 7.2.2">
+    <class name="PduBase" abstract="true" inheritsFrom="Pdu" comment="The superclass for all PDUs except LiveEntity. This incorporates the PduHeader record, section 6.2.66">
 
         <attribute name="pduStatus" comment="PDU Status Record. Described in 6.2.67. This field is not present in earlier DIS versions ">
            <sisobitfield type="PduStatus" size="8" defaultValue="0" comment="uid-less 8-bit record per 6.2.67; sub-field enums: TEI 301, LVC 302, CEI 303, FTI 304, DTI 305, RAI 306, IAI 307, ISM 308, AII 309 (REF-010 has no single umbrella table)"/>
