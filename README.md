@@ -21,8 +21,9 @@ scripts/        fix.py (upstream -> xml/ transform, v0.1.0 set),
 docs/           changes.json / overrides.json / changes-evidence.md /
                 citations-report.txt (v0.1.0 set) — plus the 2026-10-15
                 IEEE PDF audit: pdf-audit-changes.json / pdf-audit-evidence.md
-ref010/         submodule -> siso-ref-010-xml @ v37 (enum tables for the
-                uid/size join)
+ref010/         submodule -> siso-ref-010-xml @ v37-docs (v37 enum tables
+                for the uid/size join + the official v37 distribution docs
+                and the REF-010.1 operations manual)
 ```
 
 ## Using it

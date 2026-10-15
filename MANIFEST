@@ -4,7 +4,11 @@ source-of-truth chain:
   upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
                    (xml/dis_7_2012/* — byte-verified identical to the
                    working collection this transform was developed against)
-  enumerations:    siso-ref-010-xml submodule @ tag v37
+  enumerations:    siso-ref-010-xml submodule @ tag v37-docs
+                   (v37 data byte-exact, unchanged; v37-docs adds the full
+                   official v37 distribution — docs/XSLs/RPR XMLs — plus the
+                   SISO-REF-010.1-2019 Operations Manual, migrated from the
+                   loose .references collection on 2026-10-15)
   transform:       scripts/fix.py (106 logged changes -> docs/changes.json)
 reproduce:
   git clone https://github.com/open-dis/opendis7-source-generator upstream
