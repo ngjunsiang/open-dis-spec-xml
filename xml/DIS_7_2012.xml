@@ -498,7 +498,7 @@
             <primitive type="uint16" defaultValue="0"/>
         </attribute>
    
-        <attribute name="directedEnergyTargetEnergyDepositionRecordCount" hidden="true" comment="Number of DE target energy depositon records">
+        <attribute name="directedEnergyTargetEnergyDepositionRecordCount" hidden="true" comment="Number of DE target energy deposition records">
             <primitive type="uint16" defaultValue="0"/>
         </attribute>
    
@@ -585,7 +585,7 @@
     </class>
  
     <!-- Section 6.2.20.4 -->   
-    <class name="DirectedEnergyTargetEnergyDeposition" inheritsFrom="root" comment="DE energy depostion properties for a target entity. Section 6.2.20.4">
+    <class name="DirectedEnergyTargetEnergyDeposition" inheritsFrom="root" comment="DE energy deposition properties for a target entity. Section 6.2.20.4">
  
         <attribute name="targetEntityID" comment="Unique ID of the target entity.">
             <classRef name="EntityID"/>

@@ -433,3 +433,17 @@ entry of `DOCSTRING_CITES`.
 information when the target of the directed energy weapon is an
 area."* (The precision sibling is §6.2.20.3 "DE Precision Aimpoint
 record".)
+
+---
+
+## Item 13 — "depostion"/"depositon" typos
+
+**Fixed:** `DirectedEnergyTargetEnergyDeposition` class comment
+(*"DE energy deposition properties for a target entity. Section
+6.2.20.4"*) and `DirectedEnergyAreaAimpoint.
+directedEnergyTargetEnergyDepositionRecordCount`'s count comment
+(*"Number of DE target energy deposition records"*).
+
+**PDF evidence:** §6.2.20.4 is titled *"DE Target Energy Deposition
+record"*: *"Directed energy deposition properties for a target entity
+shall be communicated using the DE Target Energy Deposition record."*
