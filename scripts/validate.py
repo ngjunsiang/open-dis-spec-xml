@@ -566,6 +566,13 @@ def gate_size_spot_checks(trees):
     check(ok, "gate 8i: DataQueryPdu == Table 156 (320 + 32N + 32M; "
               "datum-ID lists)")
 
+    # ---- Transfer Ownership PDU vs Table 185: fixed part = 96 + 48 + 48
+    # + 32 + 8 + 8 + 48 + 32 = 320 bits with zero record sets (the count
+    # rides the PDU; record sets follow flat).
+    got = ev.size_class("TransferOwnershipPdu", {"numberOfRecordSets": 0})
+    check(got == 320, "gate 8j: TransferOwnershipPdu == Table 185 "
+          "(fixed part 320 bits, R=0)", f"computed {got}")
+
 
 def main():
     trees = load(fixed=True)

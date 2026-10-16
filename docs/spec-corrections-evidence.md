@@ -241,3 +241,33 @@ entries (PrimitiveList rebinding).
 own ([UID 64/65]-space datum IDs); the XML's established binding of
 `FixedDatum.fixedDatumID` to uid 66 (VariableRecordType) is followed
 here for consistency — worth revisiting in a registry-accuracy pass.
+
+---
+
+## Item 7 — TransferOwnershipPdu: record-set count + flat record sets
+
+**Before:** `recordSets` was a single `RecordSpecification` wrapper
+record (whose own hidden count + list would nest a second count the PDU
+table doesn't carry).
+
+**After:** `numberOfRecordSets` (hidden u32, "Number of Record Sets
+(R)") + `recordSets` objectlist of `RecordSpecificationElement`
+(§6.2.73 record sets, flat) — the Record-R flattening precedent.
+
+**PDF evidence:** §7.8.4 f): *"Record Information. This field shall
+specify the number of record sets, the identification of the record,
+the serial number of the record, the record length, the record count,
+and the specific record values. This field shall be represented by a
+Record Specification record (see 6.2.73)."* Table 185 rows the count
+directly — *"Number of Record Sets (R)—32-bit unsigned integer"* —
+followed by flat *"Record Set #1 … #R"* rows (128 + LQ + P bits:
+Record ID 32 + Record Set Serial Number 32 + Padding 32 + Record
+Length 16 + Record Count 16 + Record Values LQ bits + padding to
+64-bit boundary).
+
+**Change:** `xml/EntityManagementFamilyPdus.xml`;
+`scripts/validate.py` gate 8j — fixed part (R=0) = 320 bits.
+
+**Downstream bridges to retire:** the `TransferOwnershipPdu` entry of
+`EXTRA_FIELDS` (the count) and the `("TransferOwnershipPdu",
+"recordSets")` `FIELD_SHAPES` entry.
