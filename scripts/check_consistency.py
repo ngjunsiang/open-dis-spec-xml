@@ -386,6 +386,12 @@ EXPECTED = {
     # PDUs' fixed-datum lists (7.5.13 b; kept for round-trip robustness).
     # Element-type/hidden/comment changes are invisible to the inventory.
     "DistributedEmissionsFamilyPdus.xml": {
+        # IFF layer presence wave (2026-10-17): the L3/L4 format pairs
+        # fold into when= variant groups (Table 165/6.2.45 presence bits
+        # + [UID 82] format dispatch), so two attributes become one per
+        # layer.
+        "+attrs": {"IdentificationFriendOrFoePdu": {"iFFPduLayer3Data",
+                                                    "iFFPduLayer4Data"}},
         "renamed_attrs": {
             ("IFFPduLayer2Data",
              "numberOfIFFFundamentalParameterDataRecords"):
@@ -415,6 +421,13 @@ EXPECTED = {
     },
     "SimulationManagementWithReliabilityFamilyPdus.xml": {
         "+attrs": {"CommentReliablePdu": {"fixedDatumRecords"}},
+    },
+    "DistributedEmissionsFamilyPdus.xml-attrs": {
+        "-attrs": {"IdentificationFriendOrFoePdu": {
+            "iFFPduLayer3TransponderFormatData",
+            "iFFPduLayer3InterrogatorFormatData",
+            "iFFPduLayer4InterrogatorFormatData",
+            "iFFPduLayer4TransponderFormatData"}},
     },
 }
 def inventory(base):
