@@ -447,3 +447,24 @@ directedEnergyTargetEnergyDepositionRecordCount`'s count comment
 **PDF evidence:** §6.2.20.4 is titled *"DE Target Energy Deposition
 record"*: *"Directed energy deposition properties for a target entity
 shall be communicated using the DE Target Energy Deposition record."*
+
+---
+
+## Verification
+
+- `python3 scripts/validate.py` — ALL GATES PASS (new: 8f System
+  Identifier 48, 8g Silent Entity System 96, 8h IFF Layer 2/5, 8i Data
+  Query 320+32N+32M, 8j TO PDU 320).
+- `python3 scripts/check_consistency.py` — CONSISTENT (default
+  invocation; drift gate E skips without `SPEC_UPSTREAM_DIR`).
+- Gate E against the pinned upstream
+  (open-dis/opendis7-source-generator @ 7d271613, cloned to
+  `/tmp/dis7-corrections/upstream`): this wave's deltas are exactly
+  the new EXPECTED entries (6 IFF renamed_attrs; +numberOfRecordSets
+  on TransferOwnershipPdu; +fixedDatums on CommentPdu; +
+  fixedDatumRecords on CommentReliablePdu). The remaining 10
+  residuals predate this wave (stage-2 pdf-audit spelling/pad
+  changes never recorded in EXPECTED: orginating→originating on
+  SEESPdu/IsPartOfPdu, MinefieldQuery/NACK padTo32, RecordReliable
+  responseSerialNumber, VTP paddingTo64) — flagged for a bookkeeping
+  pass, not touched here.

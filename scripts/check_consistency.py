@@ -380,6 +380,42 @@ EXPECTED = {
     "DIS_7_2012.xml-attrs": {
         "-attrs": {"VariableTransmitterParameters": {"padding"}},
     },
+    # spec-corrections wave (2026-10-17): the downstream generator
+    # override facts move into xml/ — IFF count renames (Tables 168-173),
+    # the TO PDU's own record-set count (Table 185), and the Comment
+    # PDUs' fixed-datum lists (7.5.13 b; kept for round-trip robustness).
+    # Element-type/hidden/comment changes are invisible to the inventory.
+    "DistributedEmissionsFamilyPdus.xml": {
+        "renamed_attrs": {
+            ("IFFPduLayer2Data",
+             "numberOfIFFFundamentalParameterDataRecords"):
+                "numberOfIFFFundamentalParameterDataRecordsParameters",
+            ("IFFPduLayer3TransponderFormatData",
+             "numberOfIFFDataRecords"):
+                "numberOfIFFFundamentalParameterDataRecordsParameters",
+            ("IFFPduLayer3InterrogatorFormatData",
+             "numberOfIFFDataRecords"):
+                "numberOfIFFFundamentalParameterDataRecordsParameters",
+            ("IFFPduLayer4InterrogatorFormatData",
+             "numberOfIFFDataRecords"):
+                "numberOfIFFFundamentalParameterDataRecordsParameters",
+            ("IFFPduLayer4TransponderFormatData",
+             "numberOfIFFDataRecords"):
+                "numberOfIFFFundamentalParameterDataRecordsParameters",
+            ("IFFPduLayer5Data",
+             "numberOfIFFDataRecords"):
+                "numberOfIFFFundamentalParameterDataRecordsParameters",
+        },
+    },
+    "EntityManagementFamilyPdus.xml": {
+        "+attrs": {"TransferOwnershipPdu": {"numberOfRecordSets"}},
+    },
+    "SimulationManagementFamilyPdus.xml": {
+        "+attrs": {"CommentPdu": {"fixedDatums"}},
+    },
+    "SimulationManagementWithReliabilityFamilyPdus.xml": {
+        "+attrs": {"CommentReliablePdu": {"fixedDatumRecords"}},
+    },
 }
 def inventory(base):
     inv = {}
