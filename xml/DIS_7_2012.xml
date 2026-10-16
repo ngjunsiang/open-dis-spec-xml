@@ -480,7 +480,7 @@
     </class>
 
     <!-- 6.2.20 2 -->
-    <class name="DirectedEnergyAreaAimpoint" inheritsFrom="root" comment="DE Precision Aimpoint Record. Section 6.2.20.2">
+    <class name="DirectedEnergyAreaAimpoint" inheritsFrom="root" comment="DE Area Aimpoint Record. Section 6.2.20.2">
 
         <attribute name="recordType" comment="Type of Record enumeration">
             <primitive type="uint32" defaultValue="4001"/>

@@ -408,3 +408,28 @@ entity-management 1995 cites (`AggregateStatePdu` 5.9.2.2 → 7.8.2,
 classes cite requirements subclauses (5.13.3.1/5.13.4.1; formats are
 7.12.x per §5.13's own "(See 5.13 and 7.12)"). The SMWR family cites
 5.12.4.x requirements sections (formats at 7.11.x).
+
+---
+
+## Item 11 — IdentificationFriendOrFoePdu comment cite: 7.6.5.1 → 7.6.5
+
+**PDF evidence:** §7.6.5 is titled *"Identification Friend or Foe (IFF)
+PDU"*; 7.6.5.1 is its *"General"* subclause. The class's canonical
+cite is the PDU section.
+
+**Downstream bridge to retire:** the `"IdentificationFriendOrFoePdu"`
+entry of `DOCSTRING_CITES`.
+
+---
+
+## Item 12 — DirectedEnergyAreaAimpoint: own title restored
+
+**Before:** `comment="DE Precision Aimpoint Record. Section 6.2.20.2"`
+— a copy-paste of the §6.2.20.3 sibling's title.
+**After:** `comment="DE Area Aimpoint Record. Section 6.2.20.2"`.
+
+**PDF evidence:** §6.2.20.2 is titled *"DE Area Aimpoint record"*:
+*"The DE Area Aimpoint record shall be used to communicate targeting
+information when the target of the directed energy weapon is an
+area."* (The precision sibling is §6.2.20.3 "DE Precision Aimpoint
+record".)
