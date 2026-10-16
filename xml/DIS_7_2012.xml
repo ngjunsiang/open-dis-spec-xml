@@ -2464,7 +2464,7 @@
 
     </class>
 
-    <class name="VariableParameter" inheritsFrom="root" comment="Used in DetonationPdu, ArticulatedPartsPdu among others. Section 6.2.94.">
+    <class name="VariableParameter" inheritsFrom="root" comment="The specification of additional information associated with an entity or detonation, not otherwise accounted for in a PDU, shall be represented by a Variable Parameter record. This record shall provide information on articulated parts, attached parts, and other data associated with an entity or detonation. Used in DetonationPdu, ArticulatedPartsPdu among others. Section 6.2.94.">
         
         <attribute name="recordType" comment="The identification of the Variable Parameter record. Enumeration from EBV">
             <sisoenum type="VariableParameterRecordType" comment="uid 56" uid="56" size="8"/>
