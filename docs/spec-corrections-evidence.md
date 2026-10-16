@@ -121,3 +121,35 @@ size.
   its own field rows (they sum to 1056); no full-PDU gate added.
 - `SilentEntitySystem`'s class comment carries typos ("information
   abou an enitity not producing espdus").
+
+---
+
+## Item 4 — GriddedDataPdu.gridDataRecords: wrong countFieldName removed
+
+**Before:**
+```xml
+<attribute name="gridDataRecords" comment="">
+    <objectlist countFieldName="numberOfGridAxes">
+        <classRef name="GridData" initialClass="GridDataType0"/>
+    </objectlist>
+</attribute>
+```
+**After:** `countFieldName="numberOfGridAxes"` removed (replaced by
+`isDynamicListLengthField="true"` — the repo's marker for a list with
+no wire-stated count, per gate 2's vocabulary); the comment records
+the derivation.
+
+**PDF evidence:** Table 192 (Gridded Data PDU) rows the two lists
+separately — *"Grid Axis Descriptor #1 … #N"* (8K1…8KN, counted by
+"Number of Grid Axes (N)") and *"Grid Data #1 … #G"* (8D1…8DG) — with
+the where-clause: *"G is the number of grid points in the PDU, which
+is V ∏(k=1..N) Nk; V is the vector dimension; Nk is the number of
+points in Axis k"*. G is a derived product, not the axis count.
+
+**Note:** a product `countExpression` (V × ∏Nk) would express the
+derivation natively but is a vocabulary extension — deferred per the
+wave rules; the downstream `("GriddedDataPdu", "gridDataRecords")`
+`FIELD_OVERRIDES` bridge (plain list, curated body owns the count)
+retires against this shape.
+
+**Downstream bridge to retire:** that FIELD_OVERRIDES entry.
