@@ -1,5 +1,6 @@
-# Build manifest — v0.9.0
-generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit)
+# Build manifest — v0.10.0
+generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
+           2026-10-16 (stage 3 Annex C radio-system records)
 source-of-truth chain:
   upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
                    (xml/dis_7_2012/* — byte-verified identical to the
@@ -33,3 +34,19 @@ post-release erratum (2026-10-15):
   (74a28a9) predates the rewrite and no longer resolves in the submodule
   remote; main now pins the rewritten v37-docs. The validation suite is
   unaffected — it consumes only SISO-REF-010.xml, which is unchanged.
+
+stage 3 (2026-10-16, v0.10.0):
+  change:          Annex C radio-system records authored into
+                   xml/RadioCommunicationsFamilyPdus.xml (abstract
+                   6.2.58/6.2.8/6.2.95 homes; Generic Radio / Simple
+                   Intercom / Basic HAVE QUICK / CCTT SINCGARS MP
+                   records; High-Fidelity HAVE QUICK VTP record; the
+                   Transmitter PDU parameter records section re-speced
+                   per 7.7.2 s / Table 176; BeamAntennaPattern
+                   XML-parented — PR #2)
+  evidence:        docs/annex-c-evidence.md (per-table citations from
+                   IEEE Std 1278.1-2012 Annex C, pp. 647-664)
+  gates:           validate.py 8d/8e (record sizes + TransmitterPdu
+                   832 + 8M + 8A); check_consistency.py EXPECTED gained
+                   the Radio file entries (+classes/-classes/-attrs
+                   lookups generalized per file)
