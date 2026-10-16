@@ -298,7 +298,7 @@
     
     </class>
 
-    <class name="ClockTime" inheritsFrom="root" comment="Time measurements that exceed one hour are represented by this record. The first field is the hours since the unix epoch (Jan 1 1970, used by most Unix systems and java) and the second field the timestamp units since the top of the hour. Section 6.2.14">
+    <class name="ClockTime" inheritsFrom="root" comment="Time measurements that surpass 1 h shall be represented by a Clock Time record. The first field is the hours since 0000 h 1 January 1970 UTC and the second field the time past the hour indicated in the Hour field, represented by a Timestamp record (see 6.2.88). The reference time represented shall be either Absolute or Relative Time (see Annex G). Section 6.2.14">
  
         <attribute name="hour" comment="Hours in UTC">
             <primitive type="uint32"/>
