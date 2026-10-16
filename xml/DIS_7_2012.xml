@@ -897,7 +897,7 @@
   
     </class>
 
-    <class name="EntityIdentifier" inheritsFrom="root" comment="Entity Identifier. Unique ID for entities in the world. Consists of an simulation address and a entity number. Section 6.2.28.">
+    <class name="EntityIdentifier" inheritsFrom="root" comment="The unique designation of each entity in an event or exercise that is not contained in a Live Entity PDU shall be specified by an Entity Identifier record. The Entity Identifier (Entity ID) record shall consist of a Simulation Address (see 6.2.80) and an Entity Number. The Entity Identifier is an object identifier; general requirements for all object identifiers are specified in 4.2.5.2. Section 6.2.28.">
     
         <attribute name="simulationAddress" comment="Site and application IDs">
             <classRef name="SimulationAddress"/>
