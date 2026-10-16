@@ -573,6 +573,59 @@ def gate_size_spot_checks(trees):
     check(got == 320, "gate 8j: TransferOwnershipPdu == Table 185 "
           "(fixed part 320 bits, R=0)", f"computed {got}")
 
+    # ---- IFF PDU vs Tables 165/167-173: Layer 1 = 480 bits always;
+    # layers 2-5 present iff their Information Layers bit (6.2.39 c /
+    # 6.2.45 a / Table 74: bit N = Layer N); the L3/L4 format rides the
+    # Layer 1 System Type [UID 82] (+ Change/Options bit 4 for the CITs,
+    # Table B.5 / B.5.13-14). Fixed parts per layer (counts at zero):
+    # L2 224 (Table 168), L3 224 (169/170 — both Mode 5 basic data
+    # records are 128 bits), L4 288 (171/172 — Mode S basic data 192),
+    # L5 128 (173).
+    ok = True
+    L1 = 480
+    for label, vals, want in (
+        ("no layers", {"fundamentalParameters.informationLayers": 0}, L1),
+        ("L2", {"fundamentalParameters.informationLayers": 0b00000100,
+                "numberOfIFFFundamentalParameterDataRecords": 0}, L1 + 224),
+        ("L5", {"fundamentalParameters.informationLayers": 0b00100000,
+                "numberOfIFFDataRecords": 0}, L1 + 128),
+        ("L3 interrogator (type 7)",
+         {"fundamentalParameters.informationLayers": 0b00001000,
+          "systemID.systemType": 7, "numberOfIFFDataRecords": 0}, L1 + 224),
+        ("L3 transponder (type 10)",
+         {"fundamentalParameters.informationLayers": 0b00001000,
+          "systemID.systemType": 10, "numberOfIFFDataRecords": 0}, L1 + 224),
+        ("L3 CIT interrogator side (type 12, C/O bit 4)",
+         {"fundamentalParameters.informationLayers": 0b00001000,
+          "systemID.systemType": 12, "systemID.changeOptions.value": 1 << 4,
+          "numberOfIFFDataRecords": 0}, L1 + 224),
+        ("L3 CIT transponder side (type 12)",
+         {"fundamentalParameters.informationLayers": 0b00001000,
+          "systemID.systemType": 12, "systemID.changeOptions.value": 0,
+          "numberOfIFFDataRecords": 0}, L1 + 224),
+        ("L3 CR on a transponder type (type 1 -> default)",
+         {"fundamentalParameters.informationLayers": 0b00001000,
+          "systemID.systemType": 1, "numberOfIFFDataRecords": 0}, L1 + 224),
+        ("L4 interrogator (type 8)",
+         {"fundamentalParameters.informationLayers": 0b00010000,
+          "systemID.systemType": 8, "numberOfIFFDataRecords": 0}, L1 + 288),
+        ("L4 transponder (type 11)",
+         {"fundamentalParameters.informationLayers": 0b00010000,
+          "systemID.systemType": 11, "numberOfIFFDataRecords": 0}, L1 + 288),
+        ("all four layers, type 12 interrogator side",
+         {"fundamentalParameters.informationLayers": 0b00111100,
+          "systemID.systemType": 12, "systemID.changeOptions.value": 1 << 4,
+          "numberOfIFFFundamentalParameterDataRecords": 0,
+          "numberOfIFFDataRecords": 0},
+         L1 + 224 + 224 + 288 + 128),
+    ):
+        got = ev.size_class("IdentificationFriendOrFoePdu", dict(vals))
+        if got != want:
+            ok = False
+            print(f"   IFF PDU {label}: computed {got}, tables say {want}")
+    check(ok, "gate 8k: IFF PDU layer presence/format sizing "
+              "(Tables 165/167-173; Information Layers bits + [UID 82])")
+
 
 def main():
     trees = load(fixed=True)

@@ -485,27 +485,21 @@
             <classRef name="FundamentalOperationalData"/>
         </attribute>
 	
-		<attribute name="iFFPduLayer2Data" comment="IFF pdu layer 2 data">
+		<attribute name="iFFPduLayer2Data" presentIf="fundamentalParameters.informationLayers:2" comment="IFF pdu layer 2 data; present iff Information Layers bit 2 (6.2.39 c, 6.2.45 a/Table 74)">
             <classRef name="IFFPduLayer2Data"/>
         </attribute>
-        
-        <attribute name="iFFPduLayer3TransponderFormatData" comment="IFF pdu layer 3 transponder format data">
+
+		<attribute name="iFFPduLayer3Data" presentIf="fundamentalParameters.informationLayers:3" comment="IFF pdu layer 3 Mode 5 data (Table 165, 7.6.5.4); present iff Information Layers bit 3. Format per the Layer 1 System Type [UID 82] and, for the Combined Interrogator/Transponders (12, 13), the Change/Options Transponder/Interrogator Indicator (Table B.5, B.5.13/B.5.14): interrogator side -> interrogator format, else transponder format (Layer 3 is CR for any system type with an added Mode 5 capability, B.5.1.1 b 2)">
+            <classRef name="IFFPduLayer3InterrogatorFormatData" when="systemID.systemType=6 | systemID.systemType=7 | systemID.systemType=12 &amp; systemID.changeOptions.value:4 | systemID.systemType=13 &amp; systemID.changeOptions.value:4"/>
             <classRef name="IFFPduLayer3TransponderFormatData"/>
         </attribute>
-        
-        <attribute name="iFFPduLayer3InterrogatorFormatData" comment="IFF pdu layer 3 interrogator format data">
-            <classRef name="IFFPduLayer3InterrogatorFormatData"/>
-        </attribute>
-        
-        <attribute name="iFFPduLayer4InterrogatorFormatData" comment="IFF pdu layer 4 interrogator format data">
-            <classRef name="IFFPduLayer4InterrogatorFormatData"/>
-        </attribute>
-        
-        <attribute name="iFFPduLayer4TransponderFormatData" comment="IFF pdu layer 4 transponder format data">
+
+		<attribute name="iFFPduLayer4Data" presentIf="fundamentalParameters.informationLayers:4" comment="IFF pdu layer 4 Mode S data (Table 165, 7.6.5.5); present iff Information Layers bit 4. Format per the Layer 1 System Type [UID 82] and, for the Combined Interrogator/Transponders (12, 13), the Change/Options Transponder/Interrogator Indicator: interrogator side -> interrogator format, else transponder format (Layer 4 is CR for any system type with an added Mode S capability, B.5.1.1 b 3)">
+            <classRef name="IFFPduLayer4InterrogatorFormatData" when="systemID.systemType=6 | systemID.systemType=8 | systemID.systemType=12 &amp; systemID.changeOptions.value:4 | systemID.systemType=13 &amp; systemID.changeOptions.value:4"/>
             <classRef name="IFFPduLayer4TransponderFormatData"/>
         </attribute>
-        
-        <attribute name="iFFPduLayer5Data" comment="IFF pdu layer 5 data communications">
+
+        <attribute name="iFFPduLayer5Data" presentIf="fundamentalParameters.informationLayers:5" comment="IFF pdu layer 5 data communications; present iff Information Layers bit 5 (6.2.39 c, 6.2.45 a/Table 74; CR conditions in B.5.1.1 b 4)">
             <classRef name="IFFPduLayer5Data"/>
         </attribute>
 	
