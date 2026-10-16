@@ -305,20 +305,26 @@
     
         <initialValue name="pduType" value="DisPduType.COMMENT"/>
     
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Number of fixed datum records, not used in this Pdu">
+        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Number of fixed datum records, not used in this Pdu (7.5.13 b: shall be set to zero; list kept so malformed-but-parseable datagrams still round-trip)">
             <primitive type="uint32"/>
         </attribute>
-        
+
         <attribute name="numberOfVariableDatumRecords" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
             <primitive type="uint32"/>
         </attribute>
-      
+
+        <attribute name="fixedDatums" comment="variable length list of fixed datums">
+            <objectlist countFieldName="numberOfFixedDatumRecords">
+                <classRef name="FixedDatum"/>
+            </objectlist>
+        </attribute>
+
         <attribute name="variableDatums" comment="variable length list of variable length datums">
             <objectlist countFieldName="numberOfVariableDatumRecords">
                 <classRef name="VariableDatum"/>
-            </objectlist> 
+            </objectlist>
         </attribute>
-    
+
     </class>
     
 </classes>

@@ -416,7 +416,13 @@
         <attribute name="variableDatumRecords" comment="Variable datum records">
             <objectlist countFieldName="numberOfVariableDatumRecords">
                 <classRef name="VariableDatum"/>
-            </objectlist> 
+            </objectlist>
+        </attribute>
+
+        <attribute name="fixedDatumRecords" comment="Fixed datum records (shall be zero on this PDU per 7.5.13 b; kept for malformed-but-parseable datagrams)">
+            <objectlist countFieldName="numberOfFixedDatumRecords">
+                <classRef name="FixedDatum"/>
+            </objectlist>
         </attribute>
     </class>
 

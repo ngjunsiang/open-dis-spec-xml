@@ -271,3 +271,40 @@ Length 16 + Record Count 16 + Record Values LQ bits + padding to
 **Downstream bridges to retire:** the `TransferOwnershipPdu` entry of
 `EXTRA_FIELDS` (the count) and the `("TransferOwnershipPdu",
 "recordSets")` `FIELD_SHAPES` entry.
+
+---
+
+## Item 8 — Comment PDU (+Comment-R): both datum lists modeled
+
+**Before:** `CommentPdu` carried the fixed count field (comment: "not
+used in this Pdu") and only the `variableDatums` list; same for
+`CommentReliablePdu`.
+
+**After:** the Data PDU datum-list shape — both `fixedDatums`
+(`FixedDatum` records) and `variableDatums` (`VariableDatum` records),
+each counted by its u32 field. The fixed count's comment now records
+the §7.5.13 b) zero rule and the round-trip rationale.
+
+**PDF evidence:** Table 160 (Comment PDU) rows *"Number of Fixed Datum
+Records — 32-bit unsigned integer"*, *"Number of Variable Datum
+Records (M)"*, then only *"Variable Datum #1 … #M"* rows (total 256 +
+64M + KM + PM bits with the fixed count zero). §7.5.13 b): *"The value
+of this field shall be set to zero."* The fixed-datum LIST is not a
+standard-conformant emission (the count shall be zero); modeling it
+follows the locked downstream exemplar, which keeps the list so
+malformed-but-parseable datagrams still round-trip byte-exact.
+Comment-R carries the same information (§5.12.4.13).
+
+**Scope note:** the worklist named CommentPdu; CommentReliablePdu
+carries the identical EXTRA_FIELDS bridge entry and the same defect,
+so it rides in this commit (the Data-Query "+Reliable" precedent).
+
+**Change:** `xml/SimulationManagementFamilyPdus.xml`,
+`xml/SimulationManagementWithReliabilityFamilyPdus.xml`.
+
+**Downstream bridges to retire:** the `CommentPdu` and
+`CommentReliablePdu` entries of `EXTRA_FIELDS`.
+
+**Flagged (worklist cite correction):** the worklist's "§7.5.12" is
+off by one — §7.5.12 is the Event Report PDU; the Comment PDU is
+§7.5.13 (Table 160).
