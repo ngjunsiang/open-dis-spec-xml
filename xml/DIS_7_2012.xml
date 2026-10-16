@@ -421,7 +421,7 @@
     </class>
 
     <!-- Section 6.2.19.2 -->
-    <class name="MunitionDescriptor" inheritsFrom="root" comment="Represents the firing or detonation of a munition. Section 6.2.19.2">
+    <class name="MunitionDescriptor" inheritsFrom="root" comment="The firing or detonation of a munition shall be represented by a Munition Descriptor record. Munition Type is an Entity Type record (see 6.2.30); Warhead is a 16-bit enumeration (see [UID 60]); Fuse is a 16-bit enumeration (see [UID 61]); Quantity is the number of rounds fired in the burst or the number of munitions simultaneously launched; Rate is the rate of fire such as rounds per minute, and shall contain zero if Quantity equals one. The Descriptor field of the Fire and Detonation PDUs carries one 128-bit descriptor record: a Munition Descriptor (this record), an Explosion Descriptor (6.2.19.3), or an Expendable Descriptor (6.2.19.4; expendable type plus 64 bits of padding, the same 128-bit size on the wire). Section 6.2.19.2">
     
         <attribute name="munitionType" comment="What munition was used in the burst">
             <classRef name="EntityType"/> 
