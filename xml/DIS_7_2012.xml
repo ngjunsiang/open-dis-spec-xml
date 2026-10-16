@@ -2648,7 +2648,7 @@
         
          </class>
 
-    <class name="Vector3Float" inheritsFrom="root" comment="Three floating point values, x, y, and z. Section 6.2.96">
+    <class name="Vector3Float" inheritsFrom="root" comment="Vector values for entity coordinates, linear acceleration, and linear velocity shall be represented using a Vector record. This record shall consist of three fields, each a 32-bit floating point number. The unit of measure represented by these fields shall depend on the information represented. Entity Coordinate Vector: location relative to a particular entity shall be specified with respect to the origin of the entity's coordinate system; the entity coordinate system shall be as specified in 1.6.3. Linear Acceleration Vector: linear acceleration shall be represented as a vector with components in either world coordinate system or entity's coordinate system depending on the value in the Dead Reckoning Algorithm field; each vector component shall represent acceleration in meters per second squared. Linear Velocity Vector: linear velocity shall be represented as a vector with three components in either world coordinate system or entity's coordinate system depending on the value in the Dead Reckoning Algorithm field; each vector component shall represent velocity in meters per second. Section 6.2.96">
     
         <attribute name="x" comment="X value">
             <primitive type="float32"/>
