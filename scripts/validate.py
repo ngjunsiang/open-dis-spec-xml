@@ -551,6 +551,21 @@ def gate_size_spot_checks(trees):
     check(ok, "gate 8h: IFF Layer 2 == 224 + 192N, Layer 5 == 128 + "
               "records (Tables 168/173; flat 6.2.43 IFF Data elements)")
 
+    # ---- Data Query PDU vs Table 156: total = 320 + 32N + 32M bits —
+    # the lists carry 32-bit datum IDs, not Fixed/Variable Datum records.
+    ok = True
+    for n, m2 in ((0, 0), (2, 3)):
+        vals = dict(numberOfFixedDatumRecords=n,
+                    numberOfVariableDatumRecords=m2)
+        got = ev.size_class("DataQueryPdu", vals)
+        want = 320 + 32 * n + 32 * m2
+        if got != want:
+            ok = False
+            print(f"   DataQueryPdu N={n} M={m2}: computed {got}, "
+                  f"Table 156 says {want}")
+    check(ok, "gate 8i: DataQueryPdu == Table 156 (320 + 32N + 32M; "
+              "datum-ID lists)")
+
 
 def main():
     trees = load(fixed=True)

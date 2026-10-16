@@ -183,20 +183,20 @@
             <primitive type="uint32"/>
         </attribute>
       
-        <attribute name="fixedDatums" comment="variable length list of fixed datums">
+        <attribute name="fixedDatums" comment="Fixed Datum ID #1..#N, each a 32-bit enumeration (7.5.9 d; datum IDs, not Fixed Datum records)">
             <objectlist countFieldName="numberOfFixedDatumRecords">
-                <classRef name="FixedDatum"/>
-            </objectlist> 
+                <sisoenum type="VariableRecordType" comment="uid 66" uid="66" size="32"/>
+            </objectlist>
         </attribute>
-      
-        <attribute name="variableDatums" comment="variable length list of variable length datums">
+
+        <attribute name="variableDatums" comment="Variable Datum ID #1..#M, each a 32-bit enumeration (7.5.9 d; datum IDs, not Variable Datum records)">
             <objectlist countFieldName="numberOfVariableDatumRecords">
-                <classRef name="VariableDatum"/>
-            </objectlist> 
+                <sisoenum type="VariableRecordType" comment="uid 66" uid="66" size="32"/>
+            </objectlist>
         </attribute>
-    
+
     </class>
-    
+
     <class name="SetDataPdu" id="19" inheritsFrom="SimulationManagementFamilyPdu" comment="Section 7.5.10. Initializing or changing internal state information shall be communicated using a Set Data PDU. See 5.6.5.10">
     
         <initialValue name="pduType" value="DisPduType.SET_DATA"/>

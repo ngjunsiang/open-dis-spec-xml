@@ -204,3 +204,40 @@ Layer 5 = 128/192 (N=0/1; one K=0 IFF Data record pads 6→8 octets =
 `FIELD_RENAMES`, the five `IFFFundamentalParameterDataRecord`
 `FIELD_SHAPES` entries, and the six IFF entries of `FIELD_HIDDEN`
 (after item 9).
+
+---
+
+## Item 6 — Data Query PDU (+Reliable): the lists carry datum IDs
+
+**Before:** `fixedDatums`/`variableDatums` (and
+`fixedDatumRecords`/`variableDatumRecords` on Data Query-R) were
+objectlists of `FixedDatum`/`VariableDatum` records.
+
+**After:** each list is an enum-value list — `objectlist` with a 32-bit
+`sisoenum` element (bound uid 66, matching `FixedDatum.fixedDatumID`'s
+existing binding), counted by the unchanged u32 count fields. Attribute
+names unchanged.
+
+**PDF evidence:** §7.5.9 d): *"Datum Information. This field shall
+specify the types of datum for which information is required. Datum
+IDs, but not datum values, are listed in the Data Query Datum
+Specification record (see 6.2.17)."* Table 156 rows *"Fixed Datum ID
+#1 … #N — 32-bit enumeration"* and *"Variable Datum ID #1 … #M —
+32-bit enumeration"*; *"Total Data Query PDU size = 320 + 32N + 32M
+bits"*. Data Query-R carries the same lists (§5.12.4.9 defers to the
+Data Query PDU shape).
+
+**Change:** `xml/SimulationManagementFamilyPdus.xml` (DataQueryPdu),
+`xml/SimulationManagementWithReliabilityFamilyPdus.xml`
+(DataQueryReliablePdu only — the SetData/Data/EventReport/Comment-R
+siblings genuinely carry datum records);
+`scripts/validate.py` gate 8i — DataQueryPdu = 320 + 32N + 32M
+(N,M = 0/0 and 2/3).
+
+**Downstream bridges to retire:** the four Data Query `FIELD_SHAPES`
+entries (PrimitiveList rebinding).
+
+**Flagged (not fixed):** the datum-ID registers are semantically their
+own ([UID 64/65]-space datum IDs); the XML's established binding of
+`FixedDatum.fixedDatumID` to uid 66 (VariableRecordType) is followed
+here for consistency — worth revisiting in a registry-accuracy pass.
