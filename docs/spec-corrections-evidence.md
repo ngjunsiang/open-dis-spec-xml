@@ -349,3 +349,62 @@ numberOfStandardVariableRecords`, `IntercomCommunicationsParameters.
 recordLength` (count for `recordSpecificField`), and the legacy
 `De*` DE Fire classes' counts (`DeAreaAimpointRecord`,
 `DeFirePdu.DeRecordCount`).
+
+---
+
+## Item 10 — stale 1995-edition family cites → 2012 format sections
+
+**What:** the leading class-comment cite of 15 PDUs named the 1995
+edition's combined format+requirements sections; the 2012 edition
+moved PDU formats to clause 7. 2012's chapter-5 sections still exist
+as requirements sections, but the class cite convention in this set is
+the format section (cf. `"Section 7.5.9"` on DataQueryPdu).
+
+| Class | Before | After |
+|---|---|---|
+| ServiceRequestPdu | 5.5.5 | 7.4.2 |
+| ResupplyOfferPdu | 5.5.6 | 7.4.3 |
+| ResupplyReceivedPdu | 5.5.7 | 7.4.4 |
+| ResupplyCancelPdu | 5.5.8 | 7.4.5 |
+| RepairCompletePdu | 5.5.10 | 7.4.6 |
+| RepairResponsePdu | 5.5.11 | 7.4.7 |
+| TransmitterPdu | 5.8.3 | 7.7.2 |
+| SignalPdu | 5.8.4 | 7.7.3 |
+| ReceiverPdu | 5.8.5 | 7.7.4 |
+| IntercomSignalPdu | 5.8.6 | **7.7.5** |
+| IntercomControlPdu | 5.8.7 | **7.7.6** |
+| MinefieldStatePdu | 5.10.2 | 7.9.2 |
+| MinefieldQueryPdu | 5.10.3 | 7.9.3 |
+| MinefieldDataPdu | 5.10.4 | 7.9.4 |
+| MinefieldResponseNACKPdu | 5.10.5 | 7.9.5 |
+
+**PDF evidence (headings verified directly):** 7.4.2–7.4.4 Service
+Request/Resupply Offer/Resupply Received; 7.4.5 Resupply Cancel;
+7.4.6 Repair Complete; 7.4.7 Repair Response; 7.7.2 Transmitter PDU;
+7.7.3 Signal PDU; 7.7.4 Receiver PDU; **7.7.5 Intercom Signal PDU;
+7.7.6 Intercom Control PDU**; 7.9.2–7.9.5 Minefield State/Query/
+Data/Response NACK. Example cross-check — §7.7.2 opens *"Detailed
+information about a radio transmitter shall be communicated by issuing
+a Transmitter PDU. See 5.8.3 for specific requirements…"* (the 5.x
+sections remain as requirements cites, e.g. the kept
+`"See 5.6.5.9"`-style tails and the minefield inline rule cites
+`5.10.2.3` / `5.10.4.5`, which the PDF's own §7.9.2/§7.9.4 bodies
+use).
+
+**Downstream discrepancy flagged:** `DOCSTRING_CITES` pins
+IntercomSignalPdu→7.7.6 and IntercomControlPdu→7.7.7 — one past the
+PDF's 7.7.5/7.7.6. The XML follows the PDF; the downstream table
+needs a 2-entry correction in the convergence round before its
+retirement.
+
+**Downstream bridge to retire:** `DOCSTRING_CITES` — partially. The
+bridge's 15 stale-family entries map to this item; the remaining
+entries cover families outside this wave's named scope (see flags).
+
+**Flagged (not fixed — same defect, outside the named families):**
+entity-management 1995 cites (`AggregateStatePdu` 5.9.2.2 → 7.8.2,
+`IsGroupOfPdu` 5.9.3.1 → 7.8.3, `IsPartOfPdu` 5.9.5 → 7.8.5,
+`TransferOwnershipPdu` has no cite; missing 7.8.4), and the IO
+classes cite requirements subclauses (5.13.3.1/5.13.4.1; formats are
+7.12.x per §5.13's own "(See 5.13 and 7.12)"). The SMWR family cites
+5.12.4.x requirements sections (formats at 7.11.x).

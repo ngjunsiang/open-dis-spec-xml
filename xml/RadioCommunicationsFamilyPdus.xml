@@ -16,7 +16,7 @@
          
     </class>
     
-    <class name="TransmitterPdu" id="25" inheritsFrom="RadioCommunicationsFamilyPdu" comment="5.8.3 Communicates the state of a particular radio transmitter or simple intercom.">
+    <class name="TransmitterPdu" id="25" inheritsFrom="RadioCommunicationsFamilyPdu" comment="7.7.2 Communicates the state of a particular radio transmitter or simple intercom.">
   
         <initialValue name="pduType" value="DisPduType.TRANSMITTER"/>
   
@@ -121,7 +121,7 @@
 
     <!-- Special cased because of the dataLength fields which are a bit length 
     -->
-    <class name="SignalPdu" id="26" inheritsFrom="RadioCommunicationsFamilyPdu" comment="5.8.4 Conveys the audio or digital data carried by the simulated radio or intercom transmission.">
+    <class name="SignalPdu" id="26" inheritsFrom="RadioCommunicationsFamilyPdu" comment="7.7.3 Conveys the audio or digital data carried by the simulated radio or intercom transmission.">
     
         <initialValue name="pduType" value="DisPduType.SIGNAL"/>
     
@@ -161,7 +161,7 @@
         
       </class>
     
-      <class name="IntercomSignalPdu" id="31" inheritsFrom="RadioCommunicationsFamilyPdu" comment="5.8.6 Conveys the audio or digital data that is used to communicate between simulated intercom devices">
+      <class name="IntercomSignalPdu" id="31" inheritsFrom="RadioCommunicationsFamilyPdu" comment="7.7.5 Conveys the audio or digital data that is used to communicate between simulated intercom devices">
    
         <initialValue name="pduType" value="DisPduType.INTERCOM_SIGNAL"/>
   
@@ -205,7 +205,7 @@
        
      </class>
     
-    <class name="ReceiverPdu" id="27" inheritsFrom="RadioCommunicationsFamilyPdu" comment="5.8.5 Communicates the state of a particular radio receiver. Its primary application is in communicating state information to radio network monitors, data loggers, and similar applications for use in debugging, supervision, and after-action review.">
+    <class name="ReceiverPdu" id="27" inheritsFrom="RadioCommunicationsFamilyPdu" comment="7.7.4 Communicates the state of a particular radio receiver. Its primary application is in communicating state information to radio network monitors, data loggers, and similar applications for use in debugging, supervision, and after-action review.">
     
         <initialValue name="pduType" value="DisPduType.RECEIVER"/>
         
@@ -251,7 +251,7 @@
         
     </class>
     
-    <class name="IntercomControlPdu" id="32" inheritsFrom="RadioCommunicationsFamilyPdu" comment="5.8.7 Communicates the state of a particular intercom device, request an action of another intercom device, or respond to an action request.">
+    <class name="IntercomControlPdu" id="32" inheritsFrom="RadioCommunicationsFamilyPdu" comment="7.7.6 Communicates the state of a particular intercom device, request an action of another intercom device, or respond to an action request.">
    
         <initialValue name="pduType" value="DisPduType.INTERCOM_CONTROL"/>
    
