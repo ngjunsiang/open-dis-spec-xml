@@ -264,19 +264,37 @@ PDF (§6.2.80.1, complete body):
 > Address record. A Simulation Address record shall consist of the Site
 > Number and the Application Number.
 
-## Found along the way — documented, not fixed (outside this wave's collated scope)
+## Found along the way — resolution record
 
-Both are comment-level (no wire impact); neither is in the collation doc's
-ENRICH list, so they are recorded here as candidates for a later wave:
+Both items found during the comment-enrichment wave (PR #3) were fixed on
+branch `descriptor-comment-gaps`:
 
-- `xml/WarfareFamilyPdus.xml` Fire PDU `descriptor` field comment cites
+- `xml/WarfareFamilyPdus.xml` Fire PDU `descriptor` field comment cited
   "Munition Descriptor (6.2.20.2) or Expendable Descriptor (6.2.20.4)" —
   wrong clause numbers (§6.2.20 is the Directed Energy records; the
-  descriptor records are §6.2.19.2 / §6.2.19.4). The record set named
-  (Munition or Expendable only) is correct for the Fire PDU per
-  §6.2.19.1 a).
-- `xml/DIS_7_2012.xml` class `ExpendableDescriptor` comment is thin and
-  misspells the record: "Burst of chaff or expendible device. Section
-  6.2.19.4". Standard wording: "The burst of a chaff expendable or
-  ignition of a flare shall be represented by an Expendable Descriptor
-  record." (§6.2.19.4.)
+  descriptor records are §6.2.19.2 / §6.2.19.4). **Fixed (commit c9f0593)**:
+  the comment is now verbatim §7.3.2 h), which reads in full — "Descriptor.
+  This field shall describe the firing or launch of a munition or
+  expendable represented by one of the following types of Descriptor
+  records: Munition Descriptor (6.2.19.2) or Expendable Descriptor
+  (6.2.19.4)." — i.e. only the two clause digits were wrong.
+- `xml/DIS_7_2012.xml` class `ExpendableDescriptor` comment was thin and
+  misspelled ("Burst of chaff or expendible device. Section 6.2.19.4").
+  **Fixed (commit c824467)** to §6.2.19.4's definition — "The burst of a
+  chaff expendable or ignition of a flare shall be represented by an
+  Expendable Descriptor record. The Expendable Descriptor record is
+  applicable to the Fire and Detonation PDU." — plus the field semantics
+  (Expendable Type per §6.2.19.4 a), identical to the associated Fire PDU;
+  64 bits of padding; same 128-bit size as the Munition and Explosion
+  Descriptor records). The same commit also fixes the `expendableType`
+  field comment, which was a copy-paste from the Explosion Descriptor
+  ("Type of the object that exploded"; §6.2.19.4 a) says "This field shall
+  indicate the type of expendable.").
+
+Found during the follow-up survey (comment-level, documented not fixed):
+
+- `xml/DIS_7_2012.xml` class `DirectedEnergyAreaAimpoint` (recordType
+  4001) is labeled "DE Precision Aimpoint Record" in its comment while
+  citing §6.2.20.2 — §6.2.20.2 is the DE **Area** Aimpoint record (Table
+  44: "Record Type = 4001"); the DE Precision Aimpoint record is §6.2.20.3.
+  The cite is right, the label word is wrong.

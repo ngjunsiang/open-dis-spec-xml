@@ -467,9 +467,9 @@
     </class>
 
     <!-- Section 6.2.19.3 -->
-    <class name="ExpendableDescriptor" inheritsFrom="root" comment="Burst of chaff or expendible device. Section 6.2.19.4">
+    <class name="ExpendableDescriptor" inheritsFrom="root" comment="The burst of a chaff expendable or ignition of a flare shall be represented by an Expendable Descriptor record. The Expendable Descriptor record is applicable to the Fire and Detonation PDU. Expendable Type is an Entity Type record (see 6.2.30) and shall be identical to the Expendable Type in the associated Fire PDU; Padding is 64 bits, giving the same 128-bit size as the Munition and Explosion Descriptor records. Section 6.2.19.4">
 
-        <attribute name="expendableType" comment="Type of the object that exploded">
+        <attribute name="expendableType" comment="The type of expendable">
             <classRef name="EntityType"/> 
         </attribute>
     
