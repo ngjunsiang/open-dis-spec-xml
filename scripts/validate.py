@@ -464,6 +464,54 @@ def gate_size_spot_checks(trees):
     check(ok, "gate 8c: MinefieldDataPdu size == Table 189 formula "
               "(3 dataFilter patterns)")
 
+    # ---- Annex C record sizes vs their tables (fixed layouts):
+    # Table C.3 Basic HAVE QUICK MP = 128, Table C.4 High-Fidelity HAVE
+    # QUICK VTP = 320, Table C.7 CCTT SINCGARS MP = 128; the C.2/C.3
+    # zero-length markers are 0.
+    ok = True
+    for cls, want in (("BasicHaveQuickMP", 128),
+                      ("HighFidelityHAVEQUICKRadio", 320),
+                      ("CCTTSincgarsMP", 128),
+                      ("GenericRadio", 0),
+                      ("SimpleIntercomRadio", 0)):
+        got = ev.size_class(cls, {})
+        if got != want:
+            ok = False
+            print(f"   {cls}: computed {got}, Annex C table says {want}")
+    check(ok, "gate 8d: Annex C record sizes == Tables C.3/C.4/C.7 "
+              "(+ zero-length C.2/C.3 markers)")
+
+    # ---- TransmitterPdu vs Table 176: fixed part = 832 bits, then
+    # 8M (MP) + 8A (AP) + VTP records. The variant group picks the MP
+    # record by Radio System (first true wins; Simple Intercom before
+    # Generic Radio on the Major Modulation discriminator).
+    ok = True
+    no_vtp = {"variableTransmitterParameterCount": 0}
+    for label, vals, want in (
+        ("no records", dict(no_vtp), 832),
+        ("HQR MP", dict(no_vtp, **{"modulationType.radioSystem": 2}),
+         832 + 128),
+        ("CCTT MP", dict(no_vtp, **{"modulationType.radioSystem": 6}),
+         832 + 128),
+        ("intercom (major=0)",
+         dict(no_vtp, **{"modulationType.radioSystem": 1,
+                         "modulationType.majorModulation": 0}), 832),
+        ("generic (major!=0)",
+         dict(no_vtp, **{"modulationType.radioSystem": 1,
+                         "modulationType.majorModulation": 1}), 832),
+        ("beam AP", dict(no_vtp, antennaPatternType=1), 832 + 320),
+        ("HQR MP + beam AP",
+         dict(no_vtp, **{"modulationType.radioSystem": 4,
+                         "antennaPatternType": 1}), 832 + 128 + 320),
+    ):
+        got = ev.size_class("TransmitterPdu", dict(vals))
+        if got != want:
+            ok = False
+            print(f"   TransmitterPdu {label}: computed {got}, "
+                  f"Table 176 says {want}")
+    check(ok, "gate 8e: TransmitterPdu size == Table 176 formula "
+              "(832 + 8M + 8A; 7 record patterns)")
+
 
 def main():
     trees = load(fixed=True)

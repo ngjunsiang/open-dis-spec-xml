@@ -359,6 +359,24 @@ EXPECTED = {
         "renamed_attrs": {("MinefieldDataPdu", "minefieldSequenceNumber"):
                           "minefieldSequenceNumbeer"},
     },
+    # Annex C radio-system records (IEEE 1278.1-2012 Annex C survey):
+    # typed MP records + the HF HAVE QUICK VTP record replace the
+    # Transmitter's objectlists (the standard allows zero or one MP and
+    # zero or one AP record; the counts are byte lengths, Table 176).
+    "RadioCommunicationsFamilyPdus.xml": {
+        "+classes": {"ModulationParametersRecord", "GenericRadio",
+                     "SimpleIntercomRadio", "BasicHaveQuickMP",
+                     "CCTTSincgarsMP", "AntennaPatternRecord",
+                     "VariableTransmitterParametersRecord",
+                     "HighFidelityHAVEQUICKRadio"},
+        "+attrs": {"TransmitterPdu": {"modulationParameters",
+                                      "antennaPattern",
+                                      "variableTransmitterParameters"}},
+    },
+    "RadioCommunicationsFamilyPdus.xml-attrs": {
+        "-attrs": {"TransmitterPdu": {"modulationParametersList",
+                                      "antennaPatternList"}},
+    },
     "DIS_7_2012.xml-attrs": {
         "-attrs": {"VariableTransmitterParameters": {"padding"}},
     },
@@ -406,10 +424,10 @@ def gate_drift():
         src_of[k] = rename_to_src.get(k, k)
 
     # deletions and additions
-    expected_del = {( "DIS_7_2012.xml", n) for n in
-                    EXPECTED["DIS_7_2012.xml"]["-classes"]}
-    expected_add = {("DIS_7_2012.xml", n) for n in
-                    EXPECTED["DIS_7_2012.xml"]["+classes"]}
+    expected_del = {(f, n) for f, spec in EXPECTED.items()
+                    for n in spec.get("-classes", ())}
+    expected_add = {(f, n) for f, spec in EXPECTED.items()
+                    for n in spec.get("+classes", ())}
     missing = src_keys - {v for v in src_of.values()} - expected_del
     added = {k for k, v in src_of.items() if v not in src_keys} - expected_add
     for k in sorted(missing):
@@ -432,7 +450,7 @@ def gate_drift():
             rems |= r
         if "+attrs" in exp and cn in exp["+attrs"]:
             adds |= exp["+attrs"][cn]
-        neg = EXPECTED.get("DIS_7_2012.xml-attrs", {}).get("-attrs", {})
+        neg = EXPECTED.get(f + "-attrs", {}).get("-attrs", {})
         rems |= neg.get(cn, set())
         if "renamed_attrs" in exp:
             for (c2, new), old in exp["renamed_attrs"].items():
