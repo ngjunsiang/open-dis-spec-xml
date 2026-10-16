@@ -36,7 +36,7 @@
             <sisoenum type="TransmitterInputSource" comment="uid 165" uid="165" size="8"/>
         </attribute>
   
-        <attribute name="variableTransmitterParameterCount" comment="count field">
+        <attribute name="variableTransmitterParameterCount" hidden="true" comment="Number of Variable Transmitter Parameters records (N) in the parameter records section, Table 176">
             <primitive type="uint16" default="0"/>
         </attribute>
   
@@ -52,7 +52,7 @@
             <sisoenum type="TransmitterAntennaPatternType" comment="uid 167" uid="167" size="16"/>
         </attribute>
   
-        <attribute name="antennaPatternCount" hidden="true" comment="atenna pattern length">
+        <attribute name="antennaPatternCount" hidden="true" comment="Antenna Pattern Length (A): length in octets of the Antenna Pattern record in the parameter records section, Table 176. Zero = no record">
             <primitive type="uint16"/>
         </attribute>
   
@@ -80,7 +80,7 @@
             <primitive type="uint16"/>
         </attribute>
   
-        <attribute name="modulationParameterCount" hidden="true" comment="how many modulation parameters we have">
+        <attribute name="modulationParameterCount" hidden="true" comment="Length of Modulation Parameters (M): length in octets of the Modulation Parameters record in the parameter records section, Table 176. Zero = no record (Section 7.7.2 s)">
             <primitive type="uint8"/>
         </attribute>
   
@@ -92,17 +92,31 @@
             <primitive type="uint16" defaultValue="0"/>
         </attribute>
   
-        <attribute name="modulationParametersList" comment="variable length list of modulation parameters">
-            <objectlist countFieldName="modulationParameterCount">
-                <classRef name="ModulationParameters"/>
-            </objectlist> 
+        <!-- Parameter records section (Section 7.7.2 s, Table 176): in order,
+             zero or one Modulation Parameters record (Annex C; the record type
+             follows the Modulation Type record Radio System field, and the
+             first-true variant wins — Simple Intercom before Generic Radio on
+             the Major Modulation discriminator), zero or one Antenna Pattern
+             record (Section 6.2.8; non-self-identifying, typed by
+             antennaPatternType), and zero or more Variable Transmitter
+             Parameters records (Section 6.2.95) in the standard variable
+             record format decoded by record type [UID 66]. -->
+        <attribute name="modulationParameters" comment="optional single Modulation Parameters record; length in octets is the modulationParameterCount field">
+            <classRef name="SimpleIntercomRadio" when="modulationType.radioSystem=1 &amp; modulationType.majorModulation=0"/>
+            <classRef name="BasicHaveQuickMP" when="modulationType.radioSystem=2 | modulationType.radioSystem=3 | modulationType.radioSystem=4"/>
+            <classRef name="CCTTSincgarsMP" when="modulationType.radioSystem=6"/>
+            <classRef name="GenericRadio" when="modulationType.radioSystem=1"/>
         </attribute>
-  
-        <attribute name="antennaPatternList" comment="variable length list of antenna pattern records">
-            <objectlist countFieldName="antennaPatternCount">
+
+        <attribute name="antennaPattern" comment="optional single Antenna Pattern record; length in octets is the antennaPatternCount field. Omni-directional (0) carries no record; values beyond Beam (1) are reserved">
+            <classRef name="BeamAntennaPattern" when="antennaPatternType=1"/>
+        </attribute>
+
+        <attribute name="variableTransmitterParameters" comment="variable length list of Variable Transmitter Parameters records">
+            <objectlist countFieldName="variableTransmitterParameterCount">
                 <classRef name="VariableTransmitterParameters"/>
-            </objectlist> 
-        </attribute>       
+            </objectlist>
+        </attribute>
     </class>
 
     <!-- Special cased because of the dataLength fields which are a bit length 
@@ -294,6 +308,158 @@
                 <classRef name="IntercomCommunicationsParameters"/>
             </objectlist> 
         </attribute>
+    </class>
+    <!-- ===== Annex C radio-system records (IEEE 1278.1-2012 Annex C) =====
+
+         The concrete Modulation Parameters layouts (C.2, C.3, C.4.2.2,
+         C.6.2.3), the High-Fidelity HAVE QUICK VTP record (C.4.2.3), and the
+         Python-side abstract homes of the generic record types 6.2.58/6.2.8/
+         6.2.95. Wire truth quoted from the Annex C tables; the generic
+         byte-form carriers of 6.2.58 and 6.2.95 stay in DIS_7_2012.xml
+         (ModulationParameters, VariableTransmitterParameters). -->
+
+    <class name="ModulationParametersRecord" inheritsFrom="root" abstract="true" comment="Base for Modulation Parameters records. Record-specific fields vary by radio system and are defined in Annex C; the total length of each record shall be a multiple of 64 bits (Table 89). Section 6.2.58">
+
+    </class>
+
+    <class name="GenericRadio" inheritsFrom="ModulationParametersRecord" comment="Annex C.2 Generic radio. Identified by Radio System = Generic Radio or Simple Intercom (1) with any nonzero Major Modulation. There are no specific Transmitter, Signal, or Receiver PDU requirements unique to a generic radio; the record is zero-length.">
+
+    </class>
+
+    <class name="SimpleIntercomRadio" inheritsFrom="ModulationParametersRecord" comment="Annex C.3 Simple Intercom. Identified by Radio System = Generic Radio or Simple Intercom (1) and Major Modulation = No Statement (0). The Length of Modulation Parameters shall be set to zero (Annex C.3.2.2 h); the record is zero-length.">
+
+    </class>
+
+    <class name="BasicHaveQuickMP" inheritsFrom="ModulationParametersRecord" comment="Basic HAVE QUICK Modulation Parameters record (Annex C.4.2.2, Table C.3, 128 bits). Used by the Basic option of HAVE QUICK I/II/IIA (Radio System 2, 3, 4) and also required by the High-Fidelity option; shall be included regardless of the Spread Spectrum field.">
+
+        <attribute name="netId" comment="NET ID record (Annex C.4.2.4, Table C.5) packed in 16 bits: Net Number bits 0-9, Frequency Table [UID 299] bits 10-11, Mode [UID 298] bits 12-13, padding bits 14-15, where bit 0 is the most significant (first transmitted) bit. Represents an Operational Net NXX.XYY">
+            <primitive type="uint16"/>
+        </attribute>
+
+        <attribute name="mwodIndex" comment="Index into the MWOD Index - WOD Correlation Table provided by the exercise agreement; when unknown, the default maintenance and training value 1 shall be used (Annex C.4.2.2 b, Table C.2)">
+            <primitive type="uint16" defaultValue="1"/>
+        </attribute>
+
+        <attribute name="reserved16" comment="16 bits reserved; unused and reserved bits shall be set to zero (Annex C.4.2.1)">
+            <primitive type="uint16" defaultValue="0"/>
+        </attribute>
+
+        <attribute name="reserved8_1" comment="8 bits reserved; shall be zero (Annex C.4.2.1)">
+            <primitive type="uint8" defaultValue="0"/>
+        </attribute>
+
+        <attribute name="reserved8_2" comment="8 bits reserved; shall be zero (Annex C.4.2.1)">
+            <primitive type="uint8" defaultValue="0"/>
+        </attribute>
+
+        <attribute name="timeOfDay" comment="representative Time of Day for the radio; a value of zero shall be considered a match to any other value received (Annex C.4.2.2 c)">
+            <primitive type="uint32"/>
+        </attribute>
+
+        <attribute name="padding" comment="32 bits unused (Table C.3)">
+            <primitive type="uint32" defaultValue="0"/>
+        </attribute>
+
+    </class>
+
+    <class name="CCTTSincgarsMP" inheritsFrom="ModulationParametersRecord" comment="CCTT SINCGARS Modulation Parameters record (Annex C.6.2.3, Table C.7, 128 bits). Radio System = CCTT SINCGARS (6); the record shall always be included in the Transmitter PDU.">
+
+        <attribute name="fhNetId" comment="frequency hopping network identity (Annex C.6.2.3 a)">
+            <primitive type="uint16"/>
+        </attribute>
+
+        <attribute name="hopSetId" comment="set of frequencies used when creating a hopping pattern (Annex C.6.2.3 b)">
+            <primitive type="uint16"/>
+        </attribute>
+
+        <attribute name="lockoutSetId" comment="set of frequencies excluded from the hopping pattern (Annex C.6.2.3 c)">
+            <primitive type="uint16"/>
+        </attribute>
+
+        <attribute name="startOfMessage" comment="whether the radio is starting or continuing a transmission; a CCTT SINCGARS radio shall not receive any part of an FH transmission if the Start of Message is missed (Annex C.6.2.3 d)">
+            <sisoenum type="CCTTSINCGARSStartOfMessage" comment="uid 170" uid="170" size="8"/>
+        </attribute>
+
+        <attribute name="clearChannel" comment="transmission is not subject to propagation loss, interference, COMSEC, or any other form of signal degradation (Annex C.6.2.3 e)">
+            <sisoenum type="CCTTSINCGARSClearChannel" comment="uid 171" uid="171" size="8"/>
+        </attribute>
+
+        <attribute name="fhSyncTimeOffset" comment="offset to exercise time in seconds for the clock in the CCTT SINCGARS radio; all bits set to zero if no synchronization simulation is required (Annex C.6.2.3 f)">
+            <primitive type="uint32"/>
+        </attribute>
+
+        <attribute name="transmissionSecurityKey" comment="transmission security key used when generating the hopping pattern; set to zero if no key value is included (Annex C.6.2.3 g)">
+            <primitive type="uint16"/>
+        </attribute>
+
+        <attribute name="padding" comment="16 bits unused (Table C.7)">
+            <primitive type="uint16" defaultValue="0"/>
+        </attribute>
+
+    </class>
+
+    <class name="AntennaPatternRecord" inheritsFrom="root" abstract="true" comment="Base for Antenna Pattern records. Antenna pattern records are non-self-identifying: the Transmitter PDU Antenna Pattern Type field identifies the record type and the Antenna Pattern Length field gives the record length in octets; the total length of each record shall be a multiple of 64 bits. Section 6.2.8">
+
+    </class>
+
+    <class name="VariableTransmitterParametersRecord" inheritsFrom="root" abstract="true" comment="Base for Variable Transmitter Parameters records in the standard variable record format of 6.2.83: Record Type [UID 66], Record Length in octets (a multiple of 8), record-specific fields, and padding to a 64-bit boundary. The record types applicable to a radio system are identified in Annex C. Section 6.2.95">
+
+    </class>
+
+    <class name="HighFidelityHAVEQUICKRadio" inheritsFrom="VariableTransmitterParametersRecord" comment="High-Fidelity HAVE QUICK Variable Transmitter Parameters record (Annex C.4.2.3, Table C.4). Record Type 3000, Record Length 40 octets, 320 bits total; required in addition to the Basic HAVE QUICK MP record when the High-Fidelity option is modeled.">
+
+        <attribute name="recordType" comment="Record Type = 3000, the High Fidelity HAVE QUICK enumeration [UID 66]">
+            <primitive type="uint32" defaultValue="3000"/>
+        </attribute>
+
+        <attribute name="recordLength" comment="Record Length in octets = 40 (the whole record, Table C.4)">
+            <primitive type="uint16" defaultValue="40"/>
+        </attribute>
+
+        <attribute name="padding1" comment="16 bits unused (Table C.4)">
+            <primitive type="uint16" defaultValue="0"/>
+        </attribute>
+
+        <attribute name="netId" comment="NET ID record (Annex C.4.2.4, Table C.5) packed in 16 bits: Net Number bits 0-9, Frequency Table [UID 299] bits 10-11, Mode [UID 298] bits 12-13, padding bits 14-15, where bit 0 is the most significant (first transmitted) bit. Represents an Operational Net NXX.XYY">
+            <primitive type="uint16"/>
+        </attribute>
+
+        <attribute name="todTransmitIndicator" comment="whether a Time of Day is being transmitted, also referred to as a Mickey (Annex C.4.2.3 c)">
+            <sisoenum type="HighFidelityHAVEQUICKTODTransmitIndicator" comment="uid 297" uid="297" size="8"/>
+        </attribute>
+
+        <attribute name="padding2" comment="8 bits unused (Table C.4)">
+            <primitive type="uint8" defaultValue="0"/>
+        </attribute>
+
+        <attribute name="todDelta" comment="difference between the transceiver internal clock and the reference clock, in hundreds of microseconds, signed; zero means synchronized with the reference clock (Annex C.4.2.3 d)">
+            <primitive type="int32"/>
+        </attribute>
+
+        <attribute name="wod1" comment="Word of Day 1; the six WODs collectively are an MWOD, each containing six decimal digits with notation like 300.025 (Annex C.4.2.3 f)">
+            <primitive type="uint32"/>
+        </attribute>
+
+        <attribute name="wod2" comment="Word of Day 2 (Annex C.4.2.3 f)">
+            <primitive type="uint32"/>
+        </attribute>
+
+        <attribute name="wod3" comment="Word of Day 3 (Annex C.4.2.3 f)">
+            <primitive type="uint32"/>
+        </attribute>
+
+        <attribute name="wod4" comment="Word of Day 4 (Annex C.4.2.3 f)">
+            <primitive type="uint32"/>
+        </attribute>
+
+        <attribute name="wod5" comment="Word of Day 5 (Annex C.4.2.3 f)">
+            <primitive type="uint32"/>
+        </attribute>
+
+        <attribute name="wod6" comment="Word of Day 6 (Annex C.4.2.3 f)">
+            <primitive type="uint32"/>
+        </attribute>
+
     </class>
 
 </classes>
