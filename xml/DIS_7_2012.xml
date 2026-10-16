@@ -2203,7 +2203,7 @@
     
     </class>
 
-    <class name="SimulationAddress" inheritsFrom="root" comment="A Simulation Address record shall consist of the Site Identification number and the Application Identification number. Section 6.2.80 ">
+    <class name="SimulationAddress" inheritsFrom="root" comment="A simulation's designation associated with all object identifiers except those contained in Live Entity PDUs shall be specified by a Simulation Address record. A Simulation Address record shall consist of the Site Number and the Application Number. Section 6.2.80">
 
         <attribute name="site" comment="A site is defined as a facility, installation, organizational unit or a geographic location that has one or more simulation applications capable of participating in a distributed event. ">
             <primitive type="uint16"/>
