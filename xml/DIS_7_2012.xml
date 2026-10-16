@@ -298,7 +298,7 @@
     
     </class>
 
-    <class name="ClockTime" inheritsFrom="root" comment="Time measurements that exceed one hour are represented by this record. The first field is the hours since the unix epoch (Jan 1 1970, used by most Unix systems and java) and the second field the timestamp units since the top of the hour. Section 6.2.14">
+    <class name="ClockTime" inheritsFrom="root" comment="Time measurements that surpass 1 h shall be represented by a Clock Time record. The first field is the hours since 0000 h 1 January 1970 UTC and the second field the time past the hour indicated in the Hour field, represented by a Timestamp record (see 6.2.88). The reference time represented shall be either Absolute or Relative Time (see Annex G). Section 6.2.14">
  
         <attribute name="hour" comment="Hours in UTC">
             <primitive type="uint32"/>
@@ -421,7 +421,7 @@
     </class>
 
     <!-- Section 6.2.19.2 -->
-    <class name="MunitionDescriptor" inheritsFrom="root" comment="Represents the firing or detonation of a munition. Section 6.2.19.2">
+    <class name="MunitionDescriptor" inheritsFrom="root" comment="The firing or detonation of a munition shall be represented by a Munition Descriptor record. Munition Type is an Entity Type record (see 6.2.30); Warhead is a 16-bit enumeration (see [UID 60]); Fuse is a 16-bit enumeration (see [UID 61]); Quantity is the number of rounds fired in the burst or the number of munitions simultaneously launched; Rate is the rate of fire such as rounds per minute, and shall contain zero if Quantity equals one. The Descriptor field of the Fire and Detonation PDUs carries one 128-bit descriptor record: a Munition Descriptor (this record), an Explosion Descriptor (6.2.19.3), or an Expendable Descriptor (6.2.19.4; expendable type plus 64 bits of padding, the same 128-bit size on the wire). Section 6.2.19.2">
     
         <attribute name="munitionType" comment="What munition was used in the burst">
             <classRef name="EntityType"/> 
@@ -897,7 +897,7 @@
   
     </class>
 
-    <class name="EntityIdentifier" inheritsFrom="root" comment="Entity Identifier. Unique ID for entities in the world. Consists of an simulation address and a entity number. Section 6.2.28.">
+    <class name="EntityIdentifier" inheritsFrom="root" comment="The unique designation of each entity in an event or exercise that is not contained in a Live Entity PDU shall be specified by an Entity Identifier record. The Entity Identifier (Entity ID) record shall consist of a Simulation Address (see 6.2.80) and an Entity Number. The Entity Identifier is an object identifier; general requirements for all object identifiers are specified in 4.2.5.2. Section 6.2.28.">
     
         <attribute name="simulationAddress" comment="Site and application IDs">
             <classRef name="SimulationAddress"/>
@@ -1078,7 +1078,7 @@
     </class>
 -->
 
-    <class name="EulerAngles" inheritsFrom="root" comment="Three floating point values representing an orientation, psi, theta, and phi, aka the euler angles, in radians. Section 6.2.32">
+    <class name="EulerAngles" inheritsFrom="root" comment="Three floating point values representing an orientation, psi, theta, and phi, aka the euler angles, in radians. These angles shall be specified with respect to the entity's coordinate system. Section 6.2.32">
 
         <attribute name="psi">
             <primitive type="float32"/>
@@ -2203,7 +2203,7 @@
     
     </class>
 
-    <class name="SimulationAddress" inheritsFrom="root" comment="A Simulation Address record shall consist of the Site Identification number and the Application Identification number. Section 6.2.80 ">
+    <class name="SimulationAddress" inheritsFrom="root" comment="A simulation's designation associated with all object identifiers except those contained in Live Entity PDUs shall be specified by a Simulation Address record. A Simulation Address record shall consist of the Site Number and the Application Number. Section 6.2.80">
 
         <attribute name="site" comment="A site is defined as a facility, installation, organizational unit or a geographic location that has one or more simulation applications capable of participating in a distributed event. ">
             <primitive type="uint16"/>
@@ -2464,7 +2464,7 @@
 
     </class>
 
-    <class name="VariableParameter" inheritsFrom="root" comment="Used in DetonationPdu, ArticulatedPartsPdu among others. Section 6.2.94.">
+    <class name="VariableParameter" inheritsFrom="root" comment="The specification of additional information associated with an entity or detonation, not otherwise accounted for in a PDU, shall be represented by a Variable Parameter record. This record shall provide information on articulated parts, attached parts, and other data associated with an entity or detonation. Used in DetonationPdu, ArticulatedPartsPdu among others. Section 6.2.94.">
         
         <attribute name="recordType" comment="The identification of the Variable Parameter record. Enumeration from EBV">
             <sisoenum type="VariableParameterRecordType" comment="uid 56" uid="56" size="8"/>
@@ -2648,7 +2648,7 @@
         
          </class>
 
-    <class name="Vector3Float" inheritsFrom="root" comment="Three floating point values, x, y, and z. Section 6.2.96">
+    <class name="Vector3Float" inheritsFrom="root" comment="Vector values for entity coordinates, linear acceleration, and linear velocity shall be represented using a Vector record. This record shall consist of three fields, each a 32-bit floating point number. The unit of measure represented by these fields shall depend on the information represented. Entity Coordinate Vector: location relative to a particular entity shall be specified with respect to the origin of the entity's coordinate system; the entity coordinate system shall be as specified in 1.6.3. Linear Acceleration Vector: linear acceleration shall be represented as a vector with components in either world coordinate system or entity's coordinate system depending on the value in the Dead Reckoning Algorithm field; each vector component shall represent acceleration in meters per second squared. Linear Velocity Vector: linear velocity shall be represented as a vector with three components in either world coordinate system or entity's coordinate system depending on the value in the Dead Reckoning Algorithm field; each vector component shall represent velocity in meters per second. Section 6.2.96">
     
         <attribute name="x" comment="X value">
             <primitive type="float32"/>
