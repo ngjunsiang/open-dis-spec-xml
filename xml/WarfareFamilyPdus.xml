@@ -33,7 +33,7 @@
             <classRef name="Vector3Double"/>
         </attribute>
 
-        <attribute name="descriptor" comment="This field shall describe the firing or launch of a munition or expendable represented by one of the following types of Descriptor records: Munition Descriptor (6.2.20.2) or Expendable Descriptor (6.2.20.4).">
+        <attribute name="descriptor" comment="This field shall describe the firing or launch of a munition or expendable represented by one of the following types of Descriptor records: Munition Descriptor (6.2.19.2) or Expendable Descriptor (6.2.19.4).">
             <classRef name="MunitionDescriptor"/>
         </attribute>
 
