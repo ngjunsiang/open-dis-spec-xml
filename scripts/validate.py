@@ -512,6 +512,18 @@ def gate_size_spot_checks(trees):
     check(ok, "gate 8e: TransmitterPdu size == Table 176 formula "
               "(832 + 8M + 8A; 7 record patterns)")
 
+    # ---- System Identifier record vs Table 118: 16+16+8+8 = 48 bits.
+    # Locks the Change/Options record at 8 bits (Table B.5 total; Layer 1
+    # = 480 bits, Table 167, only adds up at 8) — the IFF PDU foundation.
+    ok = True
+    for cls, want in (("SystemIdentifier", 48),):
+        got = ev.size_class(cls, {})
+        if got != want:
+            ok = False
+            print(f"   {cls}: computed {got}, Table 118 says {want}")
+    check(ok, "gate 8f: SystemIdentifier == Table 118 (48 bits; "
+              "Change/Options = 8 bits per Table B.5)")
+
 
 def main():
     trees = load(fixed=True)
