@@ -44,3 +44,37 @@ the wire fact it asserts is now gate-locked here.
 **Side note (flag, not fixed):** `SystemIdentifier.changeOptions`'s
 field comment cites "see section 6.2.15"; the Change/Options record is
 §6.2.13 (Table 118 d, and the class's own comment).
+
+---
+
+## Item 2 — AppearancePdu.appearanceFlag1: uint8 → uint16
+
+**Before:** `<primitive type="uint8"/>` with the Table 221 bit map.
+**After:** `<primitive type="uint16"/>`; the comment now names the
+field per §9.4.3.5 c) (16-bit record; octets per Tables 221/222). All
+`presentIf` terms (`appearanceFlag1:0` … `:7`, and
+`appearanceFlag2`'s gate on `appearanceFlag1:7`) are unchanged — the
+low octet occupies bits 0-7 of the u16.
+
+**PDF evidence:**
+- §9.4.3.5 c): *"Appearance Flags. This field shall identify those
+  optional data fields that are being transmitted with the current PDU.
+  This field shall be defined as a 16-bit record as specified in item b)
+  in 9.4.3.2."*
+- 9.4.3.2 b): *"The format of the Appearance Flag fields shall be as
+  shown in Table 221 and Table 222"* — Table 221 defines "Flag Octet 1
+  meaning", Table 222 "Flag Octet 2 meaning" (the two octets of the
+  16-bit record).
+
+**Tension recorded (PDF-internal):** Table 221's own total says *"Total
+Appearance Flag-1 field size = 8 bits"*, and Table 223 rows the field
+as "Appearance Flag-1 — 8" plus a separate "Appearance Flag-2 — 8F7"
+(total 136 + 8F7 + …). The curated ruling modeled here (matching the
+locked downstream exemplar, which always serializes a uint16 Flag-1 and
+a separate optional Flag Octet 2) follows the §9.4.3.5 c) "16-bit
+record" prose. No Table-223 total gate is added for AppearancePdu — the
+two readings differ by 8 bits and the exemplar's math is locked
+downstream.
+
+**Downstream bridge to retire:** the `("AppearancePdu",
+"appearanceFlag1")` entry of `FIELD_OVERRIDES`.

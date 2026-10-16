@@ -88,8 +88,8 @@
             <classRef name="LiveEntityIdentifier"/>
         </attribute>
         
-        <attribute name="appearanceFlag1" comment="Appearance Flag-1 (Table 221): bit 7 flag-2 included, 6 Appearance-IR, 5 Appearance-Visual, 4 Capabilities, 3 Entity Marking, 2 Alternate Entity Type, 1 Entity Type, 0 Force ID">
-            <primitive type="uint8"/>
+        <attribute name="appearanceFlag1" comment="Appearance Flags, a 16-bit record (9.4.3.5 c): bits 7-0 = Flag Octet 1 (Table 221: bit 7 flag-2 included, 6 Appearance-IR, 5 Appearance-Visual, 4 Capabilities, 3 Entity Marking, 2 Alternate Entity Type, 1 Entity Type, 0 Force ID); bits 15-8 = Flag Octet 2 (Table 222) when included">
+            <primitive type="uint16"/>
         </attribute>
         
         <attribute name="appearanceFlag2" presentIf="appearanceFlag1:7" comment="Appearance Flag-2 (Table 222): bit 1 Appearance-Audio, bit 0 Appearance-EM; bits 7-2 reserved/unused">
