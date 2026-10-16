@@ -308,3 +308,44 @@ so it rides in this commit (the Data-Query "+Reliable" precedent).
 **Flagged (worklist cite correction):** the worklist's "§7.5.12" is
 off by one — §7.5.12 is the Event Report PDU; the Comment PDU is
 §7.5.13 (Table 160).
+
+---
+
+## Item 9 — FIELD_HIDDEN: seven count fields gain hidden="true"
+
+**Enumeration source:** `open-dis-python/generator/overrides.py`
+`FIELD_HIDDEN` (7 entries). The worklist prose said "19"; the table —
+the named enumeration source — carries 7, all now applied (the IFF six
+under their post-item-5 names).
+
+**Fields:**
+- `GridAxisDescriptorVariable.numberOfPointsOnXiAxis` (DIS_7_2012.xml)
+  — counts the `xiValues` list, derived from it.
+- `IFFPduLayer2Data.numberOfIFFFundamentalParameterDataRecords` and
+  the five Layers 3/4/5 `numberOfIFFDataRecords`
+  (DistributedEmissionsFamilyPdus.xml) — each counts its layer's
+  record list.
+
+**PDF evidence:** §6.2.40 b) item 5) (variable spacing format): *"xi(Ni)
+Values. This field shall specify the coordinate values for the Ni grid
+locations along the irregular (variable spacing) xi axis"* — Ni is the
+length of the value list. Tables 168–173 (items 5): each layer's count
+(N) is immediately followed by its record list (record #1…#N).
+
+`GridAxisDescriptorFixed.numberOfPointsOnXiAxis` stays visible — the
+fixed-spacing format has no value list, so the count is genuine wire
+state, not derivable.
+
+**Change:** `hidden="true"` on the seven attributes (comment on the
+Grid Axis one now notes the derivation).
+
+**Downstream bridge to retire:** `FIELD_HIDDEN` (empty after the
+item-5 renames land here).
+
+**Flagged (not fixed):** other count fields still lacking
+`hidden="true"` were found in survey but are outside the
+enumeration: `StandardVariableSpecification.
+numberOfStandardVariableRecords`, `IntercomCommunicationsParameters.
+recordLength` (count for `recordSpecificField`), and the legacy
+`De*` DE Fire classes' counts (`DeAreaAimpointRecord`,
+`DeFirePdu.DeRecordCount`).

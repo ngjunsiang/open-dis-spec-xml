@@ -1268,7 +1268,7 @@
 
     <class name="GridAxisDescriptorVariable" inheritsFrom="GridAxisDescriptor" comment="Grid axis descriptor for variable spacing axis data. Section 6.2.40.">
         
-        <attribute name="numberOfPointsOnXiAxis" comment="Number of grid locations along Xi axis">
+        <attribute name="numberOfPointsOnXiAxis" hidden="true" comment="Number of grid locations along Xi axis (derived from xiValues)">
             <primitive type="uint16"/>
         </attribute>
     

@@ -304,7 +304,7 @@
             <primitive type="uint8"/>
         </attribute>
         
-        <attribute name="numberOfIFFFundamentalParameterDataRecords" comment="Number of IFF Fundamental Parameter Data Records (N), Table 168">
+        <attribute name="numberOfIFFFundamentalParameterDataRecords" hidden="true" comment="Number of IFF Fundamental Parameter Data Records (N), Table 168">
             <primitive type="uint16"/>
         </attribute>
 
@@ -338,7 +338,7 @@
             <primitive type="uint16"/>
         </attribute>
         
-        <attribute name="numberOfIFFDataRecords" comment="Number of IFF Data Records (N), Table 170">
+        <attribute name="numberOfIFFDataRecords" hidden="true" comment="Number of IFF Data Records (N), Table 170">
             <primitive type="uint16"/>
         </attribute>
 
@@ -412,7 +412,7 @@
             <primitive type="uint16"/>
         </attribute>
         
-        <attribute name="numberOfIFFDataRecords" comment="Number of IFF Data Records (N), Table 169">
+        <attribute name="numberOfIFFDataRecords" hidden="true" comment="Number of IFF Data Records (N), Table 169">
             <primitive type="uint16"/>
         </attribute>
 
@@ -535,7 +535,7 @@
             <primitive type="uint16"/>
         </attribute>
         
-        <attribute name="numberOfIFFDataRecords" comment="Number of IFF Data Records (N), Table 171">
+        <attribute name="numberOfIFFDataRecords" hidden="true" comment="Number of IFF Data Records (N), Table 171">
             <primitive type="uint16"/>
         </attribute>
 
@@ -609,7 +609,7 @@
             <primitive type="uint16"/>
         </attribute>
         
-        <attribute name="numberOfIFFDataRecords" comment="Number of IFF Data Records (N), Table 172">
+        <attribute name="numberOfIFFDataRecords" hidden="true" comment="Number of IFF Data Records (N), Table 172">
             <primitive type="uint16"/>
         </attribute>
 
@@ -699,7 +699,7 @@
             <primitive type="uint16"/>
         </attribute>
         
-        <attribute name="numberOfIFFDataRecords" comment="Number of IFF Data Records (N), Table 173">
+        <attribute name="numberOfIFFDataRecords" hidden="true" comment="Number of IFF Data Records (N), Table 173">
             <primitive type="uint16"/>
         </attribute>
 
