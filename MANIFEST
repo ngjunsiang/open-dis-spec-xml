@@ -1,7 +1,8 @@
-# Build manifest — v0.10.1
+# Build manifest — v0.11.0
 generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-16 (stage 3 Annex C radio-system records),
-           2026-10-16 (stage 4 comment enrichment)
+           2026-10-16 (stage 4 comment enrichment),
+           2026-10-17 (stage 5 spec corrections, PR #6)
 source-of-truth chain:
   upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
                    (xml/dis_7_2012/* — byte-verified identical to the
@@ -68,3 +69,18 @@ stage 4 (2026-10-16, v0.10.1):
                    before/after + PDF quotes; gap resolution record)
   gates:           validate.py + check_consistency.py green (comment-only
                    wave; no gate was expected to move)
+
+stage 5 (2026-10-17, v0.11.0 — PR #6, branch spec-corrections):
+  change:          the curated downstream generator-override facts moved
+                   into xml/ so the bridges retire: appearanceFlag1
+                   uint16, silentEntitySystemList -> SilentEntitySystem,
+                   GriddedData wrong countFieldName dropped, IFF layer
+                   count names + flat 6.2.43 lists, DataQuery datum-ID
+                   lists, TransferOwnership record-set list, Comment
+                   datum lists, hidden=true on count fields, stale 1995
+                   family cites -> 2012 sections, IFFPdu 7.6.5 cite,
+                   AreaAimpoint title, deposition typos. ChangeOptions
+                   was already uint8 since v0.1.0 — gate-locked instead.
+  evidence:        docs/spec-corrections-evidence.md (per-item PDF quotes)
+  gates:           validate.py 8f (SystemIdentifier == Table 118's 48
+                   bits); check_consistency EXPECTED gained this wave
