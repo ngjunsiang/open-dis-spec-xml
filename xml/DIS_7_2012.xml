@@ -1078,7 +1078,7 @@
     </class>
 -->
 
-    <class name="EulerAngles" inheritsFrom="root" comment="Three floating point values representing an orientation, psi, theta, and phi, aka the euler angles, in radians. Section 6.2.32">
+    <class name="EulerAngles" inheritsFrom="root" comment="Three floating point values representing an orientation, psi, theta, and phi, aka the euler angles, in radians. These angles shall be specified with respect to the entity's coordinate system. Section 6.2.32">
 
         <attribute name="psi">
             <primitive type="float32"/>
