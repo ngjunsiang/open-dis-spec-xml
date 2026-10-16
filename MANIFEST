@@ -84,3 +84,7 @@ stage 5 (2026-10-17, v0.11.0 — PR #6, branch spec-corrections):
   evidence:        docs/spec-corrections-evidence.md (per-item PDF quotes)
   gates:           validate.py 8f (SystemIdentifier == Table 118's 48
                    bits); check_consistency EXPECTED gained this wave
+  erratum (2026-10-17): item 10's cite pass missed the EntityManagement
+  family (5.9.2.2/5.9.3.1/5.9.5 -> 7.8.2/7.8.3/7.8.5, TransferOwnership
+  gained its missing 7.8.4, "dyanic" -> "dynamic") — completed on main
+  before v0.11.1

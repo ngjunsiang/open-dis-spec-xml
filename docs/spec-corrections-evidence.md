@@ -468,3 +468,14 @@ shall be communicated using the DE Target Energy Deposition record."*
   SEESPdu/IsPartOfPdu, MinefieldQuery/NACK padTo32, RecordReliable
   responseSerialNumber, VTP paddingTo64) — flagged for a bookkeeping
   pass, not touched here.
+
+## Item 10 completion (2026-10-17, follow-up on main) — entity management cites
+
+The wave's cite pass missed the EntityManagement family (only
+TransferOwnership lacked a cite; the other three carried 1995-edition
+5.9.x numbers) and left the "dyanic" typo. PDF headings §7.8.2 Aggregate
+State PDU, §7.8.3 IsGroupOf PDU, §7.8.4 Transfer Ownership (TO) PDU,
+§7.8.5 IsPartOf PDU — all four comments now carry the 2012 cites; the
+Intercom pair the wave wrote as 7.7.5/7.7.6 was verified correct against
+the same heading list (the downstream's older curated values 7.7.6/7.7.7
+were the off-by-one).

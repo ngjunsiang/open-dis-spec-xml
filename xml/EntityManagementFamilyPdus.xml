@@ -5,7 +5,7 @@
     
     </class>
 
-    <class name="AggregateStatePdu" id="33" inheritsFrom="EntityManagementFamilyPdu" comment="5.9.2.2 The Aggregate State PDU shall be used to communicate the state and other pertinent information about an aggregated unit.">
+    <class name="AggregateStatePdu" id="33" inheritsFrom="EntityManagementFamilyPdu" comment="7.8.2 The Aggregate State PDU shall be used to communicate the state and other pertinent information about an aggregated unit.">
     
         <initialValue name="pduType" value="DisPduType.AGGREGATE_STATE"/>
      
@@ -105,7 +105,7 @@
       
     </class>
  
-    <class name="IsGroupOfPdu" id="34" inheritsFrom="EntityManagementFamilyPdu" comment="5.9.3.1 The IsGroupOf PDU shall communicate information about the individual states of a group of entities, including state information that is necessary for the receiving simulation applications to represent the issuing group of entities in the simulation applications’ own simulation.">
+    <class name="IsGroupOfPdu" id="34" inheritsFrom="EntityManagementFamilyPdu" comment="7.8.3 The IsGroupOf PDU shall communicate information about the individual states of a group of entities, including state information that is necessary for the receiving simulation applications to represent the issuing group of entities in the simulation applications’ own simulation.">
     
         <initialValue name="pduType" value="DisPduType.ISGROUPOF"/>
      
@@ -141,7 +141,7 @@
     
     </class>
 
-    <class name="TransferOwnershipPdu" id="35" inheritsFrom="EntityManagementFamilyPdu" comment=" Information initiating the dyanic allocation and control of simulation entities between two simulation applications.">
+    <class name="TransferOwnershipPdu" id="35" inheritsFrom="EntityManagementFamilyPdu" comment="7.8.4 Information initiating the dynamic allocation and control of simulation entities between two simulation applications.">
     
         <initialValue name="pduType" value="DisPduType.TRANSFER_OWNERSHIP"/>
      
@@ -182,7 +182,7 @@
     </class>
 
 
-    <class name="IsPartOfPdu" id="36" inheritsFrom="EntityManagementFamilyPdu" comment="5.9.5 Used to request hierarchical linkage of separately hosted simulation entities">
+    <class name="IsPartOfPdu" id="36" inheritsFrom="EntityManagementFamilyPdu" comment="7.8.5 Used to request hierarchical linkage of separately hosted simulation entities">
 
         <initialValue name="pduType" value="DisPduType.ISPARTOF"/>
  
