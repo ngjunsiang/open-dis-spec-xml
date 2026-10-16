@@ -512,6 +512,67 @@ def gate_size_spot_checks(trees):
     check(ok, "gate 8e: TransmitterPdu size == Table 176 formula "
               "(832 + 8M + 8A; 7 record patterns)")
 
+    # ---- System Identifier record vs Table 118: 16+16+8+8 = 48 bits.
+    # Locks the Change/Options record at 8 bits (Table B.5 total; Layer 1
+    # = 480 bits, Table 167, only adds up at 8) — the IFF PDU foundation.
+    ok = True
+    for cls, want in (("SystemIdentifier", 48),):
+        got = ev.size_class(cls, {})
+        if got != want:
+            ok = False
+            print(f"   {cls}: computed {got}, Table 118 says {want}")
+    check(ok, "gate 8f: SystemIdentifier == Table 118 (48 bits; "
+              "Change/Options = 8 bits per Table B.5)")
+
+    # ---- Silent Entity System record vs Table 110 (6.2.79):
+    # 16 + 16 + 64 = 96 bits with zero appearance records (A = 0).
+    got = ev.size_class("SilentEntitySystem", {"numberOfAppearanceRecords": 0})
+    check(got == 96, "gate 8g: SilentEntitySystem == Table 110 "
+          "(96 + 32A bits, A=0 -> 96)", f"computed {got}")
+
+    # ---- IFF layer fixed parts vs Tables 168/173: Layer 2 =
+    # 224 + 192N ("Layer 2 size = 224 + 192N bits"); Layer 5 =
+    # 128 + sum(48 + 8K + 8P) ("Layer 5 size = 128 + 8 sum(6 + Ki + Pi)").
+    # N=1 exercises one flat record: IFF Fundamental Parameter Data
+    # (Table 168: 192 bits) and IFF Data (6.2.43 with K=0 pads to an
+    # 8-octet record = 64 bits).
+    ok = True
+    for cls, count_field, n, want in (
+        ("IFFPduLayer2Data", "numberOfIFFFundamentalParameterDataRecords", 0, 224),
+        ("IFFPduLayer2Data", "numberOfIFFFundamentalParameterDataRecords", 1, 416),
+        ("IFFPduLayer5Data", "numberOfIFFDataRecords", 0, 128),
+        ("IFFPduLayer5Data", "numberOfIFFDataRecords", 1, 192),
+    ):
+        got = ev.size_class(cls, {count_field: n})
+        if got != want:
+            ok = False
+            print(f"   {cls} {count_field}={n}: computed {got}, "
+                  f"table says {want}")
+    check(ok, "gate 8h: IFF Layer 2 == 224 + 192N, Layer 5 == 128 + "
+              "records (Tables 168/173; flat 6.2.43 IFF Data elements)")
+
+    # ---- Data Query PDU vs Table 156: total = 320 + 32N + 32M bits —
+    # the lists carry 32-bit datum IDs, not Fixed/Variable Datum records.
+    ok = True
+    for n, m2 in ((0, 0), (2, 3)):
+        vals = dict(numberOfFixedDatumRecords=n,
+                    numberOfVariableDatumRecords=m2)
+        got = ev.size_class("DataQueryPdu", vals)
+        want = 320 + 32 * n + 32 * m2
+        if got != want:
+            ok = False
+            print(f"   DataQueryPdu N={n} M={m2}: computed {got}, "
+                  f"Table 156 says {want}")
+    check(ok, "gate 8i: DataQueryPdu == Table 156 (320 + 32N + 32M; "
+              "datum-ID lists)")
+
+    # ---- Transfer Ownership PDU vs Table 185: fixed part = 96 + 48 + 48
+    # + 32 + 8 + 8 + 48 + 32 = 320 bits with zero record sets (the count
+    # rides the PDU; record sets follow flat).
+    got = ev.size_class("TransferOwnershipPdu", {"numberOfRecordSets": 0})
+    check(got == 320, "gate 8j: TransferOwnershipPdu == Table 185 "
+          "(fixed part 320 bits, R=0)", f"computed {got}")
+
 
 def main():
     trees = load(fixed=True)

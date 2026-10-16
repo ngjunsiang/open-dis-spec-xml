@@ -262,16 +262,16 @@
             <primitive type="uint32"/>
         </attribute>
    
-        <attribute name="fixedDatumRecords" comment="Fixed datum records">
+        <attribute name="fixedDatumRecords" comment="Fixed Datum ID #1..#N, each a 32-bit enumeration (7.5.9 d via 5.12.4.9; datum IDs, not Fixed Datum records)">
             <objectlist countFieldName="numberOfFixedDatumRecords">
-                <classRef name="FixedDatum"/>
-            </objectlist> 
+                <sisoenum type="VariableRecordType" comment="uid 66" uid="66" size="32"/>
+            </objectlist>
         </attribute>
-    
-        <attribute name="variableDatumRecords" comment="Variable datum records">
+
+        <attribute name="variableDatumRecords" comment="Variable Datum ID #1..#M, each a 32-bit enumeration (7.5.9 d via 5.12.4.9; datum IDs, not Variable Datum records)">
             <objectlist countFieldName="numberOfVariableDatumRecords">
-                <classRef name="VariableDatum"/>
-            </objectlist> 
+                <sisoenum type="VariableRecordType" comment="uid 66" uid="66" size="32"/>
+            </objectlist>
         </attribute>
 
     </class>
@@ -416,7 +416,13 @@
         <attribute name="variableDatumRecords" comment="Variable datum records">
             <objectlist countFieldName="numberOfVariableDatumRecords">
                 <classRef name="VariableDatum"/>
-            </objectlist> 
+            </objectlist>
+        </attribute>
+
+        <attribute name="fixedDatumRecords" comment="Fixed datum records (shall be zero on this PDU per 7.5.13 b; kept for malformed-but-parseable datagrams)">
+            <objectlist countFieldName="numberOfFixedDatumRecords">
+                <classRef name="FixedDatum"/>
+            </objectlist>
         </attribute>
     </class>
 

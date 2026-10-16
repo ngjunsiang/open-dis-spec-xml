@@ -1,0 +1,470 @@
+# Spec-XML correction wave — 2026-10-17
+
+Branch `spec-corrections` (off v0.10.1). Moves the curated downstream
+open-dis-python generator-override facts (the wire-shape/cite backlog)
+into `xml/` so the bridges can retire. Every item below was surveyed
+against **`IEEE Std 1278.1-2012.pdf`** (sole wire/wording authority)
+before editing; per-item before/after + PDF quote, style per
+`pdf-audit-evidence.md`. One commit per item (1:1 with the later
+upstream PRs).
+
+Downstream bridges named per item retire in the open-dis-python
+convergence round after this wave tags (no regeneration in this repo).
+
+---
+
+## Item 1 — ChangeOptions: 8-bit record, locked by gate
+
+**Finding:** `xml/DIS_7_2012.xml` already carries the correct size —
+`ChangeOptions.value` is `uint8` (since v0.1.0; the upstream open-dis
+original and `.references/` both carry uint8 as well). The "uint16 →
+uint8" premise from the backlog does not hold for the current tree; the
+remaining deliverable is the size lock, which this wave adds.
+
+**PDF evidence:**
+- Table B.5 (Change/Options record, §6.2.13/B.2.4): eight 1-bit rows
+  (Change Indicator … Test Mode), *"Total Change/Options record size =
+  8 bits"*.
+- Table 118 (System Identifier record, §6.2.87): System Type 16 +
+  System Name 16 + System Mode 8 + **Change/Options — 8-bit record**;
+  *"Total System Identifier record size = 48 bits"*.
+- Table 167 (Layer 1 basic data, §7.6.5.2): 96 + 48 + 48 + 96 + 48 +
+  8 + 8 + 128 = *"Layer 1 size = 480 bits"* — only adds up with
+  Change/Options at 8 bits.
+
+**Change:** `scripts/validate.py` gains gate 8f —
+`SizeEval("SystemIdentifier") == 48` — so a future u16 flip of the
+Change/Options carrier breaks the gate. No `xml/` change.
+
+**Downstream bridge to retire:** the `ChangeOptions` entry of
+`PRIMITIVE_BINDINGS` (wrapper-class absorption to a plain `uint8`) is a
+generator-side flattening concern and stays on the downstream roadmap;
+the wire fact it asserts is now gate-locked here.
+
+**Side note (flag, not fixed):** `SystemIdentifier.changeOptions`'s
+field comment cites "see section 6.2.15"; the Change/Options record is
+§6.2.13 (Table 118 d, and the class's own comment).
+
+---
+
+## Item 2 — AppearancePdu.appearanceFlag1: uint8 → uint16
+
+**Before:** `<primitive type="uint8"/>` with the Table 221 bit map.
+**After:** `<primitive type="uint16"/>`; the comment now names the
+field per §9.4.3.5 c) (16-bit record; octets per Tables 221/222). All
+`presentIf` terms (`appearanceFlag1:0` … `:7`, and
+`appearanceFlag2`'s gate on `appearanceFlag1:7`) are unchanged — the
+low octet occupies bits 0-7 of the u16.
+
+**PDF evidence:**
+- §9.4.3.5 c): *"Appearance Flags. This field shall identify those
+  optional data fields that are being transmitted with the current PDU.
+  This field shall be defined as a 16-bit record as specified in item b)
+  in 9.4.3.2."*
+- 9.4.3.2 b): *"The format of the Appearance Flag fields shall be as
+  shown in Table 221 and Table 222"* — Table 221 defines "Flag Octet 1
+  meaning", Table 222 "Flag Octet 2 meaning" (the two octets of the
+  16-bit record).
+
+**Tension recorded (PDF-internal):** Table 221's own total says *"Total
+Appearance Flag-1 field size = 8 bits"*, and Table 223 rows the field
+as "Appearance Flag-1 — 8" plus a separate "Appearance Flag-2 — 8F7"
+(total 136 + 8F7 + …). The curated ruling modeled here (matching the
+locked downstream exemplar, which always serializes a uint16 Flag-1 and
+a separate optional Flag Octet 2) follows the §9.4.3.5 c) "16-bit
+record" prose. No Table-223 total gate is added for AppearancePdu — the
+two readings differ by 8 bits and the exemplar's math is locked
+downstream.
+
+**Downstream bridge to retire:** the `("AppearancePdu",
+"appearanceFlag1")` entry of `FIELD_OVERRIDES`.
+
+---
+
+## Item 3 — AggregateStatePdu.silentEntitySystemList: EntityType → SilentEntitySystem
+
+**Before:**
+```xml
+<attribute name="silentEntitySystemList" comment="silent entity types">
+    <objectlist countFieldName="numberOfSilentEntityTypes">
+        <classRef name="EntityType"/>
+    </objectlist>
+</attribute>
+```
+**After:** the `classRef` names `SilentEntitySystem` (the orphaned
+§6.2.79 class in DIS_7_2012.xml); the comment cites the record and its
+size.
+
+**PDF evidence:**
+- Table 183 (Aggregate State PDU): rows *"Silent Entity System #1 …
+  #S — Silent Entity System record"* at *"96 + 32A1 … 96 + 32AS"*
+  bits, counted by *"Number of Silent Entity Systems (S)"*.
+- §6.2.79 / Table 110 (Silent Entity System record): Number of
+  Entities 16 + Number of Appearance Records (A) 16 + Entity Type 64 +
+  A × Entity Appearance 32; *"Total Silent Entity System record size =
+  96 + 32A bits"*.
+
+**Change:** `xml/EntityManagementFamilyPdus.xml` classRef swap;
+`scripts/validate.py` gains gate 8g —
+`SizeEval("SilentEntitySystem", A=0) == 96` (Table 110).
+
+**Downstream bridge to retire:** the `("AggregateStatePdu",
+"silentEntitySystemList")` entry of `FIELD_SHAPES`.
+
+**Flagged (not fixed — outside this wave):**
+- `silentAggregateSystemList` still references `EntityType`; Table
+  183's "Silent Aggregate System" rows are their own 96-bit record
+  (Number of Aggregates 16 + Padding 16 + Aggregate Type 64). No
+  `SilentAggregateSystem` class exists in the XML yet — authoring one
+  is a vocabulary addition for a later wave.
+- Table 183's stated total (1088 fixed bits) does not reconcile with
+  its own field rows (they sum to 1056); no full-PDU gate added.
+- `SilentEntitySystem`'s class comment carries typos ("information
+  abou an enitity not producing espdus").
+
+---
+
+## Item 4 — GriddedDataPdu.gridDataRecords: wrong countFieldName removed
+
+**Before:**
+```xml
+<attribute name="gridDataRecords" comment="">
+    <objectlist countFieldName="numberOfGridAxes">
+        <classRef name="GridData" initialClass="GridDataType0"/>
+    </objectlist>
+</attribute>
+```
+**After:** `countFieldName="numberOfGridAxes"` removed (replaced by
+`isDynamicListLengthField="true"` — the repo's marker for a list with
+no wire-stated count, per gate 2's vocabulary); the comment records
+the derivation.
+
+**PDF evidence:** Table 192 (Gridded Data PDU) rows the two lists
+separately — *"Grid Axis Descriptor #1 … #N"* (8K1…8KN, counted by
+"Number of Grid Axes (N)") and *"Grid Data #1 … #G"* (8D1…8DG) — with
+the where-clause: *"G is the number of grid points in the PDU, which
+is V ∏(k=1..N) Nk; V is the vector dimension; Nk is the number of
+points in Axis k"*. G is a derived product, not the axis count.
+
+**Note:** a product `countExpression` (V × ∏Nk) would express the
+derivation natively but is a vocabulary extension — deferred per the
+wave rules; the downstream `("GriddedDataPdu", "gridDataRecords")`
+`FIELD_OVERRIDES` bridge (plain list, curated body owns the count)
+retires against this shape.
+
+**Downstream bridge to retire:** that FIELD_OVERRIDES entry.
+
+---
+
+## Item 5 — IFF layer classes: count names + flat §6.2.43 IFF Data records
+
+**Before (all six layer classes):** count attribute named
+`numberOfIFFFundamentalParameterDataRecordsParameters`; Layers 3/4/5
+listed `IFFDataSpecification` wrapper records (which would add a second
+count + nesting the layer table doesn't carry).
+
+**After:**
+- Layer 2 (`IFFPduLayer2Data`): count →
+  `numberOfIFFFundamentalParameterDataRecords` (PDF spelling; elements
+  stay `IFFFundamentalParameterData`).
+- Layers 3/4/5 (`IFFPduLayer3{Transponder,Interrogator}FormatData`,
+  `IFFPduLayer4{Interrogator,Transponder}FormatData`,
+  `IFFPduLayer5Data`): count → `numberOfIFFDataRecords`; the list
+  elements are flat `IFFData` records (§6.2.43). List attribute name
+  `IFFFundamentalParameterDataRecord` unchanged (matches the locked
+  downstream exemplar field name).
+
+**PDF evidence:**
+- Table 168 (Layer 2): *"Number of IFF Fundamental Parameter Data
+  Records (N)—16-bit unsigned integer"*; *"Layer 2 size = 224 + 192N
+  bits"* — the record is "IFF Fundamental Parameter Data record"
+  (§6.2.44); the "…RecordsParameters" tail is copy-paste.
+- Tables 169/170 (Layer 3 Mode 5 Interrogator/Transponder), 171/172
+  (Layer 4 Mode S Interrogator/Transponder), 173 (Layer 5): each rows
+  *"Number of IFF Data Records (N)—16-bit unsigned integer"* followed
+  by flat *"IFF Data record #1 … #N"* rows (48 + 8K + 8P bits:
+  Record Type 32 + Record Length 16 + Record-Specific fields K octets
+  + padding to 32-bit boundary). §7.6.5.4.2 d)/e): *"Number of IFF
+  Data Records… IFF Data records… shall conform to the variable record
+  format of the IFF Data Specification record (see 6.2.43)"* — the
+  records conform to the §6.2.43 format; the layer carries the count
+  itself (the wrapper's own count field is not an additional wire
+  field). Record-R flattening precedent.
+- §6.2.43: the IFF Data Specification record is "used when variable
+  records are required to be included in a layer format for Layers 3
+  through 7" — its a)/b) structure (count + IFF Data records) is what
+  the layer tables inline directly.
+
+**Change:** `xml/DistributedEmissionsFamilyPdus.xml` (six classes);
+`scripts/validate.py` gate 8h — Layer 2 = 224/416 (N=0/1, Table 168),
+Layer 5 = 128/192 (N=0/1; one K=0 IFF Data record pads 6→8 octets =
+64 bits per §6.2.43).
+
+**Downstream bridges to retire:** the six IFF entries of
+`FIELD_RENAMES`, the five `IFFFundamentalParameterDataRecord`
+`FIELD_SHAPES` entries, and the six IFF entries of `FIELD_HIDDEN`
+(after item 9).
+
+---
+
+## Item 6 — Data Query PDU (+Reliable): the lists carry datum IDs
+
+**Before:** `fixedDatums`/`variableDatums` (and
+`fixedDatumRecords`/`variableDatumRecords` on Data Query-R) were
+objectlists of `FixedDatum`/`VariableDatum` records.
+
+**After:** each list is an enum-value list — `objectlist` with a 32-bit
+`sisoenum` element (bound uid 66, matching `FixedDatum.fixedDatumID`'s
+existing binding), counted by the unchanged u32 count fields. Attribute
+names unchanged.
+
+**PDF evidence:** §7.5.9 d): *"Datum Information. This field shall
+specify the types of datum for which information is required. Datum
+IDs, but not datum values, are listed in the Data Query Datum
+Specification record (see 6.2.17)."* Table 156 rows *"Fixed Datum ID
+#1 … #N — 32-bit enumeration"* and *"Variable Datum ID #1 … #M —
+32-bit enumeration"*; *"Total Data Query PDU size = 320 + 32N + 32M
+bits"*. Data Query-R carries the same lists (§5.12.4.9 defers to the
+Data Query PDU shape).
+
+**Change:** `xml/SimulationManagementFamilyPdus.xml` (DataQueryPdu),
+`xml/SimulationManagementWithReliabilityFamilyPdus.xml`
+(DataQueryReliablePdu only — the SetData/Data/EventReport/Comment-R
+siblings genuinely carry datum records);
+`scripts/validate.py` gate 8i — DataQueryPdu = 320 + 32N + 32M
+(N,M = 0/0 and 2/3).
+
+**Downstream bridges to retire:** the four Data Query `FIELD_SHAPES`
+entries (PrimitiveList rebinding).
+
+**Flagged (not fixed):** the datum-ID registers are semantically their
+own ([UID 64/65]-space datum IDs); the XML's established binding of
+`FixedDatum.fixedDatumID` to uid 66 (VariableRecordType) is followed
+here for consistency — worth revisiting in a registry-accuracy pass.
+
+---
+
+## Item 7 — TransferOwnershipPdu: record-set count + flat record sets
+
+**Before:** `recordSets` was a single `RecordSpecification` wrapper
+record (whose own hidden count + list would nest a second count the PDU
+table doesn't carry).
+
+**After:** `numberOfRecordSets` (hidden u32, "Number of Record Sets
+(R)") + `recordSets` objectlist of `RecordSpecificationElement`
+(§6.2.73 record sets, flat) — the Record-R flattening precedent.
+
+**PDF evidence:** §7.8.4 f): *"Record Information. This field shall
+specify the number of record sets, the identification of the record,
+the serial number of the record, the record length, the record count,
+and the specific record values. This field shall be represented by a
+Record Specification record (see 6.2.73)."* Table 185 rows the count
+directly — *"Number of Record Sets (R)—32-bit unsigned integer"* —
+followed by flat *"Record Set #1 … #R"* rows (128 + LQ + P bits:
+Record ID 32 + Record Set Serial Number 32 + Padding 32 + Record
+Length 16 + Record Count 16 + Record Values LQ bits + padding to
+64-bit boundary).
+
+**Change:** `xml/EntityManagementFamilyPdus.xml`;
+`scripts/validate.py` gate 8j — fixed part (R=0) = 320 bits.
+
+**Downstream bridges to retire:** the `TransferOwnershipPdu` entry of
+`EXTRA_FIELDS` (the count) and the `("TransferOwnershipPdu",
+"recordSets")` `FIELD_SHAPES` entry.
+
+---
+
+## Item 8 — Comment PDU (+Comment-R): both datum lists modeled
+
+**Before:** `CommentPdu` carried the fixed count field (comment: "not
+used in this Pdu") and only the `variableDatums` list; same for
+`CommentReliablePdu`.
+
+**After:** the Data PDU datum-list shape — both `fixedDatums`
+(`FixedDatum` records) and `variableDatums` (`VariableDatum` records),
+each counted by its u32 field. The fixed count's comment now records
+the §7.5.13 b) zero rule and the round-trip rationale.
+
+**PDF evidence:** Table 160 (Comment PDU) rows *"Number of Fixed Datum
+Records — 32-bit unsigned integer"*, *"Number of Variable Datum
+Records (M)"*, then only *"Variable Datum #1 … #M"* rows (total 256 +
+64M + KM + PM bits with the fixed count zero). §7.5.13 b): *"The value
+of this field shall be set to zero."* The fixed-datum LIST is not a
+standard-conformant emission (the count shall be zero); modeling it
+follows the locked downstream exemplar, which keeps the list so
+malformed-but-parseable datagrams still round-trip byte-exact.
+Comment-R carries the same information (§5.12.4.13).
+
+**Scope note:** the worklist named CommentPdu; CommentReliablePdu
+carries the identical EXTRA_FIELDS bridge entry and the same defect,
+so it rides in this commit (the Data-Query "+Reliable" precedent).
+
+**Change:** `xml/SimulationManagementFamilyPdus.xml`,
+`xml/SimulationManagementWithReliabilityFamilyPdus.xml`.
+
+**Downstream bridges to retire:** the `CommentPdu` and
+`CommentReliablePdu` entries of `EXTRA_FIELDS`.
+
+**Flagged (worklist cite correction):** the worklist's "§7.5.12" is
+off by one — §7.5.12 is the Event Report PDU; the Comment PDU is
+§7.5.13 (Table 160).
+
+---
+
+## Item 9 — FIELD_HIDDEN: seven count fields gain hidden="true"
+
+**Enumeration source:** `open-dis-python/generator/overrides.py`
+`FIELD_HIDDEN` (7 entries). The worklist prose said "19"; the table —
+the named enumeration source — carries 7, all now applied (the IFF six
+under their post-item-5 names).
+
+**Fields:**
+- `GridAxisDescriptorVariable.numberOfPointsOnXiAxis` (DIS_7_2012.xml)
+  — counts the `xiValues` list, derived from it.
+- `IFFPduLayer2Data.numberOfIFFFundamentalParameterDataRecords` and
+  the five Layers 3/4/5 `numberOfIFFDataRecords`
+  (DistributedEmissionsFamilyPdus.xml) — each counts its layer's
+  record list.
+
+**PDF evidence:** §6.2.40 b) item 5) (variable spacing format): *"xi(Ni)
+Values. This field shall specify the coordinate values for the Ni grid
+locations along the irregular (variable spacing) xi axis"* — Ni is the
+length of the value list. Tables 168–173 (items 5): each layer's count
+(N) is immediately followed by its record list (record #1…#N).
+
+`GridAxisDescriptorFixed.numberOfPointsOnXiAxis` stays visible — the
+fixed-spacing format has no value list, so the count is genuine wire
+state, not derivable.
+
+**Change:** `hidden="true"` on the seven attributes (comment on the
+Grid Axis one now notes the derivation).
+
+**Downstream bridge to retire:** `FIELD_HIDDEN` (empty after the
+item-5 renames land here).
+
+**Flagged (not fixed):** other count fields still lacking
+`hidden="true"` were found in survey but are outside the
+enumeration: `StandardVariableSpecification.
+numberOfStandardVariableRecords`, `IntercomCommunicationsParameters.
+recordLength` (count for `recordSpecificField`), and the legacy
+`De*` DE Fire classes' counts (`DeAreaAimpointRecord`,
+`DeFirePdu.DeRecordCount`).
+
+---
+
+## Item 10 — stale 1995-edition family cites → 2012 format sections
+
+**What:** the leading class-comment cite of 15 PDUs named the 1995
+edition's combined format+requirements sections; the 2012 edition
+moved PDU formats to clause 7. 2012's chapter-5 sections still exist
+as requirements sections, but the class cite convention in this set is
+the format section (cf. `"Section 7.5.9"` on DataQueryPdu).
+
+| Class | Before | After |
+|---|---|---|
+| ServiceRequestPdu | 5.5.5 | 7.4.2 |
+| ResupplyOfferPdu | 5.5.6 | 7.4.3 |
+| ResupplyReceivedPdu | 5.5.7 | 7.4.4 |
+| ResupplyCancelPdu | 5.5.8 | 7.4.5 |
+| RepairCompletePdu | 5.5.10 | 7.4.6 |
+| RepairResponsePdu | 5.5.11 | 7.4.7 |
+| TransmitterPdu | 5.8.3 | 7.7.2 |
+| SignalPdu | 5.8.4 | 7.7.3 |
+| ReceiverPdu | 5.8.5 | 7.7.4 |
+| IntercomSignalPdu | 5.8.6 | **7.7.5** |
+| IntercomControlPdu | 5.8.7 | **7.7.6** |
+| MinefieldStatePdu | 5.10.2 | 7.9.2 |
+| MinefieldQueryPdu | 5.10.3 | 7.9.3 |
+| MinefieldDataPdu | 5.10.4 | 7.9.4 |
+| MinefieldResponseNACKPdu | 5.10.5 | 7.9.5 |
+
+**PDF evidence (headings verified directly):** 7.4.2–7.4.4 Service
+Request/Resupply Offer/Resupply Received; 7.4.5 Resupply Cancel;
+7.4.6 Repair Complete; 7.4.7 Repair Response; 7.7.2 Transmitter PDU;
+7.7.3 Signal PDU; 7.7.4 Receiver PDU; **7.7.5 Intercom Signal PDU;
+7.7.6 Intercom Control PDU**; 7.9.2–7.9.5 Minefield State/Query/
+Data/Response NACK. Example cross-check — §7.7.2 opens *"Detailed
+information about a radio transmitter shall be communicated by issuing
+a Transmitter PDU. See 5.8.3 for specific requirements…"* (the 5.x
+sections remain as requirements cites, e.g. the kept
+`"See 5.6.5.9"`-style tails and the minefield inline rule cites
+`5.10.2.3` / `5.10.4.5`, which the PDF's own §7.9.2/§7.9.4 bodies
+use).
+
+**Downstream discrepancy flagged:** `DOCSTRING_CITES` pins
+IntercomSignalPdu→7.7.6 and IntercomControlPdu→7.7.7 — one past the
+PDF's 7.7.5/7.7.6. The XML follows the PDF; the downstream table
+needs a 2-entry correction in the convergence round before its
+retirement.
+
+**Downstream bridge to retire:** `DOCSTRING_CITES` — partially. The
+bridge's 15 stale-family entries map to this item; the remaining
+entries cover families outside this wave's named scope (see flags).
+
+**Flagged (not fixed — same defect, outside the named families):**
+entity-management 1995 cites (`AggregateStatePdu` 5.9.2.2 → 7.8.2,
+`IsGroupOfPdu` 5.9.3.1 → 7.8.3, `IsPartOfPdu` 5.9.5 → 7.8.5,
+`TransferOwnershipPdu` has no cite; missing 7.8.4), and the IO
+classes cite requirements subclauses (5.13.3.1/5.13.4.1; formats are
+7.12.x per §5.13's own "(See 5.13 and 7.12)"). The SMWR family cites
+5.12.4.x requirements sections (formats at 7.11.x).
+
+---
+
+## Item 11 — IdentificationFriendOrFoePdu comment cite: 7.6.5.1 → 7.6.5
+
+**PDF evidence:** §7.6.5 is titled *"Identification Friend or Foe (IFF)
+PDU"*; 7.6.5.1 is its *"General"* subclause. The class's canonical
+cite is the PDU section.
+
+**Downstream bridge to retire:** the `"IdentificationFriendOrFoePdu"`
+entry of `DOCSTRING_CITES`.
+
+---
+
+## Item 12 — DirectedEnergyAreaAimpoint: own title restored
+
+**Before:** `comment="DE Precision Aimpoint Record. Section 6.2.20.2"`
+— a copy-paste of the §6.2.20.3 sibling's title.
+**After:** `comment="DE Area Aimpoint Record. Section 6.2.20.2"`.
+
+**PDF evidence:** §6.2.20.2 is titled *"DE Area Aimpoint record"*:
+*"The DE Area Aimpoint record shall be used to communicate targeting
+information when the target of the directed energy weapon is an
+area."* (The precision sibling is §6.2.20.3 "DE Precision Aimpoint
+record".)
+
+---
+
+## Item 13 — "depostion"/"depositon" typos
+
+**Fixed:** `DirectedEnergyTargetEnergyDeposition` class comment
+(*"DE energy deposition properties for a target entity. Section
+6.2.20.4"*) and `DirectedEnergyAreaAimpoint.
+directedEnergyTargetEnergyDepositionRecordCount`'s count comment
+(*"Number of DE target energy deposition records"*).
+
+**PDF evidence:** §6.2.20.4 is titled *"DE Target Energy Deposition
+record"*: *"Directed energy deposition properties for a target entity
+shall be communicated using the DE Target Energy Deposition record."*
+
+---
+
+## Verification
+
+- `python3 scripts/validate.py` — ALL GATES PASS (new: 8f System
+  Identifier 48, 8g Silent Entity System 96, 8h IFF Layer 2/5, 8i Data
+  Query 320+32N+32M, 8j TO PDU 320).
+- `python3 scripts/check_consistency.py` — CONSISTENT (default
+  invocation; drift gate E skips without `SPEC_UPSTREAM_DIR`).
+- Gate E against the pinned upstream
+  (open-dis/opendis7-source-generator @ 7d271613, cloned to
+  `/tmp/dis7-corrections/upstream`): this wave's deltas are exactly
+  the new EXPECTED entries (6 IFF renamed_attrs; +numberOfRecordSets
+  on TransferOwnershipPdu; +fixedDatums on CommentPdu; +
+  fixedDatumRecords on CommentReliablePdu). The remaining 10
+  residuals predate this wave (stage-2 pdf-audit spelling/pad
+  changes never recorded in EXPECTED: orginating→originating on
+  SEESPdu/IsPartOfPdu, MinefieldQuery/NACK padTo32, RecordReliable
+  responseSerialNumber, VTP paddingTo64) — flagged for a bookkeeping
+  pass, not touched here.
