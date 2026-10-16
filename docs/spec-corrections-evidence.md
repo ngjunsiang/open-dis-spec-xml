@@ -153,3 +153,54 @@ wave rules; the downstream `("GriddedDataPdu", "gridDataRecords")`
 retires against this shape.
 
 **Downstream bridge to retire:** that FIELD_OVERRIDES entry.
+
+---
+
+## Item 5 — IFF layer classes: count names + flat §6.2.43 IFF Data records
+
+**Before (all six layer classes):** count attribute named
+`numberOfIFFFundamentalParameterDataRecordsParameters`; Layers 3/4/5
+listed `IFFDataSpecification` wrapper records (which would add a second
+count + nesting the layer table doesn't carry).
+
+**After:**
+- Layer 2 (`IFFPduLayer2Data`): count →
+  `numberOfIFFFundamentalParameterDataRecords` (PDF spelling; elements
+  stay `IFFFundamentalParameterData`).
+- Layers 3/4/5 (`IFFPduLayer3{Transponder,Interrogator}FormatData`,
+  `IFFPduLayer4{Interrogator,Transponder}FormatData`,
+  `IFFPduLayer5Data`): count → `numberOfIFFDataRecords`; the list
+  elements are flat `IFFData` records (§6.2.43). List attribute name
+  `IFFFundamentalParameterDataRecord` unchanged (matches the locked
+  downstream exemplar field name).
+
+**PDF evidence:**
+- Table 168 (Layer 2): *"Number of IFF Fundamental Parameter Data
+  Records (N)—16-bit unsigned integer"*; *"Layer 2 size = 224 + 192N
+  bits"* — the record is "IFF Fundamental Parameter Data record"
+  (§6.2.44); the "…RecordsParameters" tail is copy-paste.
+- Tables 169/170 (Layer 3 Mode 5 Interrogator/Transponder), 171/172
+  (Layer 4 Mode S Interrogator/Transponder), 173 (Layer 5): each rows
+  *"Number of IFF Data Records (N)—16-bit unsigned integer"* followed
+  by flat *"IFF Data record #1 … #N"* rows (48 + 8K + 8P bits:
+  Record Type 32 + Record Length 16 + Record-Specific fields K octets
+  + padding to 32-bit boundary). §7.6.5.4.2 d)/e): *"Number of IFF
+  Data Records… IFF Data records… shall conform to the variable record
+  format of the IFF Data Specification record (see 6.2.43)"* — the
+  records conform to the §6.2.43 format; the layer carries the count
+  itself (the wrapper's own count field is not an additional wire
+  field). Record-R flattening precedent.
+- §6.2.43: the IFF Data Specification record is "used when variable
+  records are required to be included in a layer format for Layers 3
+  through 7" — its a)/b) structure (count + IFF Data records) is what
+  the layer tables inline directly.
+
+**Change:** `xml/DistributedEmissionsFamilyPdus.xml` (six classes);
+`scripts/validate.py` gate 8h — Layer 2 = 224/416 (N=0/1, Table 168),
+Layer 5 = 128/192 (N=0/1; one K=0 IFF Data record pads 6→8 octets =
+64 bits per §6.2.43).
+
+**Downstream bridges to retire:** the six IFF entries of
+`FIELD_RENAMES`, the five `IFFFundamentalParameterDataRecord`
+`FIELD_SHAPES` entries, and the six IFF entries of `FIELD_HIDDEN`
+(after item 9).

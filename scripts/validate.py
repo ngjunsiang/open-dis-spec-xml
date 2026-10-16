@@ -530,6 +530,27 @@ def gate_size_spot_checks(trees):
     check(got == 96, "gate 8g: SilentEntitySystem == Table 110 "
           "(96 + 32A bits, A=0 -> 96)", f"computed {got}")
 
+    # ---- IFF layer fixed parts vs Tables 168/173: Layer 2 =
+    # 224 + 192N ("Layer 2 size = 224 + 192N bits"); Layer 5 =
+    # 128 + sum(48 + 8K + 8P) ("Layer 5 size = 128 + 8 sum(6 + Ki + Pi)").
+    # N=1 exercises one flat record: IFF Fundamental Parameter Data
+    # (Table 168: 192 bits) and IFF Data (6.2.43 with K=0 pads to an
+    # 8-octet record = 64 bits).
+    ok = True
+    for cls, count_field, n, want in (
+        ("IFFPduLayer2Data", "numberOfIFFFundamentalParameterDataRecords", 0, 224),
+        ("IFFPduLayer2Data", "numberOfIFFFundamentalParameterDataRecords", 1, 416),
+        ("IFFPduLayer5Data", "numberOfIFFDataRecords", 0, 128),
+        ("IFFPduLayer5Data", "numberOfIFFDataRecords", 1, 192),
+    ):
+        got = ev.size_class(cls, {count_field: n})
+        if got != want:
+            ok = False
+            print(f"   {cls} {count_field}={n}: computed {got}, "
+                  f"table says {want}")
+    check(ok, "gate 8h: IFF Layer 2 == 224 + 192N, Layer 5 == 128 + "
+              "records (Tables 168/173; flat 6.2.43 IFF Data elements)")
+
 
 def main():
     trees = load(fixed=True)
