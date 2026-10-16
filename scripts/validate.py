@@ -524,6 +524,12 @@ def gate_size_spot_checks(trees):
     check(ok, "gate 8f: SystemIdentifier == Table 118 (48 bits; "
               "Change/Options = 8 bits per Table B.5)")
 
+    # ---- Silent Entity System record vs Table 110 (6.2.79):
+    # 16 + 16 + 64 = 96 bits with zero appearance records (A = 0).
+    got = ev.size_class("SilentEntitySystem", {"numberOfAppearanceRecords": 0})
+    check(got == 96, "gate 8g: SilentEntitySystem == Table 110 "
+          "(96 + 32A bits, A=0 -> 96)", f"computed {got}")
+
 
 def main():
     trees = load(fixed=True)

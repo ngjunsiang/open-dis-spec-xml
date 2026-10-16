@@ -87,10 +87,10 @@
             </objectlist> 
         </attribute>
         
-        <attribute name="silentEntitySystemList" comment="silent entity types">
+        <attribute name="silentEntitySystemList" comment="Silent Entity System records (6.2.79; 96 + 32A bits each)">
             <objectlist countFieldName="numberOfSilentEntityTypes">
-                <classRef name="EntityType"/>
-            </objectlist> 
+                <classRef name="SilentEntitySystem"/>
+            </objectlist>
         </attribute>
         
         <attribute name="numberOfVariableDatumRecords" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">

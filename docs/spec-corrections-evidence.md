@@ -78,3 +78,46 @@ downstream.
 
 **Downstream bridge to retire:** the `("AppearancePdu",
 "appearanceFlag1")` entry of `FIELD_OVERRIDES`.
+
+---
+
+## Item 3 — AggregateStatePdu.silentEntitySystemList: EntityType → SilentEntitySystem
+
+**Before:**
+```xml
+<attribute name="silentEntitySystemList" comment="silent entity types">
+    <objectlist countFieldName="numberOfSilentEntityTypes">
+        <classRef name="EntityType"/>
+    </objectlist>
+</attribute>
+```
+**After:** the `classRef` names `SilentEntitySystem` (the orphaned
+§6.2.79 class in DIS_7_2012.xml); the comment cites the record and its
+size.
+
+**PDF evidence:**
+- Table 183 (Aggregate State PDU): rows *"Silent Entity System #1 …
+  #S — Silent Entity System record"* at *"96 + 32A1 … 96 + 32AS"*
+  bits, counted by *"Number of Silent Entity Systems (S)"*.
+- §6.2.79 / Table 110 (Silent Entity System record): Number of
+  Entities 16 + Number of Appearance Records (A) 16 + Entity Type 64 +
+  A × Entity Appearance 32; *"Total Silent Entity System record size =
+  96 + 32A bits"*.
+
+**Change:** `xml/EntityManagementFamilyPdus.xml` classRef swap;
+`scripts/validate.py` gains gate 8g —
+`SizeEval("SilentEntitySystem", A=0) == 96` (Table 110).
+
+**Downstream bridge to retire:** the `("AggregateStatePdu",
+"silentEntitySystemList")` entry of `FIELD_SHAPES`.
+
+**Flagged (not fixed — outside this wave):**
+- `silentAggregateSystemList` still references `EntityType`; Table
+  183's "Silent Aggregate System" rows are their own 96-bit record
+  (Number of Aggregates 16 + Padding 16 + Aggregate Type 64). No
+  `SilentAggregateSystem` class exists in the XML yet — authoring one
+  is a vocabulary addition for a later wave.
+- Table 183's stated total (1088 fixed bits) does not reconcile with
+  its own field rows (they sum to 1056); no full-PDU gate added.
+- `SilentEntitySystem`'s class comment carries typos ("information
+  abou an enitity not producing espdus").
