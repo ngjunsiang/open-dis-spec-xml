@@ -114,7 +114,7 @@
 
         <attribute name="variableTransmitterParameters" comment="variable length list of Variable Transmitter Parameters records">
             <objectlist countFieldName="variableTransmitterParameterCount">
-                <classRef name="VariableTransmitterParameters"/>
+                <classRef name="VariableTransmitterParametersRecord"/>
             </objectlist>
         </attribute>
     </class>
