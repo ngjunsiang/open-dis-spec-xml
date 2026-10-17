@@ -1187,7 +1187,7 @@
      
     </class>
     
-    <class name="GridAxisDescriptor" inheritsFrom="root" comment="Detailed information about the grid dimensions (axes) and coordinates for environmental state variables">
+    <class name="GridAxisDescriptor" abstract="true" inheritsFrom="root" comment="Detailed information about the grid dimensions (axes) and coordinates for environmental state variables">
         
         <attribute name="domainInitialXi" comment="coordinate of the grid origin or initial value">
             <primitive type="float64"/>
@@ -1254,7 +1254,7 @@
 
     </class>
     
-     <class name="GridData" inheritsFrom="root" comment="6.2.41, table 68">
+     <class name="GridData" abstract="true" inheritsFrom="root" comment="6.2.41, table 68">
         
         <attribute name="sampleType">
             <sisoenum type="GriddedDataSampleType" comment="uid 246" uid="246" size="16"/>
