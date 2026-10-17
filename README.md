@@ -7,9 +7,16 @@ IEEE standard and SISO-REF-010 v37, with a validating conformance suite.
 This is the *what the wire actually says* companion to the generator-input
 XML in [opendis7-source-generator](https://github.com/open-dis/opendis7-source-generator):
 every correction carries an IEEE §/REF-010 citation (see
-`docs/changes-evidence.md`), and the set passes bit-level size parity with
-the standard's own PDU-size formulas (Tables 189, 223, 226, 229, and the
-Entity State / Fire / Detonation totals).
+`docs/changes-evidence.md` and the per-wave evidence docs), and the set
+passes bit-level size parity with the standard's own PDU-size formulas —
+fourteen size gates (validate.py 8a-8n) locking the Entity State /
+Fire / Detonation, Live Entity Fire/Detonation, Minefield Data, and
+Transmitter totals plus Annex C records, SystemIdentifier (48),
+DataQuery (320 + 32N + 32M), TransferOwnership (320), GriddedData's
+G = V x prod(Nk), the IFF PDU's full layer model (Tables 165/167-173),
+and the Aggregate State total (1088) — alongside deep-consistency
+gates (reference resolution, the 6.3.2 record-section alignment
+invariant, computed-field rules) in `scripts/check_consistency.py`.
 
 ## Layout
 
@@ -32,9 +39,11 @@ ref010/         submodule -> siso-ref-010-xml @ v37-docs (v37 enum tables
 ## Using it
 
 - **As a spec**: parse `xml/` — every `<sisoenum>`/`<sisobitfield>` carries
-  `uid` + `size`; conditional wire shapes are explicit
-  (`presentIf`/`when`/`countExpression`/`countListFieldName`; vocabulary
-  documented in `docs/changes-evidence.md`).
+  `uid` + `size`; conditional wire shapes and computed fields are explicit
+  (`presentIf`/`when`, `countExpression` incl. `product()`,
+  `bitCountExpression`, `byteCountFieldName`, `countListFieldName`,
+  `hidden`, `derived`, `lengthRole`; the closed vocabulary and its
+  semantics are documented in `docs/vocabulary-extensions-design.md`).
 - **As upstream + overrides**: `docs/overrides.json` encodes the same
   corrections keyed file → class → field, applicable to the upstream XML
   (the interim-generator-input pattern).
@@ -60,7 +69,9 @@ responsibility, not the consumer's: consumers resolve discrepancies
 against `xml/` alone and do not consult the PDFs unless a spec-repo
 issue says otherwise.
 
-## Corrections at a glance (106 changes + 2026-10-15 IEEE PDF audit)
+## Corrections at a glance
+
+**v0.1.0 transform (106 changes) + 2026-10-15 IEEE PDF audit**:
 
 Wire-shape fixes (LE identifiers/headers/flags, Minefield Data vertices +
 dataFilter conditions, typed enums, length sources), mechanical enrichment
@@ -86,3 +97,17 @@ shapes, enum uid/size): 11 wire-shape corrections, ~40 citation corrections,
 ruled on (Attribute Record Protocol Version kept literal `[UID 5]`).
 Evidence: `docs/pdf-audit-evidence.md`, `docs/pdf-audit-changes.json`.
 Gate: `python3 scripts/fix2_pdf_audit.py`.
+
+## 2026-10-17 waves (v0.11.0 - v0.12.7)
+
+Twelve releases in one day, each with its evidence doc and stage note
+in `MANIFEST`: the spec-corrections wave (v0.11.0, moving the curated
+downstream generator-override facts into `xml/`), the IFF layer
+presence model via the Information Layers bits (v0.12.0), the
+vocabulary wave (`product()` + `derived`, v0.12.2), the Silent
+Aggregate System record (v0.12.3), the 6.3.2 alignment invariant gate
+with three wrapper-as-element wire fixes (v0.12.5), length semantics
+(`lengthRole` + `byteCountFieldName`, v0.12.6), and the commented-
+legacy retirement (v0.12.7). The vocabulary design doc records the
+rulings behind every term — including the two design items closed
+no-term with evidence.
