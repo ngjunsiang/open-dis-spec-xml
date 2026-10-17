@@ -338,6 +338,10 @@ EXPECTED = {
                      "LiveEntityIdentifierElided", "LEMunitionDescriptor",
                      "LiveEntityRelativeEntityCoordinates"},
         "-classes": {"PduStatus", "Domain", "Appearance", "DataFilterRecord"},
+        # stage-2 audit: the generic 6.2.95 carrier gained explicit
+        # 64-bit alignment (Table 130); its stage-1 -padding removal is
+        # recorded below under -attrs
+        "+attrs": {"VariableTransmitterParameters": {"paddingTo64"}},
     },
     "LiveEntityFamilyPdus.xml": {
         "renames": {  # fixed-name: (was-name, added, removed)
@@ -355,7 +359,11 @@ EXPECTED = {
                           ("LiveEntityFirePdu", "fireFlag"): "flags"},
     },
     "MinefieldFamilyPdus.xml": {
-        "+attrs": {"MinefieldDataPdu": {"padTo32_4", "vertices"}},
+        "+attrs": {"MinefieldDataPdu": {"padTo32_4", "vertices"},
+                   # 32-bit boundary pads on the two query/NACK PDUs
+                   # (Tables 188/190; predate the logged stages)
+                   "MinefieldQueryPdu": {"padTo32"},
+                   "MinefieldResponseNACKPdu": {"padTo32"}},
         "renamed_attrs": {("MinefieldDataPdu", "minefieldSequenceNumber"):
                           "minefieldSequenceNumbeer"},
     },
@@ -393,6 +401,9 @@ EXPECTED = {
         "+attrs": {"IdentificationFriendOrFoePdu": {"iFFPduLayer3Data",
                                                     "iFFPduLayer4Data"}},
         "renamed_attrs": {
+            # stage-2 spelling audit: PDF "Originating Entity ID" (Table 174)
+            ("SupplementalEmissionEntityStatePdu", "originatingEntityID"):
+                "orginatingEntityID",
             ("IFFPduLayer2Data",
              "numberOfIFFFundamentalParameterDataRecords"):
                 "numberOfIFFFundamentalParameterDataRecordsParameters",
@@ -415,12 +426,23 @@ EXPECTED = {
     },
     "EntityManagementFamilyPdus.xml": {
         "+attrs": {"TransferOwnershipPdu": {"numberOfRecordSets"}},
+        # stage-2 spelling audit: PDF "Originating Entity ID"
+        "renamed_attrs": {("IsPartOfPdu", "originatingEntityID"):
+                          "orginatingEntityID"},
     },
     "SimulationManagementFamilyPdus.xml": {
         "+attrs": {"CommentPdu": {"fixedDatums"}},
     },
     "SimulationManagementWithReliabilityFamilyPdus.xml": {
-        "+attrs": {"CommentReliablePdu": {"fixedDatumRecords"}},
+        "+attrs": {"CommentReliablePdu": {"fixedDatumRecords"},
+                   # stage-2 audit: Record-R's response serial number
+                   # (Table 210; 7.11.16 e)
+                   "RecordReliablePdu": {"responseSerialNumber"}},
+    },
+    # stage-2 spelling audit: PDF "General Object Appearance"
+    "SyntheticEnvironmentFamilyPdus.xml": {
+        "renamed_attrs": {("PointObjectStatePdu", "generalObjectAppearance"):
+                          "generObjectAppearance"},
     },
     "DistributedEmissionsFamilyPdus.xml-attrs": {
         "-attrs": {"IdentificationFriendOrFoePdu": {
