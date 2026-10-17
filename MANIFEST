@@ -1,10 +1,11 @@
-# Build manifest — v0.12.1
+# Build manifest — v0.12.2
 generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-16 (stage 3 Annex C radio-system records),
            2026-10-16 (stage 4 comment enrichment),
            2026-10-17 (stage 5 spec corrections, PR #6),
            2026-10-17 (stage 6 IFF layer presence, PR #15),
-           2026-10-17 (stage 7 patch: bookkeeping + cites + nits, PR #16)
+           2026-10-17 (stage 7 patch: bookkeeping + cites + nits, PR #16),
+           2026-10-17 (stage 8 vocabulary: product() + derived, PR #17)
 source-of-truth chain:
   upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
                    (xml/dis_7_2012/* — byte-verified identical to the
@@ -134,3 +135,26 @@ stage 7 (2026-10-17, v0.12.1 — PR #16, branch v0.12.1-patch):
   gates:           validate.py + check_consistency.py green in both the
                    default and pinned-upstream (SPEC_UPSTREAM_DIR)
                    invocations
+
+stage 8 (2026-10-17, v0.12.2 — PR #17, branch v0.12.2-vocabulary):
+  change:          design items 2+3 of the vocabulary-gap design (PR
+                   #14): countExpression gains the one function form
+                   product('listField.elementField') — GriddedData's
+                   G = V x prod(Nk) expressed natively (Table 192),
+                   replacing the isDynamicListLengthField parking; and
+                   derived="true" on 92 hidden count mirrors (computed
+                   state, never stored, still serialized), excluding
+                   the byte/formula lengths (2x SV recordLength 6+K+P,
+                   TSPI systemSpecificDataLength, Intercom
+                   intercomParametersLength octets). Both terms are
+                   additive attributes — inert to the pinned upstream
+                   generator (verified against its SAX handlers).
+  evidence:        docs/v0.12.2-evidence.md (per-item rules, migration
+                   list, exclusion rulings)
+  gates:           validate.py 8l (GriddedDataPdu 512 fixed + product
+                   arithmetic); check_consistency C2 (derived binding)
+                   + gate-C product() path validation; gate E unchanged
+                   (drift-invisible); green in both invocations
+  downstream:      inert until consumed; when the generator adopts
+                   them, the GriddedData FIELD_OVERRIDES and the
+                   count-property curation retire
