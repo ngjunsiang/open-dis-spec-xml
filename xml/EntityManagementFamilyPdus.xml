@@ -181,7 +181,6 @@
 
     </class>
 
-
     <class name="IsPartOfPdu" id="36" inheritsFrom="EntityManagementFamilyPdu" comment="7.8.5 Used to request hierarchical linkage of separately hosted simulation entities">
 
         <initialValue name="pduType" value="DisPduType.ISPARTOF"/>
