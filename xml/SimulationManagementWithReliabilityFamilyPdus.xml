@@ -496,7 +496,7 @@
     
         <attribute name="recordSets" comment="record sets">
             <objectlist countFieldName="numberOfRecordSets">
-                <classRef name="RecordSpecification"/>
+                <classRef name="RecordSpecificationElement"/>
             </objectlist>
         </attribute>
     </class>
@@ -533,7 +533,7 @@
     
         <attribute name="recordSets" comment="record sets">
             <objectlist countFieldName="numberOfRecordSets">
-                <classRef name="RecordSpecification"/>
+                <classRef name="RecordSpecificationElement"/>
             </objectlist> 
         </attribute>
         
