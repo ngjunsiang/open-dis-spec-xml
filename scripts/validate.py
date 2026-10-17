@@ -543,6 +543,13 @@ def gate_size_spot_checks(trees):
     check(got == 96, "gate 8g: SilentEntitySystem == Table 110 "
           "(96 + 32A bits, A=0 -> 96)", f"computed {got}")
 
+    # ---- Silent Aggregate System record vs Table 183 (7.8.2):
+    # Number of Aggregates 16 + Padding 16 + Aggregate Type 64 = 96 bits
+    # (the total formula's 96N term; no appearance list on this one).
+    got = ev.size_class("SilentAggregateSystem", {})
+    check(got == 96, "gate 8m: SilentAggregateSystem == Table 183 "
+          "(96 bits)", f"computed {got}")
+
     # ---- IFF layer fixed parts vs Tables 168/173: Layer 2 =
     # 224 + 192N ("Layer 2 size = 224 + 192N bits"); Layer 5 =
     # 128 + sum(48 + 8K + 8P) ("Layer 5 size = 128 + 8 sum(6 + Ki + Pi)").

@@ -2203,6 +2203,22 @@
     
     </class>
 
+    <class name="SilentAggregateSystem" inheritsFrom="root" comment="An aggregate not issuing Aggregate State PDUs, carried in the Aggregate State PDU's Silent Aggregate System records. Table 183 / 7.8.2: 96 bits (Number of Aggregates + Padding + Aggregate Type)">
+
+        <attribute name="numberOfAggregates" comment="Number of Aggregates, a 16-bit unsigned integer (Table 183)">
+            <primitive type="uint16"/>
+        </attribute>
+
+        <attribute name="padding" comment="16 bits unused (Table 183)">
+            <primitive type="uint16"/>
+        </attribute>
+
+        <attribute name="aggregateType" comment="Aggregate Type record (6.2.5)">
+            <classRef name="AggregateType"/>
+        </attribute>
+
+    </class>
+
     <class name="SimulationAddress" inheritsFrom="root" comment="A simulation's designation associated with all object identifiers except those contained in Live Entity PDUs shall be specified by a Simulation Address record. A Simulation Address record shall consist of the Site Number and the Application Number. Section 6.2.80">
 
         <attribute name="site" comment="A site is defined as a facility, installation, organizational unit or a geographic location that has one or more simulation applications capable of participating in a distributed event. ">
