@@ -107,8 +107,8 @@
             </objectlist> 
         </attribute>
         
-         <attribute name="gridDataRecords" comment="Grid Data records #1..#G (6.2.41). G is derived, not a wire field: G = V x N1 x N2 x ... x NN (vector dimension times the per-axis point counts of the Grid Axis Descriptors; Table 192 where G is the number of grid points in the PDU)">
-            <objectlist isDynamicListLengthField="true">
+         <attribute name="gridDataRecords" comment="Grid Data records #1..#G (6.2.41). G is derived, not a wire field: G = V x N1 x N2 x ... x NN (vector dimension times the per-axis point counts; Table 192 where G is the number of grid points in the PDU)">
+            <objectlist countExpression="vectorDimension * product('gridAxisDescriptors.numberOfPointsOnXiAxis')">
                 <classRef name="GridData" initialClass="GridDataType0"/><!-- initialClass not used ? -->
             </objectlist>
         </attribute>

@@ -254,7 +254,41 @@ def gate_semantic_refs(m):
                     v = lst.get(k)
                     if not v:
                         continue
-                    for var in re.findall(r"[A-Za-z_][A-Za-z0-9_]*", v):
+                    # product(listField.elementField): the one function
+                    # form — validate the path reaches a field of the
+                    # list's concrete element class (initialClass is the
+                    # declared variant carrier; the bare classRef name is
+                    # an abstract parent and not a wire element)
+                    for pm in re.finditer(
+                            r"product\(\s*'?([A-Za-z_][A-Za-z0-9_.]*)'?\s*\)",
+                            v):
+                        ppath = pm.group(1)
+                        hops = ppath.split(".")
+                        if len(hops) != 2 or hops[0] not in fields:
+                            problems.append(f"{where} {k} product() arg "
+                                            f"{ppath!r} must be "
+                                            "listField.elementField")
+                            continue
+                        ol = fields[hops[0]].find("objectlist")
+                        elems = []
+                        if ol is not None:
+                            for cr in ol.iter("classRef"):
+                                elems.append(cr.get("initialClass")
+                                             or cr.get("name"))
+                        if not elems:
+                            problems.append(f"{where} {k} product() arg "
+                                            f"{hops[0]!r} not an "
+                                            "objectlist")
+                        for ecn in elems:
+                            if hops[1] not in m.flat_fields(ecn):
+                                problems.append(
+                                    f"{where} {k} product() field "
+                                    f"{hops[1]!r} missing on element "
+                                    f"{ecn}")
+                    plain = re.sub(
+                        r"product\(\s*'?[A-Za-z_][A-Za-z0-9_.]*'?\s*\)",
+                        " ", v)
+                    for var in re.findall(r"[A-Za-z_][A-Za-z0-9_]*", plain):
                         if var not in fields:
                             problems.append(f"{where} {k} variable {var!r} "
                                             "unknown")
