@@ -2181,7 +2181,7 @@
         </attribute>
     </class>
     
-    <class name="SilentEntitySystem" inheritsFrom="root" comment="information abou an enitity not producing espdus. Section 6.2.79">
+    <class name="SilentEntitySystem" inheritsFrom="root" comment="Information about an entity not producing Entity State PDUs. Section 6.2.79">
 
         <attribute name="numberOfEntities" comment="number of the type specified by the entity type field">
             <primitive type="uint16"/>
@@ -2357,7 +2357,7 @@
             <sisoenum type="IFFSystemMode" comment="uid 84" uid="84" size="8"/>
         </attribute>
 
-        <attribute name="changeOptions" comment="status of this PDU, see section 6.2.15">
+        <attribute name="changeOptions" comment="status of this PDU, see section 6.2.13">
             <classRef name="ChangeOptions"/>
         </attribute>
 
