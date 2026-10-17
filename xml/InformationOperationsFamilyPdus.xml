@@ -9,7 +9,7 @@
 
     </class>
     
-    <class name="InformationOperationsActionPdu" id="70" inheritsFrom="InformationOperationsFamilyPdu" comment="5.13.3.1 Used to communicate an IO attack or the effects of an IO attack on one or more target entities.">
+    <class name="InformationOperationsActionPdu" id="70" inheritsFrom="InformationOperationsFamilyPdu" comment="7.12.2 Used to communicate an IO attack or the effects of an IO attack on one or more target entities.">
           
         <initialValue name="pduType" value="DisPduType.INFORMATION_OPERATIONS_ACTION"/>
        
@@ -65,7 +65,7 @@
         
     </class>
     
-    <class name="InformationOperationsReportPdu" id="71" inheritsFrom="InformationOperationsFamilyPdu" comment="5.13.4.1 Used to communicate the effects of an IO attack on one or more target entities.">
+    <class name="InformationOperationsReportPdu" id="71" inheritsFrom="InformationOperationsFamilyPdu" comment="7.12.3 Used to communicate the effects of an IO attack on one or more target entities.">
           
         <initialValue name="pduType" value="DisPduType.INFORMATION_OPERATIONS_REPORT"/>
        
