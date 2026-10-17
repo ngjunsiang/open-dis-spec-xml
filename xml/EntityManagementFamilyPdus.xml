@@ -81,10 +81,10 @@
             <padtoboundary length="32"/>
         </attribute>
         
-        <attribute name="silentAggregateSystemList" comment="silent entity types">
+        <attribute name="silentAggregateSystemList" comment="Silent Aggregate System records (Table 183 / 7.8.2; 96 bits each)">
             <objectlist countFieldName="numberOfSilentAggregateTypes">
-                <classRef name="EntityType"/>
-            </objectlist> 
+                <classRef name="SilentAggregateSystem"/>
+            </objectlist>
         </attribute>
         
         <attribute name="silentEntitySystemList" comment="Silent Entity System records (6.2.79; 96 + 32A bits each)">

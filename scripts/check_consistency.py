@@ -414,7 +414,9 @@ EXPECTED = {
     "DIS_7_2012.xml": {
         "+classes": {"EntityAppearance", "EventIdentifierLiveEntityElided",
                      "LiveEntityIdentifierElided", "LEMunitionDescriptor",
-                     "LiveEntityRelativeEntityCoordinates"},
+                     "LiveEntityRelativeEntityCoordinates",
+                     # v0.12.3 (issue #7): Table 183's 96-bit record
+                     "SilentAggregateSystem"},
         "-classes": {"PduStatus", "Domain", "Appearance", "DataFilterRecord"},
         # stage-2 audit: the generic 6.2.95 carrier gained explicit
         # 64-bit alignment (Table 130); its stage-1 -padding removal is
