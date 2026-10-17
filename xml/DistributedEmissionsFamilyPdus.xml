@@ -282,7 +282,7 @@
  
     </class> 
     
-    <class name="AbstractIFFPduLayerData" id="80" inheritsFrom="root" comment="7.6.5.1 Abstract base class for IFFPduLayerData classes">
+    <class name="AbstractIFFPduLayerData" id="80" abstract="true" inheritsFrom="root" comment="7.6.5.1 Abstract base class for IFFPduLayerData classes">
 	</class>
 	
 	<class name="IFFPduLayer2Data" id="82" inheritsFrom="AbstractIFFPduLayerData" comment="7.6.5.3 Layer 2 emissions data">
