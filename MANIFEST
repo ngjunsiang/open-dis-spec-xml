@@ -1,9 +1,10 @@
-# Build manifest — v0.12.0
+# Build manifest — v0.12.1
 generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-16 (stage 3 Annex C radio-system records),
            2026-10-16 (stage 4 comment enrichment),
            2026-10-17 (stage 5 spec corrections, PR #6),
-           2026-10-17 (stage 6 IFF layer presence, PR #15)
+           2026-10-17 (stage 6 IFF layer presence, PR #15),
+           2026-10-17 (stage 7 patch: bookkeeping + cites + nits, PR #16)
 source-of-truth chain:
   upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
                    (xml/dis_7_2012/* — byte-verified identical to the
@@ -116,3 +117,20 @@ stage 6 (2026-10-17, v0.12.0 — PR #15, branch iff-layer-presence):
                    layer fields (L3/L4 unions); the six IFF
                    FIELD_OVERRIDES entries retire at the convergence
                    round (locked-test review — wire-shape change)
+
+stage 7 (2026-10-17, v0.12.1 — PR #16, branch v0.12.1-patch):
+  change:          comments + scripts only, no wire shapes: (a) the ten
+                   stage-1/2 drift residuals recorded in
+                   check_consistency EXPECTED with stage-log provenance
+                   — gate E passes against the pinned upstream for the
+                   first time (issue #13); (b) the SMWR class cites
+                   5.12.4.N -> 7.11.N and IO 5.13.3.1/5.13.4.1 ->
+                   7.12.2/7.12.3, completing the cite-renumbering
+                   convention across all PDU families (issue #8
+                   remainder); (c) the changeOptions 6.2.13 cite and
+                   SilentEntitySystem comment typos (issue #10).
+  evidence:        docs/v0.12.1-patch-evidence.md (per-item before/
+                   after + PDF headings + provenance)
+  gates:           validate.py + check_consistency.py green in both the
+                   default and pinned-upstream (SPEC_UPSTREAM_DIR)
+                   invocations
