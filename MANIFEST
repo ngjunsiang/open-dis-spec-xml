@@ -1,4 +1,4 @@
-# Build manifest — v0.12.4
+# Build manifest — v0.12.5
 generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-16 (stage 3 Annex C radio-system records),
            2026-10-16 (stage 4 comment enrichment),
@@ -7,7 +7,8 @@ generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-17 (stage 7 patch: bookkeeping + cites + nits, PR #16),
            2026-10-17 (stage 8 vocabulary: product() + derived, PR #17),
            2026-10-17 (stage 9 Silent Aggregate System, PR #18),
-           2026-10-17 (stage 10 patch: issue 9/12 resolutions, PR #19)
+           2026-10-17 (stage 10 patch: issue 9/12 resolutions, PR #19),
+           2026-10-17 (stage 11 alignment invariant + element fixes, PR #20)
 source-of-truth chain:
   upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
                    (xml/dis_7_2012/* — byte-verified identical to the
@@ -198,3 +199,32 @@ stage 10 (2026-10-17, v0.12.4 — PR #19, branch datum-id-registers):
   evidence:        docs/issue-9-resolution-evidence.md
   gates:           validate.py + check_consistency.py green in both
                    invocations (the deletion changes no model content)
+
+stage 11 (2026-10-17, v0.12.5 — PR #20, branch alignment-invariant):
+  change:          new check_consistency gate G locks the 6.3.2
+                   record-section alignment invariant (PDU-anchored
+                   position walk; preoffset recursion for wrapper
+                   records per 6.2.83's 16-bit and 6.2.73's 32-bit
+                   counts; Datum stream-pad family excluded per
+                   6.2.37/6.2.93; variable-content preservation;
+                   mutation-tested). Design item 4 (padtoboundary
+                   scope="record") closed no-term-needed: 6.3.2
+                   mandates the PDU-offset frame and no divergence
+                   site exists (the IFF PDU's unaligned-64 context is
+                   answered by 6.2.43's NOTE with a 32-bit record
+                   family). The gate's discovery scan exposed and
+                   fixed three wrapper-as-element wire bugs:
+                   SetRecordReliablePdu/RecordReliablePdu.recordSets
+                   -> RecordSpecificationElement (Tables 209/210), and
+                   DirectedEnergyFirePdu.dERecords ->
+                   StandardVariableRecord (7.3.4 o) — element swaps
+                   only; the wrappers become unreferenced orphans.
+  evidence:        docs/alignment-invariant-evidence.md (incl. the
+                   DE Fire extraction-artifact correction); design-doc
+                   item-4 closure appendix
+  gates:           validate.py + check_consistency.py (new G) green in
+                   both invocations; gate E unchanged (swaps are
+                   drift-invisible)
+  downstream:      three wire deltas for the next round (the -R record
+                   PDUs' flat record-set lists; DE Fire's generic SV
+                   record list)
