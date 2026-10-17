@@ -1,4 +1,4 @@
-# Build manifest — v0.12.3
+# Build manifest — v0.12.4
 generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-16 (stage 3 Annex C radio-system records),
            2026-10-16 (stage 4 comment enrichment),
@@ -6,7 +6,8 @@ generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-17 (stage 6 IFF layer presence, PR #15),
            2026-10-17 (stage 7 patch: bookkeeping + cites + nits, PR #16),
            2026-10-17 (stage 8 vocabulary: product() + derived, PR #17),
-           2026-10-17 (stage 9 Silent Aggregate System, PR #18)
+           2026-10-17 (stage 9 Silent Aggregate System, PR #18),
+           2026-10-17 (stage 10 patch: issue 9/12 resolutions, PR #19)
 source-of-truth chain:
   upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
                    (xml/dis_7_2012/* — byte-verified identical to the
@@ -179,3 +180,21 @@ stage 9 (2026-10-17, v0.12.3 — PR #18, branch silent-aggregate-system):
                    list[SilentAggregateSystem] at the next repin (a
                    wire delta for the following round; the v0.12.2
                    alignment pinned before this wave)
+
+stage 10 (2026-10-17, v0.12.4 — PR #19, branch datum-id-registers):
+  change:          no wire or model change. (a) #12 resolved as a
+                   no-op with evidence: 6.2.37 a)/6.2.93 a) literally
+                   cite [UID 66] for datum IDs and REF-010's uid 64/65
+                   are the repair registers — the existing binding is
+                   PDF-mandated (issue closed). (b) #9 closed on two
+                   user rulings: IntercomCommunicationsParameters.
+                   recordLength stays visible wire state (stored 6.2.46
+                   b) octet count sizes the payload; derivedExpression
+                   stays parked), recorded in the field comment; and
+                   the legacy De* hierarchy retired — it was entirely a
+                   196-line commented-out block (DMcG prose + classes),
+                   deleted as dead source text. Flagged: the
+                   neighboring commented DamageDescriptionRecord block.
+  evidence:        docs/issue-9-resolution-evidence.md
+  gates:           validate.py + check_consistency.py green in both
+                   invocations (the deletion changes no model content)
