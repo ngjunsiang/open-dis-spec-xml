@@ -177,7 +177,7 @@
 
         <attribute name="dERecords" comment="Fields shall contain one or more DE records, records shall conform to the variable record format (Section6.2.82), Section 7.3.4">
             <objectlist countFieldName="numberOfDERecords">
-                <classRef name="StandardVariableSpecification"/>
+                <classRef name="StandardVariableRecord"/><!-- 7.3.4 o): DE records (6.2.20) in the 6.2.83 SV format; may contain other SV records -->
             </objectlist>
         </attribute>
     </class>

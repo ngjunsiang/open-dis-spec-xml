@@ -218,6 +218,128 @@ def resolves(m, cls_name, path, seen=()):
     return False
 
 
+
+# ============================================ G. 6.3.2 record-section alignment
+# 6.3.2: "Each record in a PDU shall start at an offset [from the
+# beginning of the PDU] that is a multiple of the size of the largest
+# field in the record." With the per-family record-length-multiple
+# rules (6.2.8.1, 6.2.43, 6.2.46, 6.2.73 g, 6.2.83, Tables 68-70,
+# Table 130, Table C.4), record sections must START aligned to their
+# pad boundary -- e.g. 6.2.83 states it outright: "The first SV record
+# ... shall start on a 64-bit boundary. Therefore, the Number of
+# Standard Variable Records field starts 16 bits before a 64-bit
+# boundary." This gate locks that invariant (verified to hold across
+# the whole set; design item 4 of docs/vocabulary-extensions-design.md
+# resolved no-term-needed on this basis).
+#
+# Excluded: the Datum stream-pad family -- Fixed/Variable Datum records
+# pad the stream to a 64-bit boundary (6.2.37/6.2.93, "Padding to
+# 64-bit boundary" rows) with NO record-length-multiple rule, and the
+# -R PDU tables legitimately host them at ==32 mod 64 starts.
+STREAM_PAD_ELEMENTS = {"VariableDatum", "FixedDatum"}
+
+
+def _pad_sites(ev, cls_name, depth=0):
+    """{boundary_bits: preoffset_bits} for pad-hosting in cls_name.
+
+    preoffset = size of the fields before the alignment point: 0 when
+    the class carries the padtoboundary itself (record start must be
+    aligned); the prefix before the pad-hosting list for wrapper
+    records (StandardVariableSpecification's 16-bit count per 6.2.83,
+    RecordSpecification's 32-bit count per 6.2.73/Table 105).
+    """
+    out = {}
+    fields = ev.fields(cls_name)
+    pos = 0
+    vals = {an: 0 for an, _ in fields}
+    for an, a in fields:
+        for ch in a:
+            if tag_of(ch) == "padtoboundary":
+                out.setdefault(int(ch.get("length")), 0)
+        for cr in a.iter("classRef"):
+            tgt = cr.get("initialClass") or cr.get("name")
+            if tgt in ev.classes and depth == 0:
+                for n, pre in _pad_sites(ev, tgt, depth + 1).items():
+                    out.setdefault(n, pos + pre)
+        try:
+            pos += ev.size_attr(an, a, dict(vals), pos)
+        except Exception:
+            pass
+    return out
+
+
+def gate_alignment_invariant(m):
+    ev = SizeEval(m.trees)
+    problems = []
+    for f, c in m.classes():
+        cn = c.get("name")
+        if not _is_pdu(m, cn):
+            continue  # the invariant is PDU-anchored (6.3.2); records'
+            # internal sites are covered via the hosts' preoffset
+            # recursion; wrappers (RecordSpecification,
+            # StandardVariableSpecification) and orphans ride no wire
+        fields = ev.fields(cn)
+        vals = {an: 0 for an, _ in fields}
+        for _, a in fields:
+            for lst in a.iter():
+                if tag_of(lst) in ("objectlist", "primitivelist"):
+                    for k in ("countExpression", "bitCountExpression"):
+                        e = lst.get(k)
+                        if e:
+                            for pm in re.finditer(r"product\('([^']+)'\)", e):
+                                vals[pm.group(1).split(".")[0]] = []
+        pos = 0
+        for idx, (aname, a) in enumerate(fields):
+            for cr in a.iter("classRef"):
+                tgt = cr.get("initialClass") or cr.get("name")
+                if tgt in STREAM_PAD_ELEMENTS or tgt not in ev.classes:
+                    continue
+                for n, pre in _pad_sites(ev, tgt).items():
+                    if tgt in STREAM_PAD_ELEMENTS:
+                        continue
+                    if (pos + pre) % n != 0:
+                        problems.append(
+                            f"{f}:{cn}.{aname} -> {tgt}: section start "
+                            f"{pos + pre} mod {n} = {(pos + pre) % n} "
+                            "(6.3.2)")
+                    # variable content before the section preserves n
+                    for pname, pa in fields[:idx]:
+                        for lst in pa.iter():
+                            if tag_of(lst) != "objectlist":
+                                continue
+                            for cr2 in lst.iter("classRef"):
+                                e2 = cr2.get("initialClass") or cr2.get("name")
+                                if e2 in ev.classes and e2 not in \
+                                        STREAM_PAD_ELEMENTS:
+                                    try:
+                                        s = ev.size_class(e2, dict(vals))
+                                        if s % n != 0:
+                                            problems.append(
+                                                f"{f}:{cn}.{aname}: "
+                                                f"preceding element {e2} "
+                                                f"size {s} mod {n} = "
+                                                f"{s % n}")
+                                    except Exception:
+                                        pass
+            try:
+                pos += ev.size_attr(aname, a, dict(vals), pos)
+            except Exception:
+                pass
+    check(not problems, "G. 6.3.2 record-section alignment invariant "
+          "(pad-hosting sections start on their boundary)", problems)
+
+
+def _is_pdu(m, cn):
+    """Class whose inheritance chain roots in a PDU family base."""
+    chain, cur = set(), cn
+    while cur not in (None, "root") and cur not in chain:
+        chain.add(cur)
+        hits = m.decl.get(cur)
+        cur = hits[0][1].get("inheritsFrom") if hits else None
+    return any(x.endswith("FamilyPdu") or x in ("PduBase", "Pdu")
+               for x in chain)
+
+
 def gate_semantic_refs(m):
     problems = []
     for f, c in m.classes():
@@ -668,6 +790,7 @@ def main():
     gate_references(m)
     gate_semantic_refs(m)
     gate_derived_counts(m)
+    gate_alignment_invariant(m)
     gate_variant_groups(m)
     gate_type_uid_unique(m)
     gate_drift()

@@ -228,3 +228,20 @@ misaligned upstream would diverge (the downstream replacement review's
    prerequisite for clean drift review of any wave.)
 3. **Item 4** rides the next wave that touches SV records, or stands
    alone when prioritized.
+
+## Item 4 — resolved no-term-needed (2026-10-17, v0.12.5)
+
+§6.3.2 Alignment settles the boundary question: the frame is
+PDU-relative ("Each record in a PDU shall start at an offset [from the
+beginning of the PDU] that is a multiple of the size of the largest
+field in the record"), and §6.2.83 makes the record-family consequence
+explicit ("The first SV record … shall start on a 64-bit boundary.
+Therefore, the Number of Standard Variable Records field starts 16
+bits before a 64-bit boundary"). The scan for this resolution verified
+every pad-hosting record section in the set starts aligned to its
+family boundary, and the standard's one genuinely unaligned-64 context
+is answered by §6.2.43's NOTE — a 32-bit record family for the IFF
+PDU, not relative padding. No divergence site exists; no term ships.
+The invariant is locked instead by check_consistency gate G (with the
+three wrapper-as-element fixes its discovery exposed). Full account:
+`docs/alignment-invariant-evidence.md`.
