@@ -1,8 +1,9 @@
-# Build manifest — v0.11.0
+# Build manifest — v0.12.0
 generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-16 (stage 3 Annex C radio-system records),
            2026-10-16 (stage 4 comment enrichment),
-           2026-10-17 (stage 5 spec corrections, PR #6)
+           2026-10-17 (stage 5 spec corrections, PR #6),
+           2026-10-17 (stage 6 IFF layer presence, PR #15)
 source-of-truth chain:
   upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
                    (xml/dis_7_2012/* — byte-verified identical to the
@@ -85,6 +86,33 @@ stage 5 (2026-10-17, v0.11.0 — PR #6, branch spec-corrections):
   gates:           validate.py 8f (SystemIdentifier == Table 118's 48
                    bits); check_consistency EXPECTED gained this wave
   erratum (2026-10-17): item 10's cite pass missed the EntityManagement
-  family (5.9.2.2/5.9.3.1/5.9.5 -> 7.8.2/7.8.3/7.8.5, TransferOwnership
-  gained its missing 7.8.4, "dyanic" -> "dynamic") — completed on main
-  before v0.11.1
+                   family (5.9.2.2/5.9.3.1/5.9.5 -> 7.8.2/7.8.3/7.8.5, TransferOwnership
+                   gained its missing 7.8.4, "dyanic" -> "dynamic") — completed on main
+                   before v0.11.1
+
+stage 6 (2026-10-17, v0.12.0 — PR #15, branch iff-layer-presence):
+  change:          IFF PDU layers 2-5 became presence-conditional using
+                   the existing conditional vocabulary (first
+                   implementation of the vocabulary-gap design, PR #14 /
+                   issue #5 — no new terms): presentIf on the Layer 1
+                   Information Layers bits (6.2.39 c, 6.2.45 a / Table 74:
+                   bit N = Layer N); the L3/L4 format pairs folded into
+                   when= variant groups keyed on the Layer 1 System Type
+                   [UID 82], with the Change/Options
+                   Transponder/Interrogator Indicator (Table B.5 bit 4)
+                   refining the Combined I/Ts (B.5.13/B.5.14); the
+                   transponder format is the no-when default because
+                   L3/L4 are Conditionally Required for any system type
+                   with an added capability (B.5.1.1 b 2/3, Table B.63).
+  evidence:        docs/iff-layer-presence-evidence.md (per-attribute
+                   before/after + PDF quotes; survey self-correction
+                   recorded — Table 170's Mode 5 Transponder Basic Data
+                   is 128 bits, not the initially mis-read 192)
+  gates:           validate.py 8k (11 presence/format/CIT cases vs
+                   Tables 165/167-173); check_consistency.py EXPECTED
+                   gained the fold (+iFFPduLayer3Data/iFFPduLayer4Data,
+                   - the four format attributes)
+  downstream:      the generated IFF PDU surface becomes four optional
+                   layer fields (L3/L4 unions); the six IFF
+                   FIELD_OVERRIDES entries retire at the convergence
+                   round (locked-test review — wire-shape change)
