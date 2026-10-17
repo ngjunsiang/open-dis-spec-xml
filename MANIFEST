@@ -1,11 +1,12 @@
-# Build manifest — v0.12.2
+# Build manifest — v0.12.3
 generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-16 (stage 3 Annex C radio-system records),
            2026-10-16 (stage 4 comment enrichment),
            2026-10-17 (stage 5 spec corrections, PR #6),
            2026-10-17 (stage 6 IFF layer presence, PR #15),
            2026-10-17 (stage 7 patch: bookkeeping + cites + nits, PR #16),
-           2026-10-17 (stage 8 vocabulary: product() + derived, PR #17)
+           2026-10-17 (stage 8 vocabulary: product() + derived, PR #17),
+           2026-10-17 (stage 9 Silent Aggregate System, PR #18)
 source-of-truth chain:
   upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
                    (xml/dis_7_2012/* — byte-verified identical to the
@@ -158,3 +159,23 @@ stage 8 (2026-10-17, v0.12.2 — PR #17, branch v0.12.2-vocabulary):
   downstream:      inert until consumed; when the generator adopts
                    them, the GriddedData FIELD_OVERRIDES and the
                    count-property curation retire
+
+stage 9 (2026-10-17, v0.12.3 — PR #18, branch silent-aggregate-system):
+  change:          Table 183's Silent Aggregate System record authored
+                   (numberOfAggregates u16 — genuine wire state, no
+                   list follows: visible, not hidden/derived — plus
+                   padding u16 and aggregateType -> AggregateType
+                   6.2.5), and AggregateStatePdu.
+                   silentAggregateSystemList rewired from the 64-bit
+                   EntityType placeholder to it (the 96N term of
+                   Table 183's total). Template: the v0.11.0
+                   SilentEntitySystem fix (issue #7).
+  evidence:        docs/silent-aggregate-system-evidence.md
+  gates:           validate.py 8m (SilentAggregateSystem == 96 bits);
+                   drift EXPECTED +classes (element swap
+                   attr-name-invisible); no full-PDU gate — Table
+                   183's fixed total is the #11 erratum candidate
+  downstream:      silentAggregateSystemList becomes
+                   list[SilentAggregateSystem] at the next repin (a
+                   wire delta for the following round; the v0.12.2
+                   alignment pinned before this wave)
