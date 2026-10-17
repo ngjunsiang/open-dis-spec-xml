@@ -254,7 +254,41 @@ def gate_semantic_refs(m):
                     v = lst.get(k)
                     if not v:
                         continue
-                    for var in re.findall(r"[A-Za-z_][A-Za-z0-9_]*", v):
+                    # product(listField.elementField): the one function
+                    # form — validate the path reaches a field of the
+                    # list's concrete element class (initialClass is the
+                    # declared variant carrier; the bare classRef name is
+                    # an abstract parent and not a wire element)
+                    for pm in re.finditer(
+                            r"product\(\s*'?([A-Za-z_][A-Za-z0-9_.]*)'?\s*\)",
+                            v):
+                        ppath = pm.group(1)
+                        hops = ppath.split(".")
+                        if len(hops) != 2 or hops[0] not in fields:
+                            problems.append(f"{where} {k} product() arg "
+                                            f"{ppath!r} must be "
+                                            "listField.elementField")
+                            continue
+                        ol = fields[hops[0]].find("objectlist")
+                        elems = []
+                        if ol is not None:
+                            for cr in ol.iter("classRef"):
+                                elems.append(cr.get("initialClass")
+                                             or cr.get("name"))
+                        if not elems:
+                            problems.append(f"{where} {k} product() arg "
+                                            f"{hops[0]!r} not an "
+                                            "objectlist")
+                        for ecn in elems:
+                            if hops[1] not in m.flat_fields(ecn):
+                                problems.append(
+                                    f"{where} {k} product() field "
+                                    f"{hops[1]!r} missing on element "
+                                    f"{ecn}")
+                    plain = re.sub(
+                        r"product\(\s*'?[A-Za-z_][A-Za-z0-9_.]*'?\s*\)",
+                        " ", v)
+                    for var in re.findall(r"[A-Za-z_][A-Za-z0-9_]*", plain):
                         if var not in fields:
                             problems.append(f"{where} {k} variable {var!r} "
                                             "unknown")
@@ -266,6 +300,50 @@ def gate_semantic_refs(m):
                                     "unresolvable")
     check(not problems, "C. condition/count field references resolve",
           problems)
+
+
+def gate_derived_counts(m):
+    """derived="true": a count that is computed state, never stored —
+    v1 binding: cardinality of the single list whose countFieldName (or
+    countListFieldName) names this field. Byte/formula lengths
+    (recordLength = 6+K+P, octet lengths) stay hidden-only."""
+    problems = []
+    for f, c in m.classes():
+        cn = c.get("name")
+        fields = m.flat_fields(cn)
+        refs = {}
+        for a in c.findall("attribute"):
+            for lst in a.iter():
+                if tag_of(lst) not in ("objectlist", "primitivelist"):
+                    continue
+                for k in ("countFieldName", "countListFieldName"):
+                    n = lst.get(k)
+                    if n:
+                        refs[n] = refs.get(n, 0) + 1
+        for a in c.findall("attribute"):
+            if a.get("derived") != "true":
+                continue
+            an = a.get("name")
+            where = f"{f}:{cn}.{an}"
+            prim = a.find("primitive")
+            if prim is None:
+                problems.append(f"{where}: derived requires a primitive "
+                                "child")
+            elif prim.get("defaultValue") is not None:
+                problems.append(f"{where}: derived count cannot carry a "
+                                "defaultValue")
+            if a.get("hidden") != "true":
+                problems.append(f"{where}: derived counts are also "
+                                "marshaller-managed (hidden)")
+            if refs.get(an, 0) < 1:
+                problems.append(f"{where}: derived must be named by a "
+                                "list count (found none)")
+            # >=1, not exactly 1: a partitioned count may name several
+            # lists (MinefieldDataPdu's dataFilter-gated per-mine lists
+            # all reference numberOfMinesInThisPdu; the primary list is
+            # mineLocation)
+    check(not problems, "C2. derived counts: primitive, defaultless, "
+          "hidden, named by a list count", problems)
 
 
 def exprs_of(c):
@@ -587,6 +665,7 @@ def main():
     m = Model(FIXED)
     gate_references(m)
     gate_semantic_refs(m)
+    gate_derived_counts(m)
     gate_variant_groups(m)
     gate_type_uid_unique(m)
     gate_drift()

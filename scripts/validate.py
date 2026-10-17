@@ -371,7 +371,20 @@ class SizeEval:
 
     def arith(self, expr, values):
         env = {k: v for k, v in values.items() if isinstance(v, int)}
-        return int(eval(expr, {"__builtins__": {}}, env))
+
+        def product(path):
+            # countExpression product('listField.elementField'): the
+            # values dict carries the list under the list field's name,
+            # as ints or as maps; the product runs over the per-element
+            # field (Table 192: G = V x prod(Nk))
+            listfield, field = path.split(".")
+            vals = values[listfield]
+            out = 1
+            for v in vals:
+                out *= int(v if isinstance(v, int) else v[field])
+            return out
+
+        return int(eval(expr, {"__builtins__": {}, "product": product}, env))
 
 
 def gate_size_spot_checks(trees):
@@ -625,6 +638,30 @@ def gate_size_spot_checks(trees):
             print(f"   IFF PDU {label}: computed {got}, tables say {want}")
     check(ok, "gate 8k: IFF PDU layer presence/format sizing "
               "(Tables 165/167-173; Information Layers bits + [UID 82])")
+
+    # ---- Gridded Data PDU vs Table 192: total = 512 + sum(8Ki) +
+    # sum(8Dj); G ("the number of grid points in the PDU, which is
+    # V prod(Nk)") is expressed as a product() countExpression. Records
+    # evaluate at their declared carriers' sizes (GridAxisDescriptor
+    # parent = 160, GridData parent = 32 with empty payloads).
+    ok = True
+    for label, vals, want in (
+        ("no axes (fixed part; V=0 -> G=0)", {"numberOfGridAxes": 0,
+         "gridAxisDescriptors": [], "vectorDimension": 0}, 512),
+        ("two axes 4x2, V=1 -> G=8",
+         {"numberOfGridAxes": 2, "gridAxisDescriptors": [4, 2],
+          "vectorDimension": 1}, 512 + 2 * 160 + 8 * 32),
+        ("two axes 4x2, V=3 -> G=24",
+         {"numberOfGridAxes": 2, "gridAxisDescriptors": [4, 2],
+          "vectorDimension": 3}, 512 + 2 * 160 + 24 * 32),
+    ):
+        got = ev.size_class("GriddedDataPdu", dict(vals))
+        if got != want:
+            ok = False
+            print(f"   GriddedDataPdu {label}: computed {got}, "
+                  f"expected {want}")
+    check(ok, "gate 8l: GriddedDataPdu == Table 192 (512 fixed; "
+              "G = V x prod(Nk) via countExpression)")
 
 
 def main():

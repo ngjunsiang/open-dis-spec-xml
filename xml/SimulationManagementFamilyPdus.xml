@@ -107,11 +107,11 @@
             <sisoenum type="ActionRequestActionID" comment="uid 71" uid="71" size="32"/>
         </attribute>
     
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Number of fixed datum records">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Number of fixed datum records">
             <primitive type="uint32"/>
         </attribute>
     
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
             <primitive type="uint32"/>
         </attribute>
     
@@ -141,11 +141,11 @@
             <sisoenum type="ActionResponseRequestStatus" comment="uid 72" uid="72" size="32"/>
         </attribute>
     
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Number of fixed datum records">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Number of fixed datum records">
             <primitive type="uint32"/>
         </attribute>
     
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
             <primitive type="uint32"/>
         </attribute>
     
@@ -175,11 +175,11 @@
             <primitive type="uint32"/>
         </attribute>
       
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Number of fixed datum records">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Number of fixed datum records">
             <primitive type="uint32"/>
         </attribute>
       
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
             <primitive type="uint32"/>
         </attribute>
       
@@ -209,11 +209,11 @@
             <primitive type="uint32" defaultValue="0"/>
         </attribute>
       
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Number of fixed datum records">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Number of fixed datum records">
             <primitive type="uint32"/>
         </attribute>
       
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
             <primitive type="uint32"/>
         </attribute>
       
@@ -243,11 +243,11 @@
             <primitive type="uint32" defaultValue="0"/>
         </attribute>
       
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Number of fixed datum records">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Number of fixed datum records">
             <primitive type="uint32"/>
         </attribute>
       
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
             <primitive type="uint32"/>
         </attribute>
       
@@ -278,11 +278,11 @@
             <primitive type="uint32" defaultValue="0"/>
         </attribute>
       
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Number of fixed datum records">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Number of fixed datum records">
             <primitive type="uint32"/>
         </attribute>
       
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
             <primitive type="uint32"/>
         </attribute>
       
@@ -305,11 +305,11 @@
     
         <initialValue name="pduType" value="DisPduType.COMMENT"/>
     
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Number of fixed datum records, not used in this Pdu (7.5.13 b: shall be set to zero; list kept so malformed-but-parseable datagrams still round-trip)">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Number of fixed datum records, not used in this Pdu (7.5.13 b: shall be set to zero; list kept so malformed-but-parseable datagrams still round-trip)">
             <primitive type="uint32"/>
         </attribute>
 
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
             <primitive type="uint32"/>
         </attribute>
 
