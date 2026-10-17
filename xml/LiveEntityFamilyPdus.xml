@@ -148,7 +148,7 @@
             <classRef name="LiveEntityIdentifier"/>
         </attribute>
         
-        <attribute name="numberOfParameterRecords" hidden="true">
+        <attribute name="numberOfParameterRecords" derived="true" hidden="true">
             <primitive type="uint8"/>
         </attribute>
         

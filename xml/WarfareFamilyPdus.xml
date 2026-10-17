@@ -87,7 +87,7 @@
             <sisoenum type="DetonationResult" comment="uid 62" uid="62" size="8"/>
         </attribute>
 
-        <attribute name="numberOfVariableParameters" hidden="true" comment="How many articulation parameters we have, Section 7.3.3 ">
+        <attribute name="numberOfVariableParameters" derived="true" hidden="true" comment="How many articulation parameters we have, Section 7.3.3 ">
             <primitive type="uint8"/>
         </attribute>
 
@@ -171,7 +171,7 @@
             <primitive type="uint16"/>
         </attribute>
 
-        <attribute name="numberOfDERecords" hidden="true" comment="Field shall specify the number of DE records, Section 7.3.4 ">
+        <attribute name="numberOfDERecords" derived="true" hidden="true" comment="Field shall specify the number of DE records, Section 7.3.4 ">
             <primitive type="uint16"/>
         </attribute>
 
@@ -198,8 +198,8 @@
             <primitive type="uint16" defaultValue="0"/>
         </attribute>
 
-        <attribute name="numberOfDamageDescription" hidden="true" comment="field shall specify the number of Damage Description records, Section 7.3.5">
-            <primitive type="uint16" defaultValue="0"/>
+        <attribute name="numberOfDamageDescription" derived="true" hidden="true" comment="field shall specify the number of Damage Description records, Section 7.3.5">
+            <primitive type="uint16"/>
         </attribute>
    
         <attribute name="damageDescriptionRecords" comment="Fields shall contain one or more Damage Description records (see 6.2.17) and may contain other Standard Variable records, Section 7.3.5">

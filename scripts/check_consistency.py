@@ -302,6 +302,50 @@ def gate_semantic_refs(m):
           problems)
 
 
+def gate_derived_counts(m):
+    """derived="true": a count that is computed state, never stored —
+    v1 binding: cardinality of the single list whose countFieldName (or
+    countListFieldName) names this field. Byte/formula lengths
+    (recordLength = 6+K+P, octet lengths) stay hidden-only."""
+    problems = []
+    for f, c in m.classes():
+        cn = c.get("name")
+        fields = m.flat_fields(cn)
+        refs = {}
+        for a in c.findall("attribute"):
+            for lst in a.iter():
+                if tag_of(lst) not in ("objectlist", "primitivelist"):
+                    continue
+                for k in ("countFieldName", "countListFieldName"):
+                    n = lst.get(k)
+                    if n:
+                        refs[n] = refs.get(n, 0) + 1
+        for a in c.findall("attribute"):
+            if a.get("derived") != "true":
+                continue
+            an = a.get("name")
+            where = f"{f}:{cn}.{an}"
+            prim = a.find("primitive")
+            if prim is None:
+                problems.append(f"{where}: derived requires a primitive "
+                                "child")
+            elif prim.get("defaultValue") is not None:
+                problems.append(f"{where}: derived count cannot carry a "
+                                "defaultValue")
+            if a.get("hidden") != "true":
+                problems.append(f"{where}: derived counts are also "
+                                "marshaller-managed (hidden)")
+            if refs.get(an, 0) < 1:
+                problems.append(f"{where}: derived must be named by a "
+                                "list count (found none)")
+            # >=1, not exactly 1: a partitioned count may name several
+            # lists (MinefieldDataPdu's dataFilter-gated per-mine lists
+            # all reference numberOfMinesInThisPdu; the primary list is
+            # mineLocation)
+    check(not problems, "C2. derived counts: primitive, defaultless, "
+          "hidden, named by a list count", problems)
+
+
 def exprs_of(c):
     out = []
     for a in c.findall("attribute"):
@@ -621,6 +665,7 @@ def main():
     m = Model(FIXED)
     gate_references(m)
     gate_semantic_refs(m)
+    gate_derived_counts(m)
     gate_variant_groups(m)
     gate_type_uid_unique(m)
     gate_drift()

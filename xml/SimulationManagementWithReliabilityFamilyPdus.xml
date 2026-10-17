@@ -169,11 +169,11 @@
             <sisoenum type="ActionRequestActionID" comment="uid 71" uid="71" size="32"/>
         </attribute>
    
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Fixed datum record count">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Fixed datum record count">
             <primitive type="uint32"/>
         </attribute>
    
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="variable datum record count">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="variable datum record count">
             <primitive type="uint32"/>
         </attribute>
    
@@ -206,11 +206,11 @@
             <sisoenum type="ActionResponseRequestStatus" comment="uid 72" uid="72" size="32"/>
         </attribute>
    
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Fixed datum record count">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Fixed datum record count">
             <primitive type="uint32"/>
         </attribute>
    
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="variable datum record count">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="variable datum record count">
             <primitive type="uint32"/>
         </attribute>
    
@@ -254,11 +254,11 @@
             <primitive type="uint32"/>
         </attribute>
    
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Fixed datum record count">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Fixed datum record count">
             <primitive type="uint32"/>
         </attribute>
    
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="variable datum record count">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="variable datum record count">
             <primitive type="uint32"/>
         </attribute>
    
@@ -298,11 +298,11 @@
             <primitive type="uint32"/>
         </attribute>
    
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Fixed datum record count">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Fixed datum record count">
             <primitive type="uint32"/>
         </attribute>
    
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="variable datum record count">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="variable datum record count">
             <primitive type="uint32"/>
         </attribute>
    
@@ -341,11 +341,11 @@
             <primitive type="uint16"/>
         </attribute>
    
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Fixed datum record count">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Fixed datum record count">
             <primitive type="uint32"/>
         </attribute>
    
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="variable datum record count">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="variable datum record count">
             <primitive type="uint32"/>
         </attribute>
    
@@ -377,11 +377,11 @@
             <primitive type="uint32"/>
         </attribute>
    
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Fixed datum record count">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Fixed datum record count">
             <primitive type="uint32"/>
         </attribute>
    
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="variable datum record count">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="variable datum record count">
             <primitive type="uint32"/>
         </attribute>
    
@@ -405,11 +405,11 @@
       
         <initialValue name="pduType" value="DisPduType.COMMENT_RELIABLE"/>
    
-        <attribute name="numberOfFixedDatumRecords" hidden="true" comment="Fixed datum record count, not used in this Pdu">
+        <attribute name="numberOfFixedDatumRecords" derived="true" hidden="true" comment="Fixed datum record count, not used in this Pdu">
             <primitive type="uint32"/>
         </attribute>
    
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="variable datum record count">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="variable datum record count">
             <primitive type="uint32"/>
         </attribute>
     
@@ -452,7 +452,7 @@
             <primitive type="uint32"/>
         </attribute>
    
-        <attribute name="numberOfRecords" hidden="true" comment="numberOfRecords">
+        <attribute name="numberOfRecords" derived="true" hidden="true" comment="numberOfRecords">
             <primitive type="uint32"/>
         </attribute>
    
@@ -490,7 +490,7 @@
             <primitive type="uint32"/>
         </attribute>
         
-        <attribute name="numberOfRecordSets" hidden="true" comment="Number of record sets in list">
+        <attribute name="numberOfRecordSets" derived="true" hidden="true" comment="Number of record sets in list">
             <primitive type="uint32"/>
         </attribute>
     
@@ -527,7 +527,7 @@
             <primitive type="uint32"/>
         </attribute>
        
-        <attribute name="numberOfRecordSets" hidden="true" comment="Number of record sets in list">
+        <attribute name="numberOfRecordSets" derived="true" hidden="true" comment="Number of record sets in list">
             <primitive type="uint32"/>
         </attribute>
     

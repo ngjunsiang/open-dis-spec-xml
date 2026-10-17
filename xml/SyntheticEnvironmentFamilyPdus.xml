@@ -25,7 +25,7 @@
             <sisobitfield type="EnvironmentalProcessEnvironmentStatus" size="8" comment="uid 249" uid="249"/>
         </attribute>
        
-        <attribute name="numberOfEnvironmentRecords" hidden="true" comment="number of environment records ">
+        <attribute name="numberOfEnvironmentRecords" derived="true" hidden="true" comment="number of environment records ">
             <primitive type="uint16"/>
         </attribute>
        
@@ -65,7 +65,7 @@
             <sisoenum type="GriddedDataCoordinateSystem" comment="uid 244" uid="244" size="16"/>
         </attribute>
        
-        <attribute name="numberOfGridAxes" hidden="true" comment="number of grid axes for the environmental data">
+        <attribute name="numberOfGridAxes" derived="true" hidden="true" comment="number of grid axes for the environmental data">
             <primitive type="uint8"/>
         </attribute>
        
@@ -197,7 +197,7 @@
             <sisoenum type="ForceID" comment="uid 6" uid="6" size="8"/>
         </attribute>
    
-        <attribute name="numberOfLinearSegments" hidden="true" comment="number of linear segment parameters">
+        <attribute name="numberOfLinearSegments" derived="true" hidden="true" comment="number of linear segment parameters">
             <primitive type="uint8"/>
         </attribute>
    
@@ -257,7 +257,7 @@
             <primitive type="uint16"/>
         </attribute>
    
-        <attribute name="numberOfPoints" hidden="true" comment="Number of points">
+        <attribute name="numberOfPoints" derived="true" hidden="true" comment="Number of points">
             <primitive type="uint16"/>
         </attribute>
    

@@ -18,7 +18,7 @@
             <sisoenum type="ForceID" comment="uid 6" uid="6" size="8"/>
         </attribute>
  
-        <attribute name="numberOfVariableParameters" hidden="true" comment="How many variable parameters are in the variable length list. In earlier versions of DIS these were known as articulation parameters">
+        <attribute name="numberOfVariableParameters" derived="true" hidden="true" comment="How many variable parameters are in the variable length list. In earlier versions of DIS these were known as articulation parameters">
             <primitive type="uint8"/>
         </attribute>
 
@@ -356,7 +356,7 @@
             <primitive type="uint8" value="0"/>
         </attribute>
 
-        <attribute name="numberOfVariableParameters" hidden="true" comment="This field shall specify the number of variable parameters present. This field shall be represented by an 8-bit unsigned integer (see Annex I).">
+        <attribute name="numberOfVariableParameters" derived="true" hidden="true" comment="This field shall specify the number of variable parameters present. This field shall be represented by an 8-bit unsigned integer (see Annex I).">
             <primitive type="uint8"/>
         </attribute>
 
@@ -420,7 +420,7 @@
             <primitive type="uint8"/>
         </attribute>
 
-        <attribute name="numberAttributeRecordSet" hidden="true" comment="This field shall specify the number of Attribute Record Sets that make up the remainder of the PDU. It shall be represented by a 16-bit unsigned integer.">
+        <attribute name="numberAttributeRecordSet" derived="true" hidden="true" comment="This field shall specify the number of Attribute Record Sets that make up the remainder of the PDU. It shall be represented by a 16-bit unsigned integer.">
             <primitive type="uint16"/>
         </attribute>
 
@@ -437,7 +437,7 @@
             <classRef name="EntityID"/>
         </attribute>
         
-        <attribute name="numberOfAttributeRecords" hidden="true">
+        <attribute name="numberOfAttributeRecords" derived="true" hidden="true">
             <primitive type="uint16"/>
         </attribute>
         

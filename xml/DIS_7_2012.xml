@@ -374,11 +374,11 @@
 
     <class name="DataQueryDatumSpecification" inheritsFrom="root" comment="List of fixed and variable datum records. Section 6.2.17 ">
        
-        <attribute name="numberOfFixedDatums" hidden="true" comment="Number of fixed datums">
+        <attribute name="numberOfFixedDatums" derived="true" hidden="true" comment="Number of fixed datums">
             <primitive type="uint32"/>
         </attribute>
   
-        <attribute name="numberOfVariableDatums" hidden="true" comment="Number of variable datums">
+        <attribute name="numberOfVariableDatums" derived="true" hidden="true" comment="Number of variable datums">
             <primitive type="uint32"/>
         </attribute>
 
@@ -398,11 +398,11 @@
 
     <class name="DatumSpecification" inheritsFrom="root" comment="List of fixed and variable datum records. Section 6.2.18 ">
        
-        <attribute name="numberOfFixedDatums" hidden="true" comment="Number of fixed datums">
+        <attribute name="numberOfFixedDatums" derived="true" hidden="true" comment="Number of fixed datums">
             <primitive type="uint32"/>
         </attribute>
   
-        <attribute name="numberOfVariableDatums" hidden="true" comment="Number of variable datums">
+        <attribute name="numberOfVariableDatums" derived="true" hidden="true" comment="Number of variable datums">
             <primitive type="uint32"/>
         </attribute>
 
@@ -494,12 +494,12 @@
             <primitive type="uint16" defaultValue="0"/>
         </attribute>
    
-        <attribute name="beamAntennaPatternRecordCount" hidden="true" comment="Number of beam antenna pattern records">
-            <primitive type="uint16" defaultValue="0"/>
+        <attribute name="beamAntennaPatternRecordCount" derived="true" hidden="true" comment="Number of beam antenna pattern records">
+            <primitive type="uint16"/>
         </attribute>
    
-        <attribute name="directedEnergyTargetEnergyDepositionRecordCount" hidden="true" comment="Number of DE target energy deposition records">
-            <primitive type="uint16" defaultValue="0"/>
+        <attribute name="directedEnergyTargetEnergyDepositionRecordCount" derived="true" hidden="true" comment="Number of DE target energy deposition records">
+            <primitive type="uint16"/>
         </attribute>
    
         <attribute name="beamAntennaParameterList" comment="list of beam antenna records. See 6.2.8.2">
@@ -1268,7 +1268,7 @@
 
     <class name="GridAxisDescriptorVariable" inheritsFrom="GridAxisDescriptor" comment="Grid axis descriptor for variable spacing axis data. Section 6.2.40.">
         
-        <attribute name="numberOfPointsOnXiAxis" hidden="true" comment="Number of grid locations along Xi axis (derived from xiValues)">
+        <attribute name="numberOfPointsOnXiAxis" derived="true" hidden="true" comment="Number of grid locations along Xi axis (derived from xiValues)">
             <primitive type="uint16"/>
         </attribute>
     
@@ -1316,7 +1316,7 @@
    
     <class name="GridDataType0" inheritsFrom="GridData" comment="6.2.41, table 68">
 
-        <attribute name="numberOfBytes" hidden="true">
+        <attribute name="numberOfBytes" derived="true" hidden="true">
             <primitive type="uint16"/>
         </attribute>
         
@@ -1348,7 +1348,7 @@
             <primitive type="float32"/>
         </attribute>
         
-        <attribute name="numberOfValues" hidden="true">
+        <attribute name="numberOfValues" derived="true" hidden="true">
             <primitive type="uint16"/>
         </attribute>
         
@@ -1372,7 +1372,7 @@
     
     <class name="GridDataType2" inheritsFrom="GridData" comment="6.2.41, table 70">
 
-        <attribute name="numberOfValues" hidden="true">
+        <attribute name="numberOfValues" derived="true" hidden="true">
             <primitive type="uint16"/>
         </attribute>
         
@@ -1509,7 +1509,7 @@
 
     <class name="IFFDataSpecification" inheritsFrom="root" comment="Requires hand coding to be useful. Section 6.2.43">
     
-        <attribute name="numberOfIFFDataRecords" hidden="true" comment="Number of IFF records">
+        <attribute name="numberOfIFFDataRecords" derived="true" hidden="true" comment="Number of IFF records">
             <primitive type="uint16"/>
         </attribute>
   
@@ -2044,7 +2044,7 @@
 
     <class name="RecordQuerySpecification" inheritsFrom="root" comment="The identification of the records being queried 6.2.72">
 
-        <attribute name="numberOfRecords" hidden="true">
+        <attribute name="numberOfRecords" derived="true" hidden="true">
             <primitive type="uint32"/>
         </attribute>
 
@@ -2092,7 +2092,7 @@
 
     <class name="RecordSpecification" inheritsFrom="root" comment="This record shall specify the number of record sets contained in the Record Specification record and the record details. Section 6.2.73.">
 
-        <attribute name="numberOfRecordSets" hidden="true" comment="The number of record sets">
+        <attribute name="numberOfRecordSets" derived="true" hidden="true" comment="The number of record sets">
             <primitive type="uint32"/>
         </attribute>
 
@@ -2187,7 +2187,7 @@
             <primitive type="uint16"/>
         </attribute>
     
-        <attribute name="numberOfAppearanceRecords" hidden="true" comment="number of entity appearance records that follow">
+        <attribute name="numberOfAppearanceRecords" derived="true" hidden="true" comment="number of entity appearance records that follow">
             <primitive type="uint16"/>
         </attribute>
     

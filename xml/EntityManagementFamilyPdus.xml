@@ -49,19 +49,19 @@
             <classRef name="Vector3Float"/>
         </attribute>
       
-        <attribute name="numberOfDisAggregates" hidden="true" comment="number of aggregates">
+        <attribute name="numberOfDisAggregates" derived="true" hidden="true" comment="number of aggregates">
             <primitive type="uint16"/>
         </attribute>
       
-        <attribute name="numberOfDisEntities" hidden="true" comment="number of entities">
+        <attribute name="numberOfDisEntities" derived="true" hidden="true" comment="number of entities">
             <primitive type="uint16"/>
         </attribute>
       
-        <attribute name="numberOfSilentAggregateTypes" hidden="true" comment="number of silent aggregate types">
+        <attribute name="numberOfSilentAggregateTypes" derived="true" hidden="true" comment="number of silent aggregate types">
             <primitive type="uint16"/>
         </attribute>
       
-        <attribute name="numberOfSilentEntityTypes" hidden="true" comment="Number of silent entity types, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
+        <attribute name="numberOfSilentEntityTypes" derived="true" hidden="true" comment="Number of silent entity types, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
             <primitive type="uint16"/>
         </attribute>
       
@@ -93,7 +93,7 @@
             </objectlist>
         </attribute>
         
-        <attribute name="numberOfVariableDatumRecords" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
+        <attribute name="numberOfVariableDatumRecords" derived="true" hidden="true" comment="Number of variable datum records, handled automatically by marshaller at run time (and not modifiable by end-user programmers)">
             <primitive type="uint32"/>
         </attribute>
       
@@ -117,7 +117,7 @@
             <sisoenum type="IsGroupOfGroupedEntityCategory" comment="uid 213" uid="213" size="8"/>
         </attribute>
       
-        <attribute name="numberOfGroupedEntities" hidden="true" comment="Number of individual entities constituting the group">
+        <attribute name="numberOfGroupedEntities" derived="true" hidden="true" comment="Number of individual entities constituting the group">
             <primitive type="uint8"/>
         </attribute>
       
@@ -169,7 +169,7 @@
             <classRef name="EntityID"/>
         </attribute>
       
-        <attribute name="numberOfRecordSets" hidden="true" comment="Number of Record Sets (R), Table 185">
+        <attribute name="numberOfRecordSets" derived="true" hidden="true" comment="Number of Record Sets (R), Table 185">
             <primitive type="uint32"/>
         </attribute>
 

@@ -23,7 +23,7 @@
             <sisoenum type="ServiceRequestServiceTypeRequested" comment="uid 63" uid="63" size="8"/>
         </attribute>
 
-        <attribute name="numberOfSupplyTypes" hidden="true" comment="How many requested, Section 7.4.2">
+        <attribute name="numberOfSupplyTypes" derived="true" hidden="true" comment="How many requested, Section 7.4.2">
             <primitive type="uint8"/>
         </attribute>
 
@@ -51,7 +51,7 @@
             <classRef name="EntityID"/>
         </attribute>
 
-        <attribute name="numberOfSupplyTypes" hidden="true" comment="How many supplies types are being offered, Section 7.4.3">
+        <attribute name="numberOfSupplyTypes" derived="true" hidden="true" comment="How many supplies types are being offered, Section 7.4.3">
             <primitive type="uint8"/>
         </attribute>
 
@@ -83,7 +83,7 @@
             <classRef name="EntityID"/>
         </attribute>
 
-        <attribute name="numberOfSupplyTypes" hidden="true" comment="How many supplies are taken by receiving entity">
+        <attribute name="numberOfSupplyTypes" derived="true" hidden="true" comment="How many supplies are taken by receiving entity">
             <primitive type="uint8"/>
         </attribute>
 

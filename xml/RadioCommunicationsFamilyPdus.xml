@@ -36,7 +36,7 @@
             <sisoenum type="TransmitterInputSource" comment="uid 165" uid="165" size="8"/>
         </attribute>
   
-        <attribute name="variableTransmitterParameterCount" hidden="true" comment="Number of Variable Transmitter Parameters records (N) in the parameter records section, Table 176">
+        <attribute name="variableTransmitterParameterCount" derived="true" hidden="true" comment="Number of Variable Transmitter Parameters records (N) in the parameter records section, Table 176">
             <primitive type="uint16" default="0"/>
         </attribute>
   

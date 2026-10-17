@@ -21,7 +21,7 @@
             <sisoenum type="ForceID" comment="uid 6" uid="6" size="8"/>
         </attribute>
    
-        <attribute name="numberOfPerimeterPoints" hidden="true" comment="Number of permieter points">
+        <attribute name="numberOfPerimeterPoints" derived="true" hidden="true" comment="Number of permieter points">
             <primitive type="uint8"/>
         </attribute>
 
@@ -29,7 +29,7 @@
             <classRef name="EntityType"/>
         </attribute>
    
-        <attribute name="numberOfMineTypes" hidden="true" comment="the number of different mine types employed in the minefield">
+        <attribute name="numberOfMineTypes" derived="true" hidden="true" comment="the number of different mine types employed in the minefield">
             <primitive type="uint16"/>
         </attribute>
    
@@ -79,7 +79,7 @@
             <primitive type="uint8"/>
         </attribute>
        
-        <attribute name="numberOfPerimeterPoints" hidden="true" comment="Number of perimeter points for the minefield">
+        <attribute name="numberOfPerimeterPoints" derived="true" hidden="true" comment="Number of perimeter points for the minefield">
             <primitive type="uint8"/>
         </attribute>
        
@@ -87,7 +87,7 @@
             <primitive type="uint8"/>
         </attribute>
        
-        <attribute name="numberOfSensorTypes" hidden="true" comment="Number of sensor types">
+        <attribute name="numberOfSensorTypes" derived="true" hidden="true" comment="Number of sensor types">
             <primitive type="uint8"/>
         </attribute>
        
@@ -144,11 +144,11 @@
             <primitive type="uint8"/>
         </attribute>
    
-        <attribute name="numberOfMinesInThisPdu" hidden="true" comment="how many mines are in this PDU">
+        <attribute name="numberOfMinesInThisPdu" derived="true" hidden="true" comment="how many mines are in this PDU">
             <primitive type="uint8"/>
         </attribute>
    
-        <attribute name="numberOfSensorTypes" hidden="true" comment="how many sensor type are in this PDU">
+        <attribute name="numberOfSensorTypes" derived="true" hidden="true" comment="how many sensor type are in this PDU">
             <primitive type="uint8"/>
         </attribute>
    
@@ -306,7 +306,7 @@
             <primitive type="uint8"/>
         </attribute>
    
-        <attribute name="numberOfMissingPdus" hidden="true" comment="how many pdus were missing">
+        <attribute name="numberOfMissingPdus" derived="true" hidden="true" comment="how many pdus were missing">
             <primitive type="uint8"/>
         </attribute>
    

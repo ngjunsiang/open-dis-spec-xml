@@ -53,7 +53,7 @@
             <primitive type="uint16"/>
         </attribute>
  
-        <attribute name="numberOfIORecords" hidden="true">
+        <attribute name="numberOfIORecords" derived="true" hidden="true">
             <primitive type="uint16"/>
         </attribute>
     
@@ -97,7 +97,7 @@
             <primitive type="uint16"/>
         </attribute>
 
-        <attribute name="numberOfIORecords" hidden="true">
+        <attribute name="numberOfIORecords" derived="true" hidden="true">
             <primitive type="uint16"/>
         </attribute>
     

@@ -23,7 +23,7 @@
             <sisoenum type="ElectromagneticEmissionStateUpdateIndicator" comment="uid 77" uid="77" size="8"/>
         </attribute>
   
-        <attribute name="numberOfSystems" hidden="true" comment="This field shall specify the number of emission systems being described in the current PDU.">
+        <attribute name="numberOfSystems" derived="true" hidden="true" comment="This field shall specify the number of emission systems being described in the current PDU.">
             <primitive type="uint8"/>
         </attribute>
  
@@ -45,7 +45,7 @@
             <primitive type="uint8"/>
         </attribute>
   
-        <attribute name="numberOfBeams" hidden="true" comment="the number of beams being described in the current PDU for the emitter system being described. ">
+        <attribute name="numberOfBeams" derived="true" hidden="true" comment="the number of beams being described in the current PDU for the emitter system being described. ">
             <primitive type="uint8"/>
         </attribute>
         
@@ -95,7 +95,7 @@
             <sisoenum type="ElectromagneticEmissionBeamFunction" comment="uid 78" uid="78" size="8"/>
         </attribute>
         
-        <attribute name="numberOfTargets" hidden="true">
+        <attribute name="numberOfTargets" derived="true" hidden="true">
             <primitive type="uint8"/>
         </attribute>
         
@@ -201,15 +201,15 @@
             <primitive type="uint8"/> <!-- go with IEEE -->
         </attribute>
   
-        <attribute name="numberOfShafts" hidden="true" comment=" This field shall represent the number of shafts on a platform">
+        <attribute name="numberOfShafts" derived="true" hidden="true" comment=" This field shall represent the number of shafts on a platform">
             <primitive type="uint8"/>
         </attribute>
   
-        <attribute name="numberOfAPAs" hidden="true" comment="This field shall indicate the number of APAs described in the current UA PDU">
+        <attribute name="numberOfAPAs" derived="true" hidden="true" comment="This field shall indicate the number of APAs described in the current UA PDU">
             <primitive type="uint8"/>
         </attribute>
   
-        <attribute name="numberOfUAEmitterSystems" hidden="true" comment="This field shall specify the number of UA emitter systems being described in the current UA PDU">
+        <attribute name="numberOfUAEmitterSystems" derived="true" hidden="true" comment="This field shall specify the number of UA emitter systems being described in the current UA PDU">
             <primitive type="uint8"/>
         </attribute>
   
@@ -238,7 +238,7 @@
             <primitive type="uint8"/>
         </attribute>
   
-        <attribute name="numberOfBeams" hidden="true" comment="the number of beams being described in the current PDU for the emitter system being described.">
+        <attribute name="numberOfBeams" derived="true" hidden="true" comment="the number of beams being described in the current PDU for the emitter system being described.">
             <primitive type="uint8"/>
         </attribute>
   
@@ -304,7 +304,7 @@
             <primitive type="uint8"/>
         </attribute>
         
-        <attribute name="numberOfIFFFundamentalParameterDataRecords" hidden="true" comment="Number of IFF Fundamental Parameter Data Records (N), Table 168">
+        <attribute name="numberOfIFFFundamentalParameterDataRecords" derived="true" hidden="true" comment="Number of IFF Fundamental Parameter Data Records (N), Table 168">
             <primitive type="uint16"/>
         </attribute>
 
@@ -338,7 +338,7 @@
             <primitive type="uint16"/>
         </attribute>
         
-        <attribute name="numberOfIFFDataRecords" hidden="true" comment="Number of IFF Data Records (N), Table 170">
+        <attribute name="numberOfIFFDataRecords" derived="true" hidden="true" comment="Number of IFF Data Records (N), Table 170">
             <primitive type="uint16"/>
         </attribute>
 
@@ -412,7 +412,7 @@
             <primitive type="uint16"/>
         </attribute>
         
-        <attribute name="numberOfIFFDataRecords" hidden="true" comment="Number of IFF Data Records (N), Table 169">
+        <attribute name="numberOfIFFDataRecords" derived="true" hidden="true" comment="Number of IFF Data Records (N), Table 169">
             <primitive type="uint16"/>
         </attribute>
 
@@ -529,7 +529,7 @@
             <primitive type="uint16"/>
         </attribute>
         
-        <attribute name="numberOfIFFDataRecords" hidden="true" comment="Number of IFF Data Records (N), Table 171">
+        <attribute name="numberOfIFFDataRecords" derived="true" hidden="true" comment="Number of IFF Data Records (N), Table 171">
             <primitive type="uint16"/>
         </attribute>
 
@@ -603,7 +603,7 @@
             <primitive type="uint16"/>
         </attribute>
         
-        <attribute name="numberOfIFFDataRecords" hidden="true" comment="Number of IFF Data Records (N), Table 172">
+        <attribute name="numberOfIFFDataRecords" derived="true" hidden="true" comment="Number of IFF Data Records (N), Table 172">
             <primitive type="uint16"/>
         </attribute>
 
@@ -693,7 +693,7 @@
             <primitive type="uint16"/>
         </attribute>
         
-        <attribute name="numberOfIFFDataRecords" hidden="true" comment="Number of IFF Data Records (N), Table 173">
+        <attribute name="numberOfIFFDataRecords" derived="true" hidden="true" comment="Number of IFF Data Records (N), Table 173">
             <primitive type="uint16"/>
         </attribute>
 
@@ -725,11 +725,11 @@
             <primitive type="uint16"/>
         </attribute>   
   
-        <attribute name="numberOfPropulsionSystems" hidden="true" comment="how many propulsion systems">
+        <attribute name="numberOfPropulsionSystems" derived="true" hidden="true" comment="how many propulsion systems">
             <primitive type="uint16"/>
         </attribute>   
   
-        <attribute name="numberOfVectoringNozzleSystems" hidden="true" comment="how many vectoring nozzle systems">
+        <attribute name="numberOfVectoringNozzleSystems" derived="true" hidden="true" comment="how many vectoring nozzle systems">
             <primitive type="uint16"/>
         </attribute>   
   
