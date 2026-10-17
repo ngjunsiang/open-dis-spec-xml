@@ -248,11 +248,7 @@
             </primitivelist>
         </attribute>
 
-        <!--<attribute name="paddingTo64Bits" comment="Padding necessary to put the end of the record on a 64-bit boundary">
-            <primitivelist length="2">
-                <primitive type="uint8"/>
-            </primitivelist>
-        </attribute> -->
+        
         
        <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
             <padtoboundary length="64"/>
@@ -1029,11 +1025,7 @@
             </primitivelist>
         </attribute>
     
-        <!--<attribute name="padding2" comment="padding to bring the total size up to a 64-bit boundary">
-            <primitivelist length="0">
-                <primitive type="uint8"/>
-            </primitivelist>
-        </attribute> -->
+        
         
         <attribute name="padding2">
             <padtoboundary length="64"/>
@@ -1041,42 +1033,7 @@
 
     </class>
     
-    <!-- not present in SISO_REF_10.xml
-
-    <class name="EnvironmentType" 
-           inheritsFrom="root" 
-           comment="Description of environmental data in environmental process and gridded data PDUs. Section 6.2.32">
     
-        <attribute name="entityKind" comment="Kind of entity">
-            <primitive type="unsigned byte"/>
-        </attribute>
-    
-        <attribute name="domain" comment="Domain of entity (air, surface, subsurface, space, etc.)">
-            <primitive type="unsigned byte"/>
-        </attribute>
-    
-        <attribute name="entityClass" comment="class of environmental entity" >
-            <primitive type="unsigned short"/>
-        </attribute>
-    
-        <attribute name="category" comment="category of entity">
-            <primitive type="unsigned byte"/>
-        </attribute>
-    
-        <attribute name="subcategory" comment="subcategory of entity">
-            <primitive type="unsigned byte"/>
-        </attribute>
-    
-        <attribute name="specific" comment="specific info based on subcategory field">
-            <primitive type="unsigned byte"/>
-        </attribute>
-    
-        <attribute name="extra">
-            <primitive type="unsigned byte"/>
-        </attribute>
-    
-    </class>
--->
 
     <class name="EulerAngles" inheritsFrom="root" comment="Three floating point values representing an orientation, psi, theta, and phi, aka the euler angles, in radians. These angles shall be specified with respect to the entity's coordinate system. Section 6.2.32">
 
@@ -1121,7 +1078,6 @@
         </attribute>
     
     </class>
-
 
     <class name="Expendable" inheritsFrom="root" comment="An entity's expendable (chaff, flares, etc.) information. Section 6.2.35">
 
@@ -1290,11 +1246,7 @@
             </primitivelist>
         </attribute>
     
-        <!--<attribute name="paddingTo64" >
-            <primitivelist>
-                <primitive type="uint8" length="0"/>
-            </primitivelist>
-        </attribute> -->
+        
         
         <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
             <padtoboundary length="64"/>
@@ -1326,11 +1278,7 @@
             </primitivelist>
         </attribute>
         
-        <!--<attribute name="paddingTo16">
-            <primitivelist>
-                <primitive type="uint8" length="0"/>
-            </primitivelist>
-        </attribute> -->
+        
         
         <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
             <padtoboundary length="16"/>
@@ -1358,11 +1306,7 @@
             </primitivelist>
         </attribute>
         
-        <!--<attribute name="paddingTo32">
-            <primitivelist>
-                <primitive type="uint16" length="0"/>
-            </primitivelist> 
-        </attribute> -->
+        
         
         <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
             <padtoboundary length="32"/>
@@ -1494,18 +1438,11 @@
                 <primitive type="uint8"/>
             </primitivelist>        
         </attribute>
-        <!--
-        <attribute name="paddingTo32">
-            <primitivelist length="0">
-                <primitive type="uint8"/>
-            </primitivelist>
-        </attribute>
-        -->
+        
         <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
             <padtoboundary length="32"/>
         </attribute>
     </class>
-
 
     <class name="IFFDataSpecification" inheritsFrom="root" comment="Requires hand coding to be useful. Section 6.2.43">
     
@@ -1571,11 +1508,7 @@
             </primitivelist>
         </attribute>
         
-        <!--<attribute name="paddingTo32">
-            <primitivelist length="0">
-                <primitive type="uint8"/>
-            </primitivelist>           
-        </attribute> -->
+        
         
         <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
             <padtoboundary length="32"/>
@@ -1755,7 +1688,6 @@
 
     </class>
 
-
     <class name="MinefieldIdentifier" inheritsFrom="root" comment="The unique designation of a minefield Section 6.2.56 ">
 
         <attribute name="simulationAddress" comment="">
@@ -1893,7 +1825,6 @@
 
     </class>
 
-
     <class name="ObjectType" inheritsFrom="root" comment="The unique designation of an environmental object. Section 6.2.64">
 
         <attribute name="domain" comment="Domain of entity (air, surface, subsurface, space, etc.)">
@@ -1930,45 +1861,7 @@
         </attribute>
     </class>
 
-	<!-- not used, incorporated into Pdu class
-    <class name="PduHeader" inheritsFrom="root"
-           comment="Not used in PDU creation. The PDU Header Record is directly incoroporated into the PDU class. Section 6.2.66">
-
-        <attribute name="protocolVersion" comment="The version of the protocol. 5=DIS-1995, 6=DIS-1998, 7=DIS-2009.">
-            <primitive type= "uint8" defaultValue="7"/>
-        </attribute>
-  
-        <attribute name="exerciseID" comment="Exercise ID provides a unique identifier">
-            <primitive type= "uint8" defaultValue="0"/>
-        </attribute>
-  
-        <attribute name="pduType" comment="Type of pdu, unique for each PDU class">
-            <sisoenum type="DisPduType" comment="uid 4"/>
-        </attribute>
-  
-        <attribute name="protocolFamily" comment="value that refers to the protocol family, eg SimulationManagement, etc">
-            <sisoenum type="DISProtocolFamily" comment="uid 5"/>
-        </attribute>
- 
-        <attribute name="timestamp" comment="Timestamp value">
-            <primitive type="uint32"/>
-        </attribute>
-
-        <attribute name="pduLength" comment="Length, in bytes, of the PDU. Changed name from length to avoid use of Hibernate QL reserved word.">
-            <primitive type="uint16"/>
-        </attribute>
-
-        <attribute name="pduStatus" comment="PDU Status Record. Described in 6.2.67. This field is not present in earlier DIS versions ">
-            <primitive type="uint8"/>
-        </attribute>
- 
-        <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
-            <primitive type="uint8" defaultValue="0"/>
-        </attribute>
- 
-    </class>
-    
-    -->
+	
 
     <class name="PropulsionSystemData" inheritsFrom="root" comment="contains information describing the propulsion systems of the entity. This information shall be provided for each active propulsion system defined. Section 6.2.68">
 
@@ -2051,7 +1944,7 @@
         <attribute name="recordIDs" comment="variable length list of 32-bit record types">
             <objectlist countFieldName="numberOfRecords">
                 <sisoenum type="VariableRecordType" comment="uid 66" uid="66" size="32"/>
-                <!--<classRef name="VariableRecordType"/>-->
+                
             </objectlist> 
         </attribute>
 
@@ -2231,7 +2124,6 @@
 
     </class>
 
-
     <class name="SimulationIdentifier" inheritsFrom="root" comment="The unique designation of a simulation when using the 48-bit identifier format shall be specified by the Sim- ulation Identifier record. The reason that the 48-bit format is required in addition to the 32-bit simulation address format that actually identifies a specific simulation is because some 48-bit identifier fields in PDUs may contain either an Object Identifier, such as an Entity ID, or a Simulation Identifier. Section 6.2.81">
 
         <attribute name="simulationAddress" comment="Simulation address ">
@@ -2274,11 +2166,7 @@
             </primitivelist>        
         </attribute>
         
-        <!-- <attribute name="paddingTo64bits">
-            <primitivelist length="2">
-                <primitive type="uint8"/>
-            </primitivelist>
-        </attribute>-->
+        
         
         <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
             <padtoboundary length="64"/>
@@ -2345,7 +2233,6 @@
         </attribute>
 
     </class>
-
 
     <class name="SupplyQuantity" inheritsFrom="root" comment=" A supply, and the amount of that supply. Section 6.2.86">
 
@@ -2984,120 +2871,8 @@ next hour. The next hour then starts back at zero. This results in each time uni
     </class>
 
     <!-- Generic holder of PDUs. This is mostly for XML compatability -->
-  <!-- this doesn't unmarshal properly
-    <class name="PduContainer" 
-           inheritsFrom="root"
-           comment="Used for XML compatability. A container that holds PDUs"
-           xmlRootElement="true">
-      
-        <attribute name="numberOfPdus" hidden="true" comment="Number of PDUs in the container list">
-            <primitive type= "uint32"/>
-        </attribute>
-        
-        <attribute name="pdus" comment="record sets">
-            <objectlist countFieldName="numberOfPdus">
-                <classRef name="Pdu"/>
-            </objectlist> 
-        </attribute>
-        
-    </class>
-  -->
+  
 
-    <!--
-    <class name="DamageDescriptionRecord"
-           inheritsFrom="root"
-           comment="This record contains additional damage descriptions from an entity that was damaged.">
     
-      <attribute name="RecordType" comment="Damage Description Record Type.">
-        <primitive type="unsigned int" defaultValue="0"/>
-      </attribute>
-    
-      <attribute name="RecordLength" comment="Damage Description Record Length.">
-        <primitive type="unsigned short" defaultValue="0"/>
-      </attribute>
-    
-      <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
-        <primitive type="unsigned short" defaultValue="0"/>
-      </attribute>
-    
-      <attribute name="Location" comment="Position (meters) relative to body centroid.">
-        <classRef name="Vector3Float"/>
-      </attribute>
-    
-      <attribute name="DamageDiameter" comment="Diameter of damage (meters).">
-        <primitive type="float" defaultValue="0"/>
-      </attribute>
-    
-      <attribute name="Temperature" comment="Tempeture of area (deg C).">
-        <primitive type="float" defaultValue="0"/>
-      </attribute>
-    
-      <attribute name="CompID" comment="Component ID ENUM.">
-        <primitive type="unsigned byte" defaultValue="0"/>
-        <enum name="COMPID_T">
-          <item name="COMPID_CENTER"                   value="0"/>
-          <item name="COMPID_ENTITY_STRUCTURE"         value="1"/>
-          <item name="COMPID_CONTROL_SYSTEM"           value="2"/>
-          <item name="COMPID_CONTROL_SURFACE"          value="3"/>
-          <item name="COMPID_ENGINE_PROPULSION_SYSTEM" value="4"/>
-          <item name="COMPID_CREW_MEMBER"              value="5"/>
-          <item name="COMPID_FUSE"                     value="6"/>
-          <item name="COMPID_ACQUISITION_SENSOR"       value="7"/>
-          <item name="COMPID_TRACKING_SENSOR"          value="8"/>
-          <item name="COMPID_FUEL_TANK"                value="9"/>
-        </enum>
-      </attribute>
-    
-      <attribute name="CompDmgStatus" comment="Component Damage Status ENUM.">
-        <primitive type="unsigned byte" defaultValue="0"/>
-        <enum name="COMPDMG_T">
-          <item name="COMPDMG_NO_DAMAGE"     value="0"/>
-          <item name="COMPDMG_MINOR_DAMAGE"  value="1"/>
-          <item name="COMPDMG_MEDIUM_DAMAGE" value="2"/>
-          <item name="COMPDMG_MAJOR_DAMAGE"  value="3"/>
-          <item name="COMPDMG_DESTROYED"     value="4"/>
-        </enum>
-      </attribute>
-    
-      <attribute name="CompVisualDmgStatus" comment="Component Visual Damage Status ENUM.">
-        <primitive type="unsigned byte" defaultValue="0"/>
-        <enum name="VISDMG_T">
-          <item name="VISDMG_FIRE_PRESENT"   value="0x01"/>
-          <item name="VISDMG_FIRE_MASK"      value="0x01"/>
-    
-          <item name="VISDMG_NO_SMOKE"       value="0x00"/>
-          <item name="VISDMG_LIGHT_SMOKE"    value="0x02"/>
-          <item name="VISDMG_MODERATE_SMOKE" value="0x04"/>
-          <item name="VISDMG_HEAVY_SMOKE"    value="0x06"/>
-          <item name="VISDMG_SMOKE_MASK"     value="0x06"/>
-    
-          <item name="VISDMG_NO_CHARRING"    value="0x00"/>
-          <item name="VISDMG_LIGHT_CHARRING" value="0x08"/>
-          <item name="VISDMG_HEAVY_CHARRING" value="0x10"/>
-          <item name="VISDMG_HOLES"          value="0x18"/>
-          <item name="VISDMG_CHARRING_MASK"  value="0x18"/>
-        </enum>
-      </attribute>
-    
-      <attribute name="CompVisualSmokeColor" comment="Comp Visual Somke Color ENUM.">
-        <primitive type="unsigned byte" defaultValue="0"/>
-        <enum name="SMOKE_COLOR_T">
-          <item name="SMOKE_COLOR_NO_SMOKE"/>
-          <item name="SMOKE_COLOR_WHITE"/>
-          <item name="SMOKE_COLOR_GREY"/>
-          <item name="SMOKE_COLOR_BLACK"/>
-        </enum>
-      </attribute>
-    
-      <attribute name="FireEventID" comment="Unique event ID for this event.">
-        <classRef name="EventIdentifier"/>
-      </attribute>
-    
-      <attribute name="Padding2" comment="Padding.">
-        <primitive type="unsigned short" defaultValue="0"/>
-      </attribute>
-    
-    </class>
-    -->
 
 </classes>

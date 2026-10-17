@@ -1,18 +1,5 @@
 <classes>
-    <!--  TODO check, why unused?
-    <class name="LiveEntityPdu" id="11" abstract="true" inheritsFrom="Pdu"
-           comment="The live entity PDUs have a slightly different header.">
-
-        <attribute name="subprotocolNumber" comment="Subprotocol used to decode the PDU. Section 13 of EBV.">
-            <sisoenum type="DISLiveEntitySubprotocolNumber" comment="uid 417"/>
-        </attribute>
-
-        <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
-            <primitive type="uint8" defaultValue="0"/>
-        </attribute>
-
-    </class>
-    -->
+    
     
     <class name="LiveEntityFamilyPdu" id="11" abstract="true" inheritsFrom="Pdu" comment="Does not inherit from PduBase.  See section 9.">
      
