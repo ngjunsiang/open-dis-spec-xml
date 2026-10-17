@@ -1,4 +1,4 @@
-# Build manifest — v0.12.6
+# Build manifest — v0.12.7
 generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-16 (stage 3 Annex C radio-system records),
            2026-10-16 (stage 4 comment enrichment),
@@ -9,7 +9,8 @@ generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-17 (stage 9 Silent Aggregate System, PR #18),
            2026-10-17 (stage 10 patch: issue 9/12 resolutions, PR #19),
            2026-10-17 (stage 11 alignment invariant + element fixes, PR #20),
-           2026-10-17 (stage 12 length semantics, PR #21)
+           2026-10-17 (stage 12 length semantics, PR #21),
+           2026-10-17 (stage 13 commented-legacy sweep, PR #22)
 source-of-truth chain:
   upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
                    (xml/dis_7_2012/* — byte-verified identical to the
@@ -260,3 +261,26 @@ stage 12 (2026-10-17, v0.12.6 — PR #21, branch length-semantics):
   downstream:      inert until consumed; adoption retires the
                    FIELD_DROPS length family — the last curated
                    bridge category
+
+stage 13 (2026-10-17, v0.12.7 — PR #22, branch commented-legacy-sweep):
+  change:          text-only retirement of the commented-out legacy
+                   definitions: 15 comment blocks (424 lines) — six
+                   commented classes (EnvironmentType, PduHeader,
+                   PduContainer, DamageDescriptionRecord,
+                   FastEntityStatePdu, LiveEntityPdu; each superseded
+                   by a live shape) and nine commented padding/classRef
+                   fragments. Parser- and drift-invisible (commented
+                   content is never parsed; nothing live referenced
+                   it). Census correction: 15 blocks, not the ~46
+                   mentions of the earlier naive count. Issue #11
+                   closed invalid this cycle (premise refuted in
+                   v0.12.6; the formula's 16P notation slip documented
+                   in the gate-8n comment).
+  evidence:        docs/commented-legacy-evidence.md
+  gates:           validate.py + check_consistency.py green in both
+                   invocations; zero downstream delta
+  state:           with this stage the repo reaches zero open issues
+                   and no known remaining work items; remaining
+                   campaign work lives downstream (open-dis-python #5
+                   generator vocabulary consumption, #6 intercom
+                   cites) and in the gated upstream PR campaign
