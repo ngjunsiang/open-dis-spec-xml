@@ -1,4 +1,4 @@
-# Build manifest — v0.12.5
+# Build manifest — v0.12.6
 generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-16 (stage 3 Annex C radio-system records),
            2026-10-16 (stage 4 comment enrichment),
@@ -8,7 +8,8 @@ generated: 2026-10-14 (stage 1), 2026-10-15 (stage 2 IEEE PDF audit),
            2026-10-17 (stage 8 vocabulary: product() + derived, PR #17),
            2026-10-17 (stage 9 Silent Aggregate System, PR #18),
            2026-10-17 (stage 10 patch: issue 9/12 resolutions, PR #19),
-           2026-10-17 (stage 11 alignment invariant + element fixes, PR #20)
+           2026-10-17 (stage 11 alignment invariant + element fixes, PR #20),
+           2026-10-17 (stage 12 length semantics, PR #21)
 source-of-truth chain:
   upstream:        open-dis/opendis7-source-generator @ 7d2716136292dee9a16257b5d5f606ac02fc3b9e
                    (xml/dis_7_2012/* — byte-verified identical to the
@@ -228,3 +229,34 @@ stage 11 (2026-10-17, v0.12.5 — PR #20, branch alignment-invariant):
   downstream:      three wire deltas for the next round (the -R record
                    PDUs' flat record-set lists; DE Fire's generic SV
                    record list)
+
+stage 12 (2026-10-17, v0.12.6 — PR #21, branch length-semantics):
+  change:          length semantics per the 2026-10-17 rulings.
+  (a) Issue #11 resolved NOT-an-erratum: the 1088-vs-1056 gap was our
+                   own row sum (Table 183's trailing 32-bit M count
+                   had been dropped); table, formula, draft, and XML
+                   are consistent at 1088 — gate 8n now locks the
+                   full-PDU AggregateStatePdu total across six cases
+                   (the gate the flawed analysis had blocked).
+  (b) byteCountFieldName: octet-counted payload binding (gate 2 +
+                   SizeEval + gate C), bound to TSPI
+                   systemSpecificData (9.4.2).
+  (c) lengthRole="recordOctets"|"recordWords32" — closed role
+                   vocabulary, NO expression syntax (precedents are
+                   whole languages; runtime never evaluates XML
+                   formulas; formulas live in the gates). Migrated:
+                   the SV recordLength family + Environment.length
+                   (self-framing records) and the 7.6.2 emitter/beam
+                   lengths. Gate C2 extended to computed fields — it
+                   caught the migration's own gaps (4 hidden flags,
+                   3 stale defaultValues). Design item-5 addendum
+                   records the rulings (derivedExpression rejected;
+                   recordType generator-side; pads explicit).
+  evidence:        docs/length-semantics-evidence.md; correction on
+                   issue #11 (close recommended, user's call)
+  gates:           validate.py 8n + gate-2 byteCountFieldName;
+                   check_consistency C2 extended; both invocations
+                   green; drift-invisible (gate E unchanged)
+  downstream:      inert until consumed; adoption retires the
+                   FIELD_DROPS length family — the last curated
+                   bridge category
