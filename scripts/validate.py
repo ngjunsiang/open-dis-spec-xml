@@ -110,7 +110,8 @@ def gate_length_sources(trees):
             if t not in ("primitivelist", "objectlist"):
                 continue
             srcs = ("countFieldName", "countExpression", "bitCountFieldName",
-                    "bitCountExpression", "countListFieldName",
+                    "bitCountExpression", "byteCountFieldName",
+                    "countListFieldName",
                     "isDynamicListLengthField", "length")
             if not any(k in e.attrib for k in srcs):
                 owner = e.getparent().get("name")
@@ -359,6 +360,8 @@ class SizeEval:
             return self.arith(c.get("countExpression"), values)
         if "bitCountFieldName" in c.attrib:
             return int(values[c.get("bitCountFieldName")]) // 8
+        if "byteCountFieldName" in c.attrib:
+            return int(values[c.get("byteCountFieldName")])
         if "bitCountExpression" in c.attrib:
             return self.arith(c.get("bitCountExpression"), values) // 8
         if "countListFieldName" in c.attrib:
@@ -669,6 +672,45 @@ def gate_size_spot_checks(trees):
                   f"expected {want}")
     check(ok, "gate 8l: GriddedDataPdu == Table 192 (512 fixed; "
               "G = V x prod(Nk) via countExpression)")
+
+    # ---- Aggregate State PDU vs Table 183 (issue #11, resolved):
+    # the fixed part is 1088 bits = 96+48+8+8+64+32+256+96+96+192+96
+    # + 4x16 (W/J/N/S counts) + 32 (the M count, which the table rows
+    # AFTER the silent-system lists, just before Variable Datum #1).
+    # An earlier survey summed 1056 by dropping the M count and filed
+    # the gap as an erratum candidate (issue #11) -- wrong: the table
+    # is internally consistent, as is the 1278.1-200X draft. Total =
+    # 1088 + 48W + 48J + 8P + 96N + sum(96 + 32A) + sum(64 + K + P),
+    # P in octets (the printed formula's "16P" term is a units slip;
+    # the row says 8 bits per padding octet).
+    ok = True
+    base = {"numberOfDisAggregates": 0, "numberOfDisEntities": 0,
+            "numberOfSilentAggregateTypes": 0,
+            "numberOfSilentEntityTypes": 0,
+            "numberOfVariableDatumRecords": 0,
+            "numberOfAppearanceRecords": 0}
+    for label, vals, want in (
+        ("empty", {}, 1088),
+        ("W=2 (P=0)", {"numberOfDisAggregates": 2}, 1088 + 96),
+        ("W=1 (P=2 octets = 16 bits)", {"numberOfDisAggregates": 1},
+         1088 + 48 + 16),
+        ("S=1, A=0", {"numberOfSilentEntityTypes": 1,
+                      "numberOfAppearanceRecords": 0}, 1088 + 96),
+        ("N=1", {"numberOfSilentAggregateTypes": 1}, 1088 + 96),
+        ("W=2 J=2 S=1 N=1", {"numberOfDisAggregates": 2,
+                             "numberOfDisEntities": 2,
+                             "numberOfSilentAggregateTypes": 1,
+                             "numberOfSilentEntityTypes": 1,
+                             "numberOfAppearanceRecords": 0},
+         1088 + 96 + 96 + 96 + 96),
+    ):
+        got = ev.size_class("AggregateStatePdu", dict(base, **vals))
+        if got != want:
+            ok = False
+            print(f"   AggregateStatePdu {label}: computed {got}, "
+                  f"row-sum says {want}")
+    check(ok, "gate 8n: AggregateStatePdu == Table 183 "
+              "(1088 fixed incl. the trailing M count)")
 
 
 def main():

@@ -412,8 +412,8 @@
             <primitive type="uint32" defaultValue="3000"/>
         </attribute>
 
-        <attribute name="recordLength" comment="Record Length in octets = 40 (the whole record, Table C.4)">
-            <primitive type="uint16" defaultValue="40"/>
+        <attribute name="recordLength" lengthRole="recordOctets" hidden="true" comment="Record Length in octets = 40 (the whole record, Table C.4)">
+            <primitive type="uint16"/>
         </attribute>
 
         <attribute name="padding1" comment="16 bits unused (Table C.4)">

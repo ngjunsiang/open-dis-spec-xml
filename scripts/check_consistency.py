@@ -357,7 +357,8 @@ def gate_semantic_refs(m):
             for lst in a.iter():
                 if tag_of(lst) not in ("primitivelist", "objectlist"):
                     continue
-                for k in ("countFieldName", "bitCountFieldName"):
+                for k in ("countFieldName", "bitCountFieldName",
+                          "byteCountFieldName"):
                     v = lst.get(k)
                     if v and v not in fields:
                         problems.append(f"{where} {k} -> unknown field {v!r}")
@@ -443,29 +444,41 @@ def gate_derived_counts(m):
                     if n:
                         refs[n] = refs.get(n, 0) + 1
         for a in c.findall("attribute"):
-            if a.get("derived") != "true":
+            role = a.get("lengthRole")
+            if a.get("derived") != "true" and role is None:
                 continue
             an = a.get("name")
             where = f"{f}:{cn}.{an}"
             prim = a.find("primitive")
             if prim is None:
-                problems.append(f"{where}: derived requires a primitive "
-                                "child")
+                problems.append(f"{where}: derived/lengthRole requires a "
+                                "primitive child")
             elif prim.get("defaultValue") is not None:
-                problems.append(f"{where}: derived count cannot carry a "
+                problems.append(f"{where}: computed field cannot carry a "
                                 "defaultValue")
             if a.get("hidden") != "true":
-                problems.append(f"{where}: derived counts are also "
+                problems.append(f"{where}: computed fields are also "
                                 "marshaller-managed (hidden)")
-            if refs.get(an, 0) < 1:
+            if role == "recordOctets":
+                # the record's total octets (6.2.83 b 2, 6.2.31): no
+                # list reference required; the record self-frames
+                pass
+            elif role == "recordWords32":
+                # 32-bit words including the header (7.6.2)
+                pass
+            elif role:
+                problems.append(f"{where}: unknown lengthRole {role!r} "
+                                "(recordOctets | recordWords32)")
+            elif refs.get(an, 0) < 1:
                 problems.append(f"{where}: derived must be named by a "
                                 "list count (found none)")
             # >=1, not exactly 1: a partitioned count may name several
             # lists (MinefieldDataPdu's dataFilter-gated per-mine lists
             # all reference numberOfMinesInThisPdu; the primary list is
             # mineLocation)
-    check(not problems, "C2. derived counts: primitive, defaultless, "
-          "hidden, named by a list count", problems)
+    check(not problems, "C2. computed fields (derived counts, "
+          "lengthRole): primitive, defaultless, hidden, valid role",
+          problems)
 
 
 def exprs_of(c):

@@ -245,3 +245,38 @@ PDU, not relative padding. No divergence site exists; no term ships.
 The invariant is locked instead by check_consistency gate G (with the
 three wrapper-as-element fixes its discovery exposed). Full account:
 `docs/alignment-invariant-evidence.md`.
+
+## Item 5 — length roles (2026-10-17, v0.12.6; supersedes any
+derivedExpression idea)
+
+Ruled after surveying the precedents (expression-bearing format
+languages — DFDL, Kaitai Struct — are whole languages; SQL generated
+columns cover the derived-value concept): **no expression syntax**.
+The runtime never evaluates XML formulas (generators compute from
+actual marshalled size), so the XML declares **roles** — a closed
+vocabulary the standard itself names — and formulas live in the
+gates:
+
+- `lengthRole="recordOctets"` — the record's total octets (§6.2.83
+  b) 2); makes the record self-framing: parse reads the 6-byte
+  header, consumes the remainder). Migrated: the SV `recordLength`s
+  (DirectedEnergy ×3, HighFidelityHAVEQUICK, Attribute,
+  StandardVariableRecord) and `Environment.length`.
+- `lengthRole="recordWords32"` — 32-bit words including the header
+  (§7.6.2). Migrated: `systemDataLength`/`beamDataLength` on
+  ElectronicEmitter/EmitterBeam/UAEmitter/UABeam.
+- Cardinality stays `derived="true"` (v0.12.2) — the third role,
+  already shipped.
+- `byteCountFieldName` added for octet-counted payloads (§9.4.2 TSPI
+  `systemSpecificData`; the bit-granular `bitCountFieldName` remains
+  for bit counts).
+- `recordType` stays **generator-side**: the XML already carries the
+  constant (`defaultValue`); ClassVar emission is codegen.
+- Pads stay **explicit** `padtoboundary` elements; a role reads the
+  whole record's size including them (retires the absorb-the-pad
+  payload hack downstream).
+
+Gate C2 enforces: primitive child, no `defaultValue`, `hidden`,
+known role. Downstream consumption: role → computed property
+(`marshalledSize()` / word count); parse self-frames. Retires the
+FIELD_DROPS length family when consumed.

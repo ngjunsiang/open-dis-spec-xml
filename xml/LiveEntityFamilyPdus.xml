@@ -71,7 +71,7 @@
         </attribute>
         
         <attribute name="systemSpecificData">
-            <primitivelist countFieldName="systemSpecificDataLength">
+            <primitivelist byteCountFieldName="systemSpecificDataLength">
                 <primitive type="uint8" length="0"/>
             </primitivelist>
         </attribute>
