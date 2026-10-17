@@ -318,8 +318,8 @@
             <primitive type="uint32" defaultValue="4500" comment="record type is always 4500"/>
         </attribute>
 
-        <attribute name="recordLength" comment="DE Record Length (bytes)">
-            <primitive type="uint16" defaultValue="40"/>
+        <attribute name="recordLength" lengthRole="recordOctets" hidden="true" comment="DE Record Length (bytes)">
+            <primitive type="uint16"/>
         </attribute>
 
         <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
@@ -486,7 +486,7 @@
             <primitive type="uint32" defaultValue="4001"/>
         </attribute>
 
-        <attribute name="recordLength" comment="Length of Record">
+        <attribute name="recordLength" lengthRole="recordOctets" hidden="true" comment="Length of Record">
             <primitive type="uint16"/>
         </attribute>
 
@@ -527,8 +527,8 @@
             <primitive type="uint32" defaultValue="4000"/>
         </attribute>
 
-        <attribute name="recordLength" comment="Length of Record">
-            <primitive type="uint16" defaultValue="88"/>
+        <attribute name="recordLength" lengthRole="recordOctets" hidden="true" comment="Length of Record">
+            <primitive type="uint16"/>
         </attribute>
 
         <attribute name="padding" comment="zero-filled array of padding bits for byte alignment and consistent sizing of PDU data">
@@ -1011,7 +1011,7 @@
             <sisoenum type="EnvironmentalProcessRecordType" comment="uid 250" uid="250" size="32"/>
         </attribute>
     
-        <attribute name="length" comment="length, in bits">
+        <attribute name="length" lengthRole="recordOctets" hidden="true" comment="length, in bits">
             <primitive type="uint16"/>
         </attribute>
     
@@ -2264,7 +2264,7 @@
             <sisoenum type="VariableRecordType" comment="uid 66 Variable Record Type values are defined by VariableRecordType enumerations" uid="66" size="32"/>
         </attribute>
         
-        <attribute name="recordLength" hidden="true">
+        <attribute name="recordLength" lengthRole="recordOctets" hidden="true">
             <primitive type="uint16"/>
         </attribute>
         
